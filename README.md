@@ -21,11 +21,10 @@ Aplikacja przedstawia prosty system kliniki medycznej z podstawowymi funkcjonaln
 - Realizacja wizyty
 - Powiadomienia o nadchodzącej wizycie
 
+---
 
 ### Architektura oprogramowania
 Wstępnie aplikacja ma być podzielona na mikroserwisy
-
----
 
 ### Wykorzystane technologie(alpha v0.1):
 
