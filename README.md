@@ -8,6 +8,8 @@ Aplikacja przedstawia prosty system kliniki medycznej z podstawowymi funkcjonaln
 #### Zrealizowane cele:
 - [x] [Utworzenie DPU](https://github.com/Pawel-Raciborski/system-kliniki-medycznej/tree/main/Koncepcja%20systemu/Diagramy%20przypadk%C3%B3w%20u%C5%BCycia)
 - [x] [Podstawowe scenariusze](https://github.com/Pawel-Raciborski/system-kliniki-medycznej/blob/main/Koncepcja%20systemu/Scenariusze/System%20kliniki%20medycznej%20-%20scenariusze.pdf)
+- [x] [Utworzenie diagramu związków encji](https://github.com/Pawel-Raciborski/system-kliniki-medycznej/blob/main/Koncepcja%20systemu/Diagram%20zwi%C4%85zk%C3%B3w%20encji/diagram_zwi%C4%85zk%C3%B3w_encji.png)
+
 
 #### Podstawowe funkcjonalności w systemie:
 - Rejestracja pacjenta
