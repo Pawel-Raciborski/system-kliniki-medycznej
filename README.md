@@ -21,25 +21,24 @@ Aplikacja przedstawia prosty system kliniki medycznej z podstawowymi funkcjonaln
 - Realizacja wizyty
 - Powiadomienia o nadchodzącej wizycie
 
+---
 
 ### Architektura oprogramowania
 Wstępnie aplikacja ma być podzielona na mikroserwisy
 
----
-
 ### Wykorzystane technologie(alpha v0.1):
 
-##### Front-end:
+#### Front-end:
 - Angular
 - TypeScript
 - CSS(lub SCSS)
 - HTML5
 
-##### Back-end:
+#### Back-end:
 - Java
 - Spring Boot
 
-##### Baza danych:
+#### Baza danych:
 - PostgreSQL
 
 #### Inne technologie:
