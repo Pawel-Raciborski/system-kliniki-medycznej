@@ -26,7 +26,7 @@ Aplikacja przedstawia prosty system kliniki medycznej z podstawowymi funkcjonaln
 ---
 
 ### Architektura oprogramowania
-Wstępnie aplikacja ma być podzielona na mikroserwisy
+Aplikacja monolityczna
 
 ### Wykorzystane technologie(alpha v0.1):
 
