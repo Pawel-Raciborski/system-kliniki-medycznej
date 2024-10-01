@@ -1,0 +1,10 @@
+CREATE TABLE doctor
+(
+    id                  SERIAL NOT NULL PRIMARY KEY,
+    user_id             INT    NOT NULL,
+    personal_details_id INT    NOT NULL,
+    pwz_number          VARCHAR(16),
+    date_of_employment  DATE,
+    CONSTRAINT fk_doctor_personal_details FOREIGN KEY (personal_details_id) REFERENCES personal_details (id),
+    CONSTRAINT fk_doctor_user FOREIGN KEY (user_id) REFERENCES user_table (id)
+)
