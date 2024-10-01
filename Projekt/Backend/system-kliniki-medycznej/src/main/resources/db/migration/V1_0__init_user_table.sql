@@ -4,5 +4,5 @@ CREATE TABLE user_table
     username         varchar(64)  NOT NULL,
     password         varchar(256) NOT NULL,
     email            varchar(64)  NOT NULL,
-    date_of_creation timestamp
+    date_time_of_creation timestamp
 )

@@ -2,8 +2,8 @@ create table patient_card
 (
     id                      uuid NOT NULL PRIMARY KEY,
     patient_id              INT  NOT NULL UNIQUE,
-    created_date            timestamp,
-    last_visit_date         timestamp, -- on each visit this date is updated
+    created_date_time       timestamp,
+    last_visit_date_time    timestamp, -- on each visit this date is updated
     interview_id            INT  NOT NULL UNIQUE,
     patient_data_files_path text NOT NULL,
     patient_details_id      INT  NOT NULL UNIQUE,

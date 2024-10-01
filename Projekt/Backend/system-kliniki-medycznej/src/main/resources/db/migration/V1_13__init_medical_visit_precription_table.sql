@@ -1,4 +1,4 @@
-create table medical_visit_prescription
+create table appointment_prescription
 (
     id              SERIAL not null PRIMARY KEY,
     prescription_id INT    NOT NULL,
