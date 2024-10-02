@@ -2,7 +2,7 @@ package org.back.systemklinikimedycznej.receptionist.repositories.entities;
 
 import jakarta.persistence.*;
 import org.back.systemklinikimedycznej.personal_details.repositories.entities.PersonalDetails;
-import org.back.systemklinikimedycznej.user.repositories.entities.User;
+import org.back.systemklinikimedycznej.user.repositories.entities.Account;
 
 import java.time.LocalDate;
 
@@ -13,8 +13,8 @@ public class Receptionist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne
-    @JoinColumn(name="user_id")
-    private User user;
+    @JoinColumn(name="account_id")
+    private Account account;
     @OneToOne
     @JoinColumn(name = "personal_details_id")
     private PersonalDetails personalDetails;

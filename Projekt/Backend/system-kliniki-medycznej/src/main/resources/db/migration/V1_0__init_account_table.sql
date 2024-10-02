@@ -1,4 +1,4 @@
-CREATE TABLE user_table
+CREATE TABLE account
 (
     id               SERIAL       NOT NULL PRIMARY KEY,
     username         varchar(64)  NOT NULL,

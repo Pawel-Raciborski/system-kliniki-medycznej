@@ -1,16 +1,23 @@
 package org.back.systemklinikimedycznej.appointment.repositories.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.back.systemklinikimedycznej.appointment.domain.AppointmentStatus;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.calendar.DoctorCalendar;
 import org.back.systemklinikimedycznej.patient.repositories.entities.patient_card.PatientCard;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
+@Builder
 @Entity
 @Table(name = "appointment")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -24,16 +31,15 @@ public class Appointment {
     @ManyToOne
     @JoinColumn(name="patient_card_id")
     private PatientCard patientCard;
-    @Column(name="visit_date_time")
-    private String visitDateTime;
+    @Column(name="appointment_date_time")
+    private LocalDateTime appointmentDateTime;
     @Column(name="finish_date_time")
-    private String finishDateTime;
+    private LocalDateTime finishDateTime;
     @Column(name="status")
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
     @Column(name="diagnosis")
     private String diagnosis;
-
     @OneToMany(mappedBy = "appointment")
     private Set<AppointmentPrescription> appointmentPrescriptions;
 }

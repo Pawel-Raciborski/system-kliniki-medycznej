@@ -8,3 +8,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/system_kliniki_medycznej
     username: postgres
     password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: create-drop

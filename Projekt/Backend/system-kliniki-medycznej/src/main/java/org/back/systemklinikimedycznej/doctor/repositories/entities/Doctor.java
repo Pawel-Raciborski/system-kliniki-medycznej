@@ -6,7 +6,7 @@ import org.back.systemklinikimedycznej.appointment.repositories.entities.Appoint
 import org.back.systemklinikimedycznej.doctor.repositories.entities.calendar.DoctorCalendar;
 import org.back.systemklinikimedycznej.personal_details.repositories.entities.PersonalDetails;
 import org.back.systemklinikimedycznej.prescription.repositories.entities.Prescription;
-import org.back.systemklinikimedycznej.user.repositories.entities.User;
+import org.back.systemklinikimedycznej.user.repositories.entities.Account;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -24,8 +24,8 @@ public class Doctor {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "account_id")
+    private Account account;
 
     @OneToOne
     @JoinColumn(name = "personal_details_id")
@@ -35,7 +35,7 @@ public class Doctor {
     @JoinColumn(name="calendar_id")
     private DoctorCalendar calendar;
 
-    @OneToMany(mappedBy = "doctor")
+    @OneToMany(mappedBy = "doctor",cascade = CascadeType.PERSIST)
     private Set<DoctorSpecialization> doctorSpecializations;
 
     @OneToMany(mappedBy = "doctor")

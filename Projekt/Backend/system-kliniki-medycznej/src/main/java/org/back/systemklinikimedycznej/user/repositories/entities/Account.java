@@ -9,10 +9,10 @@ import java.time.LocalDateTime;
 
 @Entity
 @Builder
-@Table(name = "user_table")
+@Table(name = "account")
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
