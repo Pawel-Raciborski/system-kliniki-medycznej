@@ -10,4 +10,6 @@ public interface DoctorSpecializationMapper {
     DoctorSpecializationMapper INSTANCE = Mappers.getMapper(DoctorSpecializationMapper.class);
 
     DoctorSpecialization mapFromDto(DoctorSpecializationDto doctorSpecializationDto);
+
+    DoctorSpecializationDto mapFromEntity(DoctorSpecialization doctorSpecialization);
 }

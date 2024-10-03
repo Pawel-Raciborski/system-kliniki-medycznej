@@ -9,6 +9,7 @@ public record DoctorDto(
         String surname,
         String email,
         String pwzNumber,
+        String description,
         String phoneNumber,
         String street,
         String postalCode,

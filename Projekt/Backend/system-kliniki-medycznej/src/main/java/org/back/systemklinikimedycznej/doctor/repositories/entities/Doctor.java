@@ -35,6 +35,9 @@ public class Doctor {
     @JoinColumn(name="calendar_id")
     private DoctorCalendar calendar;
 
+    @Column(name="description")
+    private String description;
+
     @OneToMany(mappedBy = "doctor",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Set<DoctorSpecialization> doctorSpecializations;
 

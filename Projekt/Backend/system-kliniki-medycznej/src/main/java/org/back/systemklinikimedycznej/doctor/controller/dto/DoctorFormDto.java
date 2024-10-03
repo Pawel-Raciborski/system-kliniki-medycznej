@@ -10,6 +10,7 @@ public record DoctorFormDto(
         AccountDto registerAccountData,
         PersonalDetailsDto personalDetails,
         String pwzNumber,
+        String description,
         LocalDate dateOfEmployment,
         List<DoctorSpecializationDto> doctorSpecializations
 ){

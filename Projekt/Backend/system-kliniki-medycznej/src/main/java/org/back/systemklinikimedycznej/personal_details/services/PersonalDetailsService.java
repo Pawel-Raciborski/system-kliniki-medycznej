@@ -65,6 +65,12 @@ public class PersonalDetailsService {
         PersonalDetails personalDetailsToUpdate = personalDetailsOpt.get();
         Address updatedAddress = addressService.update(newPersonalDetails.address(), personalDetailsToUpdate.getAddress());
 
+        setFields(newPersonalDetails, personalDetailsToUpdate, updatedAddress);
+
+        return personalDetailsRepository.save(personalDetailsToUpdate);
+    }
+
+    private static void setFields(PersonalDetailsDto newPersonalDetails, PersonalDetails personalDetailsToUpdate, Address updatedAddress) {
         personalDetailsToUpdate.setAddress(updatedAddress);
         personalDetailsToUpdate.setName(newPersonalDetails.name());
         personalDetailsToUpdate.setSurname(newPersonalDetails.surname());
@@ -72,7 +78,5 @@ public class PersonalDetailsService {
         personalDetailsToUpdate.setGender(newPersonalDetails.gender());
         personalDetailsToUpdate.setPhoneNumber(newPersonalDetails.phoneNumber());
         personalDetailsToUpdate.setBirthDate(newPersonalDetails.birthDate());
-
-        return personalDetailsRepository.save(personalDetailsToUpdate);
     }
 }

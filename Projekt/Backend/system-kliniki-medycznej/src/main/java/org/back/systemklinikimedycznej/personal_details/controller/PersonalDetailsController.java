@@ -1,4 +1,4 @@
-package org.back.systemklinikimedycznej.personal_details;
+package org.back.systemklinikimedycznej.personal_details.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.personal_details.dto.PersonalDetailsDto;
