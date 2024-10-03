@@ -24,7 +24,7 @@ public class PersonalDetails {
     @Column(name="birth_date")
     private LocalDate birthDate;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name="address_id")
     private Address address;
 

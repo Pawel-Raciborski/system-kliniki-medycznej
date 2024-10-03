@@ -1,12 +1,12 @@
 package org.back.systemklinikimedycznej.user.repositories.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @Entity
 @Builder
 @Table(name = "account")

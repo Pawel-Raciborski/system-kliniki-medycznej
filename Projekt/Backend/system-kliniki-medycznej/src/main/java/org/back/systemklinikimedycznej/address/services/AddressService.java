@@ -23,12 +23,6 @@ public class AddressService {
     private final CityService cityService;
     @Transactional
     public Address create(AddressForm addressForm){
-        String cityName = addressForm.city();
-        Optional<City> cityOpt = cityRepository.findByName(cityName);
-
-        if(cityOpt.isEmpty()){
-            cityRepository.save(City.builder().name(cityName).build());
-        }
         Address addressToCreate = buildAddressFromForm(addressForm);
         Example<Address> addressExample = Example.of(addressToCreate);
 
@@ -49,5 +43,16 @@ public class AddressService {
                 .postalCode(addressForm.postalCode())
                 .city(addressCity)
                 .build();
+    }
+
+    public Address update(AddressForm newAddress, Address oldAddress) {
+        City city = cityService.findByName(newAddress.city());
+
+        oldAddress.setStreet(newAddress.street());
+        oldAddress.setApartmentNumber(newAddress.apartmentNumber());
+        oldAddress.setPostalCode(newAddress.postalCode());
+        oldAddress.setCity(city);
+
+        return addressRepository.save(oldAddress);
     }
 }

@@ -1,17 +1,15 @@
 package org.back.systemklinikimedycznej.address.repositories.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
+@Getter
 @Setter
 @Builder
 @Entity
-@Table
+@Table(name = "city")
 @NoArgsConstructor
 @AllArgsConstructor
 public class City {

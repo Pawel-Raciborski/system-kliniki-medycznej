@@ -40,6 +40,6 @@ public class Appointment {
     private AppointmentStatus status;
     @Column(name="diagnosis")
     private String diagnosis;
-    @OneToMany(mappedBy = "appointment")
+    @OneToMany(mappedBy = "appointment",cascade = CascadeType.REMOVE)
     private Set<AppointmentPrescription> appointmentPrescriptions;
 }

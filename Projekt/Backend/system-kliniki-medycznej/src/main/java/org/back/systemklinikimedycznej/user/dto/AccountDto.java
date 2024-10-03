@@ -1,6 +1,6 @@
 package org.back.systemklinikimedycznej.user.dto;
 
-public record RegisterAccountForm(
+public record AccountDto(
         String username,
         String password,
         String email

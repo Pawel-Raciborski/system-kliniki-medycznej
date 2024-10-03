@@ -1,20 +1,16 @@
 package org.back.systemklinikimedycznej.doctor.controller.dto;
 
 import org.back.systemklinikimedycznej.personal_details.dto.PersonalDetailsDto;
+import org.back.systemklinikimedycznej.user.dto.AccountDto;
 
+import java.time.LocalDate;
 import java.util.List;
 
-public record DoctorDto(
-        String name,
-        String surname,
-        String email,
+public record DoctorFormDto(
+        AccountDto registerAccountData,
+        PersonalDetailsDto personalDetails,
         String pwzNumber,
-        String phoneNumber,
-        String street,
-        String postalCode,
-        String apartmentNumber,
-        String city,
+        LocalDate dateOfEmployment,
         List<DoctorSpecializationDto> doctorSpecializations
-
-) {
+){
 }

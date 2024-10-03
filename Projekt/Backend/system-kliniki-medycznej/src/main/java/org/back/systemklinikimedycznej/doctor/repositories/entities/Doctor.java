@@ -23,22 +23,22 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "personal_details_id")
     private PersonalDetails personalDetails;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name="calendar_id")
     private DoctorCalendar calendar;
 
-    @OneToMany(mappedBy = "doctor",cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "doctor",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Set<DoctorSpecialization> doctorSpecializations;
 
-    @OneToMany(mappedBy = "doctor")
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.REMOVE)
     private Set<DoctorOfficeHours> doctorOfficeHours;
 
     @Column(name = "pwz_number")
@@ -47,9 +47,9 @@ public class Doctor {
     @Column(name = "date_of_employment")
     private LocalDate dateOfEmployment;
 
-    @OneToMany(mappedBy = "doctor")
+    @OneToMany(mappedBy = "doctor",cascade = CascadeType.REMOVE)
     private Set<Appointment> appointments;
 
-    @OneToMany(mappedBy = "doctor")
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.REMOVE)
     private Set<Prescription> prescriptions;
 }

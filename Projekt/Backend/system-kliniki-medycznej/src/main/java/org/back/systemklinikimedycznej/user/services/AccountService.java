@@ -1,7 +1,7 @@
 package org.back.systemklinikimedycznej.user.services;
 
 import lombok.RequiredArgsConstructor;
-import org.back.systemklinikimedycznej.user.dto.RegisterAccountForm;
+import org.back.systemklinikimedycznej.user.dto.AccountDto;
 import org.back.systemklinikimedycznej.user.exceptions.UserEmailAlreadyUsed;
 import org.back.systemklinikimedycznej.user.exceptions.UsernameAlreadyUsed;
 import org.back.systemklinikimedycznej.user.repositories.AccountRepository;
@@ -19,29 +19,29 @@ public class AccountService {
     private final AccountRepository accountRepository;
 
     @Transactional
-    public Account create(RegisterAccountForm registerAccountForm) {
-        Optional<Account> foundUserOpt = accountRepository.findByEmail(registerAccountForm.email());
+    public Account create(AccountDto accountDto) {
+        Optional<Account> foundUserOpt = accountRepository.findByEmail(accountDto.email());
 
         if(foundUserOpt.isPresent()){
             throw new UserEmailAlreadyUsed("Niepoprawny email!", HttpStatus.CONFLICT);
         }
 
-        foundUserOpt = accountRepository.findByUsername(registerAccountForm.username());
+        foundUserOpt = accountRepository.findByUsername(accountDto.username());
 
         if(foundUserOpt.isPresent()){
             throw new UsernameAlreadyUsed("Nazwa użytkownika już zajęta!", HttpStatus.CONFLICT);
         }
 
-        Account accountToRegister = buildUserFromRegistrationForm(registerAccountForm);
+        Account accountToRegister = buildUserFromRegistrationForm(accountDto);
 
         return accountRepository.save(accountToRegister);
     }
 
-    private Account buildUserFromRegistrationForm(RegisterAccountForm registerAccountForm) {
+    private Account buildUserFromRegistrationForm(AccountDto accountDto) {
         return Account.builder()
-                .username(registerAccountForm.username())
-                .password(registerAccountForm.password())
-                .email(registerAccountForm.email())
+                .username(accountDto.username())
+                .password(accountDto.password())
+                .email(accountDto.email())
                 .dateTimeOfCreation(LocalDateTime.now())
                 .build();
     }

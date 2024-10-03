@@ -4,7 +4,7 @@ import org.back.systemklinikimedycznej.address.dto.AddressForm;
 
 import java.time.LocalDate;
 
-public record PersonalDetailsForm(
+public record PersonalDetailsDto(
         String pesel,
         String name,
         String surname,

@@ -3,7 +3,8 @@ package org.back.systemklinikimedycznej.personal_details.services;
 import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.address.repositories.entities.Address;
 import org.back.systemklinikimedycznej.address.services.AddressService;
-import org.back.systemklinikimedycznej.personal_details.dto.PersonalDetailsForm;
+import org.back.systemklinikimedycznej.exceptions.GlobalAppException;
+import org.back.systemklinikimedycznej.personal_details.dto.PersonalDetailsDto;
 import org.back.systemklinikimedycznej.personal_details.exceptions.PeselExistsException;
 import org.back.systemklinikimedycznej.personal_details.exceptions.PhoneExistsException;
 import org.back.systemklinikimedycznej.personal_details.repositories.PersonalDetailsRepository;
@@ -21,35 +22,57 @@ public class PersonalDetailsService {
     private final AddressService addressService;
 
     @Transactional
-    public PersonalDetails create(PersonalDetailsForm personalDetailsForm) {
-        Optional<PersonalDetails> foundPersonalDetailsOpt = personalDetailsRepository.findByPesel(personalDetailsForm.pesel());
+    public PersonalDetails create(PersonalDetailsDto personalDetailsDto) {
+        Optional<PersonalDetails> foundPersonalDetailsOpt = personalDetailsRepository.findByPesel(personalDetailsDto.pesel());
 
-        if(foundPersonalDetailsOpt.isPresent()){
+        if (foundPersonalDetailsOpt.isPresent()) {
             throw new PeselExistsException("Błędny pesel", HttpStatus.CONFLICT);
         }
 
-        foundPersonalDetailsOpt = personalDetailsRepository.findByPhoneNumber(personalDetailsForm.phoneNumber());
+        foundPersonalDetailsOpt = personalDetailsRepository.findByPhoneNumber(personalDetailsDto.phoneNumber());
 
-        if(foundPersonalDetailsOpt.isPresent()){
+        if (foundPersonalDetailsOpt.isPresent()) {
             throw new PhoneExistsException("Numer telefonu jest zajęty!", HttpStatus.CONFLICT);
         }
 
-        PersonalDetails personalDetailsToCreate = buildPersonalDetails(personalDetailsForm);
+        PersonalDetails personalDetailsToCreate = buildPersonalDetails(personalDetailsDto);
 
         return personalDetailsRepository.save(personalDetailsToCreate);
     }
 
-    private PersonalDetails buildPersonalDetails(PersonalDetailsForm personalDetailsForm) {
-        Address createdAddress = addressService.create(personalDetailsForm.address());
+    private PersonalDetails buildPersonalDetails(PersonalDetailsDto personalDetailsDto) {
+        Address createdAddress = addressService.create(personalDetailsDto.address());
 
         return PersonalDetails.builder()
-                .pesel(personalDetailsForm.pesel())
-                .name(personalDetailsForm.name())
-                .surname(personalDetailsForm.surname())
-                .gender(personalDetailsForm.gender())
-                .birthDate(personalDetailsForm.birthDate())
-                .phoneNumber(personalDetailsForm.phoneNumber())
+                .pesel(personalDetailsDto.pesel())
+                .name(personalDetailsDto.name())
+                .surname(personalDetailsDto.surname())
+                .gender(personalDetailsDto.gender())
+                .birthDate(personalDetailsDto.birthDate())
+                .phoneNumber(personalDetailsDto.phoneNumber())
                 .address(createdAddress)
                 .build();
+    }
+
+    @Transactional
+    public PersonalDetails update(PersonalDetailsDto newPersonalDetails) {
+        Optional<PersonalDetails> personalDetailsOpt = personalDetailsRepository.findByPesel(newPersonalDetails.pesel());
+
+        if (personalDetailsOpt.isEmpty()) {
+            throw new GlobalAppException("Nie znaleziono danych z podanym PESELEM", HttpStatus.CONFLICT);
+        }
+
+        PersonalDetails personalDetailsToUpdate = personalDetailsOpt.get();
+        Address updatedAddress = addressService.update(newPersonalDetails.address(), personalDetailsToUpdate.getAddress());
+
+        personalDetailsToUpdate.setAddress(updatedAddress);
+        personalDetailsToUpdate.setName(newPersonalDetails.name());
+        personalDetailsToUpdate.setSurname(newPersonalDetails.surname());
+        personalDetailsToUpdate.setPesel(newPersonalDetails.pesel());
+        personalDetailsToUpdate.setGender(newPersonalDetails.gender());
+        personalDetailsToUpdate.setPhoneNumber(newPersonalDetails.phoneNumber());
+        personalDetailsToUpdate.setBirthDate(newPersonalDetails.birthDate());
+
+        return personalDetailsRepository.save(personalDetailsToUpdate);
     }
 }
