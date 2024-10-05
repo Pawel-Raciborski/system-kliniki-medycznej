@@ -1,6 +1,6 @@
-package org.back.systemklinikimedycznej.user.repositories;
+package org.back.systemklinikimedycznej.account.repositories;
 
-import org.back.systemklinikimedycznej.user.repositories.entities.Account;
+import org.back.systemklinikimedycznej.account.repositories.entities.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

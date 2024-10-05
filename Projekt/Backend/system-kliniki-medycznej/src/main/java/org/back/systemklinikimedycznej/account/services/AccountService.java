@@ -1,11 +1,11 @@
-package org.back.systemklinikimedycznej.user.services;
+package org.back.systemklinikimedycznej.account.services;
 
 import lombok.RequiredArgsConstructor;
-import org.back.systemklinikimedycznej.user.dto.AccountDto;
-import org.back.systemklinikimedycznej.user.exceptions.UserEmailAlreadyUsed;
-import org.back.systemklinikimedycznej.user.exceptions.UsernameAlreadyUsed;
-import org.back.systemklinikimedycznej.user.repositories.AccountRepository;
-import org.back.systemklinikimedycznej.user.repositories.entities.Account;
+import org.back.systemklinikimedycznej.account.dto.AccountDto;
+import org.back.systemklinikimedycznej.account.exceptions.UserEmailAlreadyExistException;
+import org.back.systemklinikimedycznej.account.exceptions.UsernameAlreadyExistException;
+import org.back.systemklinikimedycznej.account.repositories.AccountRepository;
+import org.back.systemklinikimedycznej.account.repositories.entities.Account;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,13 +23,13 @@ public class AccountService {
         Optional<Account> foundUserOpt = accountRepository.findByEmail(accountDto.email());
 
         if(foundUserOpt.isPresent()){
-            throw new UserEmailAlreadyUsed("Niepoprawny email!", HttpStatus.CONFLICT);
+            throw new UserEmailAlreadyExistException("Niepoprawny email!", HttpStatus.CONFLICT);
         }
 
         foundUserOpt = accountRepository.findByUsername(accountDto.username());
 
         if(foundUserOpt.isPresent()){
-            throw new UsernameAlreadyUsed("Nazwa użytkownika już zajęta!", HttpStatus.CONFLICT);
+            throw new UsernameAlreadyExistException("Nazwa użytkownika już zajęta!", HttpStatus.CONFLICT);
         }
 
         Account accountToRegister = buildUserFromRegistrationForm(accountDto);

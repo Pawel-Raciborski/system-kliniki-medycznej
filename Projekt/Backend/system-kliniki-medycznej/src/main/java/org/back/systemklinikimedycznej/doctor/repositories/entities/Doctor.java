@@ -6,7 +6,7 @@ import org.back.systemklinikimedycznej.appointment.repositories.entities.Appoint
 import org.back.systemklinikimedycznej.doctor.repositories.entities.calendar.DoctorCalendar;
 import org.back.systemklinikimedycznej.personal_details.repositories.entities.PersonalDetails;
 import org.back.systemklinikimedycznej.prescription.repositories.entities.Prescription;
-import org.back.systemklinikimedycznej.user.repositories.entities.Account;
+import org.back.systemklinikimedycznej.account.repositories.entities.Account;
 
 import java.time.LocalDate;
 import java.util.Set;

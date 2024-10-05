@@ -1,4 +1,4 @@
-package org.back.systemklinikimedycznej.user.repositories.entities;
+package org.back.systemklinikimedycznej.account.repositories.entities;
 
 import jakarta.persistence.*;
 import lombok.*;

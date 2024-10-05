@@ -2,7 +2,7 @@ package org.back.systemklinikimedycznej.patient.repositories.entities;
 
 import jakarta.persistence.*;
 import org.back.systemklinikimedycznej.personal_details.repositories.entities.PersonalDetails;
-import org.back.systemklinikimedycznej.user.repositories.entities.Account;
+import org.back.systemklinikimedycznej.account.repositories.entities.Account;
 
 import java.time.LocalDateTime;
 

@@ -1,4 +1,4 @@
-package org.back.systemklinikimedycznej.user.dto;
+package org.back.systemklinikimedycznej.account.dto;
 
 public record AccountDto(
         String username,
