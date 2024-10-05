@@ -1,13 +1,20 @@
 package org.back.systemklinikimedycznej.doctor.repositories.entities;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+@With
+@Getter
+@Setter
+@Builder
 @Entity
 @Table(name = "doctor_office_hours")
+@NoArgsConstructor
+@AllArgsConstructor
 public class DoctorOfficeHours {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
