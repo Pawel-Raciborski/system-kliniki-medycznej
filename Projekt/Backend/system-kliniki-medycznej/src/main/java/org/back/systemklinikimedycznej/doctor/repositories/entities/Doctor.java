@@ -11,6 +11,7 @@ import org.back.systemklinikimedycznej.account.repositories.entities.Account;
 import java.time.LocalDate;
 import java.util.Set;
 
+@With
 @Setter
 @Getter
 @Entity
@@ -31,14 +32,13 @@ public class Doctor {
     @JoinColumn(name = "personal_details_id")
     private PersonalDetails personalDetails;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name="calendar_id")
+    @OneToOne(mappedBy = "doctor", cascade = CascadeType.REMOVE)
     private DoctorCalendar calendar;
 
-    @Column(name="description")
+    @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "doctor",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "doctor", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Set<DoctorSpecialization> doctorSpecializations;
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.REMOVE)
@@ -50,7 +50,7 @@ public class Doctor {
     @Column(name = "date_of_employment")
     private LocalDate dateOfEmployment;
 
-    @OneToMany(mappedBy = "doctor",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.REMOVE)
     private Set<Appointment> appointments;
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.REMOVE)

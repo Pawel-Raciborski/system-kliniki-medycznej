@@ -5,6 +5,5 @@ CREATE TABLE doctor_office_hours
     day           varchar(32) NOT NULL,
     start_time    TIME        NOT NULL,
     end_time      TIME        NOT NULL,
-    modified_date date,
-    CONSTRAINT fk_doctor_office_hours_doctor FOREIGN KEY (doctor_id) REFERENCES doctor (id)
+    modified_date date
 );

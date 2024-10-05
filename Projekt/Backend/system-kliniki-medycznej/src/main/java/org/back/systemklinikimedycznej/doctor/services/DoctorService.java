@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorFormDto;
 import org.back.systemklinikimedycznej.doctor.exceptions.DoctorNotExistException;
 import org.back.systemklinikimedycznej.doctor.exceptions.PwzNumberException;
-import org.back.systemklinikimedycznej.doctor.mapper.DoctorSpecializationMapper;
 import org.back.systemklinikimedycznej.doctor.repositories.DoctorRepository;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.DoctorSpecialization;
+import org.back.systemklinikimedycznej.doctor.repositories.entities.calendar.DoctorCalendar;
 import org.back.systemklinikimedycznej.personal_details.repositories.entities.PersonalDetails;
 import org.back.systemklinikimedycznej.personal_details.services.PersonalDetailsService;
 import org.back.systemklinikimedycznej.account.repositories.entities.Account;
@@ -16,8 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +27,8 @@ public class DoctorService {
     private final AccountService accountService;
     private final PersonalDetailsService personalDetailsService;
     private final DoctorRepository doctorRepository;
+    private final CalendarService calendarService;
+    private final DoctorSpecializationsService doctorSpecializationsService;
 
     @Transactional
     public Doctor create(DoctorFormDto doctorFormDto) {
@@ -37,14 +40,14 @@ public class DoctorService {
 
         Account createdDoctorAccount = accountService.create(doctorFormDto.registerAccountData());
         PersonalDetails doctorPersonalDetails = personalDetailsService.create(doctorFormDto.personalDetails());
-        Set<DoctorSpecialization> doctorSpecializations = doctorFormDto.doctorSpecializations().stream()
-                .map(DoctorSpecializationMapper.INSTANCE::mapFromDto).collect(Collectors.toSet());
 
-        Doctor doctorToCreate = buildDoctor(doctorFormDto, createdDoctorAccount, doctorPersonalDetails, doctorSpecializations);
+        Doctor doctorToCreate = buildDoctor(doctorFormDto, createdDoctorAccount, doctorPersonalDetails);
 
-        doctorSpecializations.forEach(doctorSpecialization -> doctorSpecialization.setDoctor(doctorToCreate));
+        Doctor createdDoctor = doctorRepository.save(doctorToCreate);
+        calendarService.createCalendarForDoctor(createdDoctor);
 
-        return doctorRepository.save(doctorToCreate);
+        List<DoctorSpecialization> doctorSpecializations = doctorSpecializationsService.addSpecializationToDoctor(createdDoctor, doctorFormDto.doctorSpecializations());
+        return createdDoctor.withDoctorSpecializations(new HashSet<>(doctorSpecializations));
     }
 
     @Transactional
@@ -80,14 +83,13 @@ public class DoctorService {
                 );
     }
 
-    private Doctor buildDoctor(DoctorFormDto doctorFormDto, Account createdDoctorAccount, PersonalDetails doctorPersonalDetails, Set<DoctorSpecialization> doctorSpecializations) {
+    private Doctor buildDoctor(DoctorFormDto doctorFormDto, Account createdDoctorAccount, PersonalDetails doctorPersonalDetails) {
         return Doctor.builder()
                 .account(createdDoctorAccount)
                 .personalDetails(doctorPersonalDetails)
                 .description(doctorFormDto.description())
                 .pwzNumber(doctorFormDto.pwzNumber())
                 .dateOfEmployment(doctorFormDto.dateOfEmployment())
-                .doctorSpecializations(doctorSpecializations)
                 .build();
     }
 }

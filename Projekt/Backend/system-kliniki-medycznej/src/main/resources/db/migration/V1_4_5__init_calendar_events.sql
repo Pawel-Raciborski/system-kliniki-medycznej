@@ -5,6 +5,5 @@ create table calendar_event
     description      TEXT,
     start_date_time  timestamp,
     finish_date_time timestamp,
-    calendar_id      INT          NOT NULL,
-    CONSTRAINT fk_calendar_event_calendar FOREIGN KEY (calendar_id) REFERENCES doctor_calendar (id)
+    calendar_id      INT          NOT NULL
 )

@@ -48,21 +48,12 @@ public class DoctorSpecializationsService {
                 throw new DoctorSpecializationExistException("Lekarz posiada już specjalizację o nazwie [%s]!".formatted(doctorSpecializationDto.name()),HttpStatus.CONFLICT);
             }
 
-            Example<DoctorSpecialization> exampleToFind = Example.of(buildDoctorSpecialization(doctor,doctorSpecializationDto));
+            Optional<DoctorSpecialization> existDoctorSpecializationOpt = doctorSpecializationRepository. findByDoctorAndName(doctor,doctorSpecializationDto.name());
 
-            if(doctorSpecializationRepository.exists(exampleToFind)){
+            if(existDoctorSpecializationOpt.isPresent()){
                 throw new DoctorSpecializationExistException("Podana specjalizacja została dodana do lekarza", HttpStatus.CONFLICT);
             }
         }
-    }
-
-    private DoctorSpecialization buildDoctorSpecialization(Doctor doctor, DoctorSpecializationDto doctorSpecializationDto) {
-        return DoctorSpecialization.builder()
-                .doctor(doctor)
-                .name(doctorSpecializationDto.name())
-                .description(doctorSpecializationDto.description())
-                .realizedDate(doctorSpecializationDto.realizedDate())
-                .build();
     }
 
     public List<DoctorSpecialization> findAllSpecializationsForDoctor(Doctor doctor) {
@@ -71,12 +62,7 @@ public class DoctorSpecializationsService {
 
     @Transactional
     public DoctorSpecialization removeDoctorSpecialization(Doctor doctor, String specializationName) {
-        Example<DoctorSpecialization> doctorSpecializationExample = Example.of(DoctorSpecialization.builder()
-                        .name(specializationName)
-                        .doctor(doctor)
-                .build());
-
-        Optional<DoctorSpecialization> doctorSpecializationOptional = doctorSpecializationRepository.findOne(doctorSpecializationExample);
+        Optional<DoctorSpecialization> doctorSpecializationOptional = doctorSpecializationRepository.findByDoctorAndName(doctor,specializationName);
 
         if(doctorSpecializationOptional.isEmpty()){
             throw new DoctorSpecializationNotFoundException("Nie znaleziono specjalizacji o nazwie [%s] dla podanego doktora".formatted(specializationName),HttpStatus.NOT_FOUND);
