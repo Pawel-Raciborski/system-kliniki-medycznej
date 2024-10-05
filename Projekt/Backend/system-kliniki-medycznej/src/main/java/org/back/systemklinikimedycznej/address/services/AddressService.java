@@ -7,6 +7,7 @@ import org.back.systemklinikimedycznej.address.repositories.AddressRepository;
 import org.back.systemklinikimedycznej.address.repositories.CityRepository;
 import org.back.systemklinikimedycznej.address.repositories.entities.Address;
 import org.back.systemklinikimedycznej.address.repositories.entities.City;
+import org.back.systemklinikimedycznej.address.validators.AddressValidator;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
@@ -19,16 +20,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AddressService {
     private final AddressRepository addressRepository;
-    private final CityRepository cityRepository;
+    private final AddressManagementService addressManagementService;
     private final CityService cityService;
     @Transactional
     public Address create(AddressForm addressForm){
         Address addressToCreate = buildAddressFromForm(addressForm);
-        Example<Address> addressExample = Example.of(addressToCreate);
-
-        if(addressRepository.findOne(addressExample).isPresent()){
-            throw new AddressAlreadyExistsException("Podany adres już istnieje!", HttpStatus.CONFLICT);
-        }
+        addressManagementService.validateAddressExist(addressToCreate);
 
         return addressRepository.save(addressToCreate);
     }
@@ -47,11 +44,7 @@ public class AddressService {
 
     public Address update(AddressForm newAddress, Address oldAddress) {
         City city = cityService.findByName(newAddress.city());
-
-        oldAddress.setStreet(newAddress.street());
-        oldAddress.setApartmentNumber(newAddress.apartmentNumber());
-        oldAddress.setPostalCode(newAddress.postalCode());
-        oldAddress.setCity(city);
+        addressManagementService.setAddressFields(newAddress, oldAddress, city);
 
         return addressRepository.save(oldAddress);
     }

@@ -3,11 +3,9 @@ package org.back.systemklinikimedycznej.doctor.services;
 import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorFormDto;
 import org.back.systemklinikimedycznej.doctor.exceptions.DoctorNotExistException;
-import org.back.systemklinikimedycznej.doctor.exceptions.PwzNumberException;
 import org.back.systemklinikimedycznej.doctor.repositories.DoctorRepository;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.DoctorSpecialization;
-import org.back.systemklinikimedycznej.doctor.repositories.entities.calendar.DoctorCalendar;
 import org.back.systemklinikimedycznej.personal_details.repositories.entities.PersonalDetails;
 import org.back.systemklinikimedycznej.personal_details.services.PersonalDetailsService;
 import org.back.systemklinikimedycznej.account.repositories.entities.Account;
@@ -18,78 +16,50 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class DoctorService {
+    private final DoctorManagementService doctorManagementService;
     private final AccountService accountService;
     private final PersonalDetailsService personalDetailsService;
     private final DoctorRepository doctorRepository;
-    private final CalendarService calendarService;
-    private final DoctorSpecializationsService doctorSpecializationsService;
 
     @Transactional
     public Doctor create(DoctorFormDto doctorFormDto) {
-        Optional<Doctor> doctorOpt = doctorRepository.findByPwzNumber(doctorFormDto.pwzNumber());
-
-        if (doctorOpt.isPresent()) {
-            throw new PwzNumberException("Podany numer pwz już zajęty!", HttpStatus.CONFLICT);
-        }
+        doctorManagementService.validatePwzNumber(doctorFormDto.pwzNumber());
 
         Account createdDoctorAccount = accountService.create(doctorFormDto.registerAccountData());
         PersonalDetails doctorPersonalDetails = personalDetailsService.create(doctorFormDto.personalDetails());
 
-        Doctor doctorToCreate = buildDoctor(doctorFormDto, createdDoctorAccount, doctorPersonalDetails);
+        Doctor doctorToCreate = doctorManagementService.buildDoctor(doctorFormDto, createdDoctorAccount, doctorPersonalDetails);
+        Doctor createdDoctor = saveDoctor(doctorToCreate);
 
-        Doctor createdDoctor = doctorRepository.save(doctorToCreate);
-        calendarService.createCalendarForDoctor(createdDoctor);
-
-        List<DoctorSpecialization> doctorSpecializations = doctorSpecializationsService.addSpecializationToDoctor(createdDoctor, doctorFormDto.doctorSpecializations());
-        return createdDoctor.withDoctorSpecializations(new HashSet<>(doctorSpecializations));
+        return doctorManagementService.postDoctorCreateOperations(doctorFormDto, createdDoctor);
     }
 
     @Transactional
     public String updatePwzNumber(String oldPwzNumber, String newPwzNumber) {
-        Optional<Doctor> optionalDoctor = doctorRepository.findByPwzNumber(oldPwzNumber);
-
-        if (optionalDoctor.isEmpty()) {
-            throw new DoctorNotExistException("Wybrany doktor nie istnieje!", HttpStatus.NOT_FOUND);
-        }
-
-        Doctor doctorToUpdate = optionalDoctor.get();
+        Doctor doctorToUpdate = findByPwzNumber(oldPwzNumber);
         doctorToUpdate.setPwzNumber(newPwzNumber);
 
-        return doctorRepository.save(doctorToUpdate).getPwzNumber();
+        return saveDoctor(doctorToUpdate).getPwzNumber();
     }
 
     @Transactional
     public void delete(String pwzNumber) {
-        Optional<Doctor> doctorOptional = doctorRepository.findByPwzNumber(pwzNumber);
+        Doctor doctorToRemove = findByPwzNumber(pwzNumber);
 
-        if (doctorOptional.isEmpty()) {
-            throw new DoctorNotExistException("Doktor z numerem PWZ: %s nie istnieje".formatted(pwzNumber), HttpStatus.NOT_FOUND);
-        }
-
-        Doctor doctorToDelete = doctorOptional.get();
-
-        doctorRepository.deleteById(doctorToDelete.getId());
+        doctorRepository.deleteById(doctorToRemove.getId());
     }
 
     public Doctor findByPwzNumber(String pwzNumber) {
-        return doctorRepository.findByPwzNumber(pwzNumber)
-                .orElseThrow(() -> new DoctorNotExistException("Doktor z numerem PWZ: %s nie istnieje".formatted(pwzNumber), HttpStatus.NOT_FOUND)
-                );
+        return doctorRepository.findByPwzNumber(pwzNumber).orElseThrow(
+                () -> new DoctorNotExistException("Doktor z numerem PWZ: %s nie istnieje".formatted(pwzNumber), HttpStatus.NOT_FOUND)
+        );
     }
 
-    private Doctor buildDoctor(DoctorFormDto doctorFormDto, Account createdDoctorAccount, PersonalDetails doctorPersonalDetails) {
-        return Doctor.builder()
-                .account(createdDoctorAccount)
-                .personalDetails(doctorPersonalDetails)
-                .description(doctorFormDto.description())
-                .pwzNumber(doctorFormDto.pwzNumber())
-                .dateOfEmployment(doctorFormDto.dateOfEmployment())
-                .build();
+    private Doctor saveDoctor(Doctor doctorToCreate) {
+        return doctorRepository.save(doctorToCreate);
     }
 }

@@ -22,38 +22,18 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DoctorSpecializationsService {
     private final DoctorSpecializationRepository doctorSpecializationRepository;
+    private final DoctorSpecializationManagementService doctorSpecializationManagementService;
 
     @Transactional
     public List<DoctorSpecialization> addSpecializationToDoctor(
             Doctor doctor,
             List<DoctorSpecializationDto> doctorSpecializationDtos) {
 
-        checkSpecializationsExistForDoctor(doctor,doctorSpecializationDtos);
+        doctorSpecializationManagementService.checkSpecializationsExistForDoctor(doctor, doctorSpecializationDtos);
 
-        var doctorSpecializations = createDoctorSpecializationsSet(doctorSpecializationDtos);
-        doctorSpecializations.forEach(doctorSpecialization -> doctorSpecialization.setDoctor(doctor));
+        Set<DoctorSpecialization> doctorSpecializations = doctorSpecializationManagementService.assignDoctorToSpecializations(doctorSpecializationDtos, doctor);
 
         return doctorSpecializationRepository.saveAll(doctorSpecializations);
-    }
-
-    private Set<DoctorSpecialization> createDoctorSpecializationsSet(List<DoctorSpecializationDto> doctorSpecializationDtos) {
-        return doctorSpecializationDtos.stream()
-                .map(DoctorSpecializationMapper.INSTANCE::mapFromDto)
-                .collect(Collectors.toSet());
-    }
-
-    private void checkSpecializationsExistForDoctor(Doctor doctor, List<DoctorSpecializationDto> doctorSpecializations) {
-        for(DoctorSpecializationDto doctorSpecializationDto: doctorSpecializations){
-            if(doctorSpecializationRepository.findByName(doctorSpecializationDto.name()).isPresent()){
-                throw new DoctorSpecializationExistException("Lekarz posiada już specjalizację o nazwie [%s]!".formatted(doctorSpecializationDto.name()),HttpStatus.CONFLICT);
-            }
-
-            Optional<DoctorSpecialization> existDoctorSpecializationOpt = doctorSpecializationRepository. findByDoctorAndName(doctor,doctorSpecializationDto.name());
-
-            if(existDoctorSpecializationOpt.isPresent()){
-                throw new DoctorSpecializationExistException("Podana specjalizacja została dodana do lekarza", HttpStatus.CONFLICT);
-            }
-        }
     }
 
     public List<DoctorSpecialization> findAllSpecializationsForDoctor(Doctor doctor) {
@@ -62,15 +42,15 @@ public class DoctorSpecializationsService {
 
     @Transactional
     public DoctorSpecialization removeDoctorSpecialization(Doctor doctor, String specializationName) {
-        Optional<DoctorSpecialization> doctorSpecializationOptional = doctorSpecializationRepository.findByDoctorAndName(doctor,specializationName);
+        DoctorSpecialization doctorSpecializationToRemove = findByDoctorAndName(doctor, specializationName);
 
-        if(doctorSpecializationOptional.isEmpty()){
-            throw new DoctorSpecializationNotFoundException("Nie znaleziono specjalizacji o nazwie [%s] dla podanego doktora".formatted(specializationName),HttpStatus.NOT_FOUND);
-        }
-
-        DoctorSpecialization doctorSpecializationToRemove = doctorSpecializationOptional.get();
         doctorSpecializationRepository.delete(doctorSpecializationToRemove);
 
         return doctorSpecializationToRemove;
+    }
+
+    private DoctorSpecialization findByDoctorAndName(Doctor doctor, String specializationName) {
+        return doctorSpecializationRepository.findByDoctorAndName(doctor, specializationName)
+                .orElseThrow(() -> new DoctorSpecializationNotFoundException("Nie znaleziono specjalizacji o nazwie [%s] dla podanego doktora".formatted(specializationName), HttpStatus.NOT_FOUND));
     }
 }
