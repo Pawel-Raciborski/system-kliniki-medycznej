@@ -7,31 +7,39 @@ import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorFormDto;
 import org.back.systemklinikimedycznej.doctor.exceptions.DoctorNotExistException;
 import org.back.systemklinikimedycznej.doctor.repositories.DoctorRepository;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
+import org.back.systemklinikimedycznej.doctor.repositories.entities.DoctorSpecialization;
+import org.back.systemklinikimedycznej.doctor.util.DoctorManagerUtil;
+import org.back.systemklinikimedycznej.doctor.validators.DoctorValidator;
 import org.back.systemklinikimedycznej.personal_details.repositories.entities.PersonalDetails;
 import org.back.systemklinikimedycznej.personal_details.services.PersonalDetailsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class DoctorService {
-    private final DoctorManagementService doctorManagementService;
+    private final DoctorValidator doctorValidator;
     private final AccountService accountService;
     private final PersonalDetailsService personalDetailsService;
     private final DoctorRepository doctorRepository;
+    private final CalendarService calendarService;
+    private final DoctorSpecializationsService doctorSpecializationsService;
 
     @Transactional
     public Doctor create(DoctorFormDto doctorFormDto) {
-        doctorManagementService.validatePwzNumber(doctorFormDto.pwzNumber());
+        doctorValidator.validatePwzNumber(doctorFormDto.pwzNumber());
 
         Account createdDoctorAccount = accountService.create(doctorFormDto.registerAccountData());
         PersonalDetails doctorPersonalDetails = personalDetailsService.create(doctorFormDto.personalDetails());
 
-        Doctor doctorToCreate = doctorManagementService.buildDoctor(doctorFormDto, createdDoctorAccount, doctorPersonalDetails);
+        Doctor doctorToCreate = DoctorManagerUtil.buildDoctor(doctorFormDto, createdDoctorAccount, doctorPersonalDetails);
         Doctor createdDoctor = saveDoctor(doctorToCreate);
 
-        return doctorManagementService.postDoctorCreateOperations(doctorFormDto, createdDoctor);
+        return postDoctorCreateOperations(doctorFormDto, createdDoctor);
     }
 
     @Transactional
@@ -57,5 +65,13 @@ public class DoctorService {
 
     private Doctor saveDoctor(Doctor doctorToCreate) {
         return doctorRepository.save(doctorToCreate);
+    }
+
+    public Doctor postDoctorCreateOperations(DoctorFormDto doctorFormDto, Doctor createdDoctor) {
+        calendarService.createCalendarForDoctor(createdDoctor);
+
+        List<DoctorSpecialization> doctorSpecializations = doctorSpecializationsService.addSpecializationToDoctor(createdDoctor, doctorFormDto.doctorSpecializations());
+
+        return createdDoctor.withDoctorSpecializations(new HashSet<>(doctorSpecializations));
     }
 }

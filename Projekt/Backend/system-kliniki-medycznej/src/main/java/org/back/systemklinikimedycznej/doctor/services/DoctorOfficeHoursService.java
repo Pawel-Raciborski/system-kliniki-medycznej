@@ -6,79 +6,48 @@ import org.back.systemklinikimedycznej.doctor.exceptions.DoctorOfficeHoursExcept
 import org.back.systemklinikimedycznej.doctor.repositories.DoctorOfficeHoursRepository;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.DoctorOfficeHours;
+import org.back.systemklinikimedycznej.doctor.util.OfficeHoursManagerUtil;
+import org.back.systemklinikimedycznej.doctor.validators.OfficeHoursValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class DoctorOfficeHoursService {
     private final DoctorOfficeHoursRepository doctorOfficeHoursRepository;
+    private final OfficeHoursValidator officeHoursValidator;
 
     @Transactional
     public DoctorOfficeHours add(Doctor doctorToAddOfficeHours, OfficeHoursDto officeHoursDto) {
-        Optional<DoctorOfficeHours> existOfficeHoursOpt = doctorOfficeHoursRepository.findByDoctorAndDay(doctorToAddOfficeHours, officeHoursDto.day());
-
-        if(existOfficeHoursOpt.isPresent()){
-            throw new DoctorOfficeHoursException("Podany dzień jest już zarezerwowany dla podanego lekarza!", HttpStatus.CONFLICT);
-        }
-        DoctorOfficeHours officeHoursToAdd = buildDoctorOfficeHours(doctorToAddOfficeHours, officeHoursDto);
+        officeHoursValidator.validateDayNotExist(doctorToAddOfficeHours, officeHoursDto);
+        DoctorOfficeHours officeHoursToAdd = OfficeHoursManagerUtil.buildDoctorOfficeHours(doctorToAddOfficeHours, officeHoursDto);
 
         return doctorOfficeHoursRepository.save(officeHoursToAdd);
     }
 
+
     @Transactional
     public DoctorOfficeHours update(Doctor doctorToUpdateOfficeHours, OfficeHoursDto updatedOfficeHours) {
-        Optional<DoctorOfficeHours> doctorOfficeHoursOpt = doctorOfficeHoursRepository.findByDoctorAndDay(doctorToUpdateOfficeHours,updatedOfficeHours.day());
-
-        if(doctorOfficeHoursOpt.isEmpty()){
-            throw new DoctorOfficeHoursException("Nie znaleziono godziń pracy w dniu [%s] dla doktora".formatted(updatedOfficeHours.day()),HttpStatus.NOT_FOUND);
-        }
-
-        DoctorOfficeHours doctorOfficeHoursToUpdate = withUpdatedFields(doctorOfficeHoursOpt.get(),updatedOfficeHours);
+        DoctorOfficeHours doctorOfficeHoursToUpdate = findOfficeHoursForDoctorForDay(doctorToUpdateOfficeHours,updatedOfficeHours.day());
+        doctorOfficeHoursToUpdate = OfficeHoursManagerUtil.withUpdatedFields(doctorOfficeHoursToUpdate,updatedOfficeHours);
 
         return doctorOfficeHoursRepository.save(doctorOfficeHoursToUpdate);
     }
 
     @Transactional
-    public void delete(Doctor doctorForRemoveOfficeHours, String day) {
-        DayOfWeek dayToRemove = DayOfWeek.valueOf(day.toUpperCase());
-
-        Optional<DoctorOfficeHours> officeHoursForRemove = doctorOfficeHoursRepository.findByDoctorAndDay(doctorForRemoveOfficeHours, dayToRemove);
-
-        if(officeHoursForRemove.isEmpty()){
-            throw new DoctorOfficeHoursException("Nie znaleziono dnia [%s] dla doktora".formatted(day),HttpStatus.NOT_FOUND);
-        }
-
-        doctorOfficeHoursRepository.delete(officeHoursForRemove.get());
+    public void delete(Doctor doctorForRemoveOfficeHours, DayOfWeek day) {
+        DoctorOfficeHours officeHoursForRemove = findOfficeHoursForDoctorForDay(doctorForRemoveOfficeHours,day);
+        doctorOfficeHoursRepository.delete(officeHoursForRemove);
 
     }
 
-    public DoctorOfficeHours findOfficeHoursForDoctorForDay(Doctor doctor, String day) {
-        return doctorOfficeHoursRepository.findByDoctorAndDay(doctor,DayOfWeek.valueOf(day.toUpperCase()))
+    public DoctorOfficeHours findOfficeHoursForDoctorForDay(Doctor doctor, DayOfWeek day) {
+        return doctorOfficeHoursRepository.findByDoctorAndDay(doctor,day)
                 .orElseThrow(
-                        () -> new DoctorOfficeHoursException("Nie znaleziono godzin pracy dla dnia [%s]".formatted(day),HttpStatus.NOT_FOUND)
+                        () -> new DoctorOfficeHoursException("Nie znaleziono dnia [%s] dla podanego doktora".formatted(day),HttpStatus.NOT_FOUND)
                 );
-    }
-
-    private DoctorOfficeHours withUpdatedFields(DoctorOfficeHours doctorOfficeHours, OfficeHoursDto updatedOfficeHours) {
-        return doctorOfficeHours.withStartHour(updatedOfficeHours.startTime())
-                .withEndHour(updatedOfficeHours.endTime())
-                .withDay(updatedOfficeHours.day())
-                .withModifiedDate(LocalDate.now());
-    }
-
-    private DoctorOfficeHours buildDoctorOfficeHours(Doctor doctorToAddOfficeHours, OfficeHoursDto officeHoursDto) {
-        return DoctorOfficeHours.builder()
-                .endHour(officeHoursDto.endTime())
-                .startHour(officeHoursDto.startTime())
-                .day(officeHoursDto.day())
-                .doctor(doctorToAddOfficeHours)
-                .modifiedDate(LocalDate.now())
-                .build();
     }
 }

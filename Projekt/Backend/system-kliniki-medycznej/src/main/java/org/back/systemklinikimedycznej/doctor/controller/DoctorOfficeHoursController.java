@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.DayOfWeek;
+
 @RestController
 @RequestMapping("/doctor/office-hours")
 @RequiredArgsConstructor
@@ -47,7 +49,7 @@ public class DoctorOfficeHoursController {
     ) {
         Doctor doctor = doctorService.findByPwzNumber(doctorPwzNumber);
         OfficeHoursDto foundDoctorOfficeHours = OfficeHoursMapper.INSTANCE.mapFromEntity(
-                doctorOfficeHoursService.findOfficeHoursForDoctorForDay(doctor, day)
+                doctorOfficeHoursService.findOfficeHoursForDoctorForDay(doctor, DayOfWeek.valueOf(day.toUpperCase()))
         );
 
         return ResponseEntity.ok(foundDoctorOfficeHours);
@@ -59,7 +61,7 @@ public class DoctorOfficeHoursController {
             @RequestParam(name = "day") String day
     ) {
         Doctor doctorForRemoveOfficeHours = doctorService.findByPwzNumber(doctorPwzNumber);
-        doctorOfficeHoursService.delete(doctorForRemoveOfficeHours, day);
+        doctorOfficeHoursService.delete(doctorForRemoveOfficeHours, DayOfWeek.valueOf(day));
 
         return ResponseEntity.ok().build();
     }

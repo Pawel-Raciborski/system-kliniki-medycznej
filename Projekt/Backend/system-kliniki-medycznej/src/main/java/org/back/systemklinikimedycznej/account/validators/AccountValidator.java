@@ -19,17 +19,17 @@ public class AccountValidator {
 
     @Transactional
     public void validateEmailAndUsername(AccountDto accountDto) {
-        validateEmail(accountDto);
-        validateUsername(accountDto);
+        validateEmail(accountDto.email());
+        validateUsername(accountDto.username());
     }
 
-    private void validateUsername(AccountDto accountDto) {
-        Optional<Account> foundUserOpt = accountRepository.findByUsername(accountDto.username());
+    private void validateUsername(String username) {
+        Optional<Account> foundUserOpt = accountRepository.findByUsername(username);
         checkUsernameNotExist(foundUserOpt.isPresent());
     }
 
-    private void validateEmail(AccountDto accountDto) {
-        Optional<Account> foundUserOpt = accountRepository.findByEmail(accountDto.email());
+    private void validateEmail(String email) {
+        Optional<Account> foundUserOpt = accountRepository.findByEmail(email);
         checkEmailNotExist(foundUserOpt.isPresent());
     }
 

@@ -1,29 +1,48 @@
 package org.back.systemklinikimedycznej.personal_details.validator;
 
+import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.exceptions.GlobalAppException;
+import org.back.systemklinikimedycznej.personal_details.dto.PersonalDetailsDto;
 import org.back.systemklinikimedycznej.personal_details.exceptions.PeselExistsException;
 import org.back.systemklinikimedycznej.personal_details.exceptions.PhoneExistsException;
+import org.back.systemklinikimedycznej.personal_details.repositories.PersonalDetailsRepository;
+import org.back.systemklinikimedycznej.personal_details.repositories.entities.PersonalDetails;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
 public class PersonalDetailsValidator {
+    private final PersonalDetailsRepository personalDetailsRepository;
 
-    public static void checkPeselNotExist(boolean existPersonalDetailsForPesel){
-        if (existPersonalDetailsForPesel) {
+    @Transactional
+    public void validatePeselAndPhoneNumber(PersonalDetailsDto personalDetailsDto) {
+        validatePeselNotExist(personalDetailsDto.pesel());
+        validatePhoneNotExist(personalDetailsDto.phoneNumber());
+    }
+
+    public void validatePeselNotExist(String pesel) {
+        Optional<PersonalDetails> foundPersonalDetailsOpt = personalDetailsRepository.findByPesel(pesel);
+        checkPeselNotExist(foundPersonalDetailsOpt.isPresent());
+    }
+
+    public void validatePhoneNotExist(String phoneNumber) {
+        Optional<PersonalDetails> foundPersonalDetailsOpt = personalDetailsRepository.findByPhoneNumber(phoneNumber);
+        checkPhoneNumberNotExist(foundPersonalDetailsOpt.isPresent());
+    }
+
+    public void checkPeselNotExist(boolean peselExist) {
+        if (peselExist) {
             throw new PeselExistsException("Błędny pesel", HttpStatus.CONFLICT);
         }
     }
 
-    public static void checkPhoneNumberNotExist(boolean existPersonalDetailsWithPhone) {
-        if(existPersonalDetailsWithPhone){
+    public void checkPhoneNumberNotExist(boolean phoneExist) {
+        if (phoneExist) {
             throw new PhoneExistsException("Numer telefonu jest zajęty!", HttpStatus.CONFLICT);
         }
-    }
-
-
-    public static void checkPeselExist(boolean peselNotExist) {
-        if (peselNotExist) {
-            throw new GlobalAppException("Nie znaleziono danych z podanym PESELEM", HttpStatus.CONFLICT);
-        }
-
     }
 }

@@ -2,37 +2,32 @@ package org.back.systemklinikimedycznej.doctor.services;
 
 import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorSpecializationDto;
-import org.back.systemklinikimedycznej.doctor.exceptions.DoctorSpecializationExistException;
 import org.back.systemklinikimedycznej.doctor.exceptions.DoctorSpecializationNotFoundException;
-import org.back.systemklinikimedycznej.doctor.mapper.DoctorSpecializationMapper;
 import org.back.systemklinikimedycznej.doctor.repositories.DoctorSpecializationRepository;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.DoctorSpecialization;
-import org.springframework.data.domain.Example;
+import org.back.systemklinikimedycznej.doctor.util.DoctorSpecializationManagerUtil;
+import org.back.systemklinikimedycznej.doctor.validators.DoctorSpecializationValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class DoctorSpecializationsService {
     private final DoctorSpecializationRepository doctorSpecializationRepository;
-    private final DoctorSpecializationManagementService doctorSpecializationManagementService;
+    private final DoctorSpecializationValidator doctorSpecializationValidator;
 
     @Transactional
     public List<DoctorSpecialization> addSpecializationToDoctor(
             Doctor doctor,
             List<DoctorSpecializationDto> doctorSpecializationDtos) {
+        doctorSpecializationValidator.checkSpecializationsExistForDoctor(doctor, doctorSpecializationDtos);
 
-        doctorSpecializationManagementService.checkSpecializationsExistForDoctor(doctor, doctorSpecializationDtos);
-
-        Set<DoctorSpecialization> doctorSpecializations = doctorSpecializationManagementService.assignDoctorToSpecializations(doctorSpecializationDtos, doctor);
-
+        Set<DoctorSpecialization> doctorSpecializations = DoctorSpecializationManagerUtil.assignDoctorToSpecializations(doctorSpecializationDtos, doctor);
         return doctorSpecializationRepository.saveAll(doctorSpecializations);
     }
 
@@ -45,7 +40,6 @@ public class DoctorSpecializationsService {
         DoctorSpecialization doctorSpecializationToRemove = findByDoctorAndName(doctor, specializationName);
 
         doctorSpecializationRepository.delete(doctorSpecializationToRemove);
-
         return doctorSpecializationToRemove;
     }
 
