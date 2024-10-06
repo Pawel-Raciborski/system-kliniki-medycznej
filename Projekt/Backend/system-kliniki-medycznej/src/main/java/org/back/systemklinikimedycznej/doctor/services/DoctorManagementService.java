@@ -3,13 +3,11 @@ package org.back.systemklinikimedycznej.doctor.services;
 import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.account.repositories.entities.Account;
 import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorFormDto;
-import org.back.systemklinikimedycznej.doctor.exceptions.PwzNumberException;
 import org.back.systemklinikimedycznej.doctor.repositories.DoctorRepository;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.DoctorSpecialization;
 import org.back.systemklinikimedycznej.doctor.validators.DoctorValidator;
 import org.back.systemklinikimedycznej.personal_details.repositories.entities.PersonalDetails;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

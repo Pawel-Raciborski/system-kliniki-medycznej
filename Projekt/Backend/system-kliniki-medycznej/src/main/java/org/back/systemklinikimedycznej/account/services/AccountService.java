@@ -6,6 +6,8 @@ import org.back.systemklinikimedycznej.account.exceptions.UserEmailAlreadyExistE
 import org.back.systemklinikimedycznej.account.exceptions.UsernameAlreadyExistException;
 import org.back.systemklinikimedycznej.account.repositories.AccountRepository;
 import org.back.systemklinikimedycznej.account.repositories.entities.Account;
+import org.back.systemklinikimedycznej.account.util.AccountManagerUtil;
+import org.back.systemklinikimedycznej.account.validators.AccountValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,32 +19,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AccountService {
     private final AccountRepository accountRepository;
+    private final AccountValidator accountValidator;
 
     @Transactional
     public Account create(AccountDto accountDto) {
-        Optional<Account> foundUserOpt = accountRepository.findByEmail(accountDto.email());
+        accountValidator.validateEmailAndUsername(accountDto);
 
-        if(foundUserOpt.isPresent()){
-            throw new UserEmailAlreadyExistException("Niepoprawny email!", HttpStatus.CONFLICT);
-        }
-
-        foundUserOpt = accountRepository.findByUsername(accountDto.username());
-
-        if(foundUserOpt.isPresent()){
-            throw new UsernameAlreadyExistException("Nazwa użytkownika już zajęta!", HttpStatus.CONFLICT);
-        }
-
-        Account accountToRegister = buildUserFromRegistrationForm(accountDto);
+        Account accountToRegister = AccountManagerUtil.buildUserFromRegistrationForm(accountDto);
 
         return accountRepository.save(accountToRegister);
-    }
-
-    private Account buildUserFromRegistrationForm(AccountDto accountDto) {
-        return Account.builder()
-                .username(accountDto.username())
-                .password(accountDto.password())
-                .email(accountDto.email())
-                .dateTimeOfCreation(LocalDateTime.now())
-                .build();
     }
 }
