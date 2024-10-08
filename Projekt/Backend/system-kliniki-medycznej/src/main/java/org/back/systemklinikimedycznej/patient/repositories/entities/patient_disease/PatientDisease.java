@@ -5,7 +5,6 @@ import org.back.systemklinikimedycznej.patient.domain.CureStatus;
 import org.back.systemklinikimedycznej.patient.repositories.entities.patient_card.PatientCard;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -30,5 +29,5 @@ public class PatientDisease {
     private LocalDate finishCureDate;
 
     @OneToMany(mappedBy = "patientDisease")
-    private Set<PatientDiseaseCure> patientDiseaseCures;
+    private Set<PatientDiseaseMedicine> patientDiseaseMedicines;
 }

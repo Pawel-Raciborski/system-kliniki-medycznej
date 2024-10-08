@@ -1,13 +1,13 @@
 package org.back.systemklinikimedycznej.patient.repositories.entities.patient_disease;
 
 import jakarta.persistence.*;
-import org.back.systemklinikimedycznej.cure.repositories.entities.Cure;
+import org.back.systemklinikimedycznej.cure.repositories.entities.Medicine;
 
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "patient_disease_cure")
-public class PatientDiseaseCure {
+@Table(name = "patient_disease_medicine")
+public class PatientDiseaseMedicine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,12 +15,12 @@ public class PatientDiseaseCure {
     @JoinColumn(name="patient_disease_id")
     private PatientDisease patientDisease;
     @ManyToOne
-    @JoinColumn(name="cure_id")
-    private Cure cure;
-    @Column(name="cure_dosage")
+    @JoinColumn(name="medicine_id")
+    private Medicine medicine;
+    @Column(name="medicine_dosage")
     private String cureDosage;
     @Column(name="notes")
     private String notes;
-    @Column(name="cure_update_date")
-    private LocalDate cureUpdateDate;
+    @Column(name="medicine_update_date")
+    private LocalDate medicineUpdateDate;
 }

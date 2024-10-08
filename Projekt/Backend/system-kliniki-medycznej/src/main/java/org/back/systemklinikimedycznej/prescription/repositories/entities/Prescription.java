@@ -21,7 +21,7 @@ public class Prescription {
     @Column(name="description")
     private String description;
     @OneToMany(mappedBy = "prescription")
-    private Set<PrescriptionCure> prescriptionCures;
+    private Set<PrescriptionMedicine> prescriptionMedicines;
     
     @OneToMany(mappedBy = "prescription")
     private Set<AppointmentPrescription> appointmentPrescriptions;
