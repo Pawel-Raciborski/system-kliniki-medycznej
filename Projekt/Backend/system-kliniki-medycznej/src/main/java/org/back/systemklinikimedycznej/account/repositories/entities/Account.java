@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -24,4 +25,7 @@ public class Account {
 
     @Column(name = "date_time_of_creation")
     private LocalDateTime dateTimeOfCreation;
+
+    @OneToMany(mappedBy = "account")
+    private Set<AccountRole> accountRoles;
 }
