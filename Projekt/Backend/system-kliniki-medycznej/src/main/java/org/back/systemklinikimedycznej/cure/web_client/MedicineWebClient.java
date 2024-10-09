@@ -4,9 +4,11 @@ import org.back.systemklinikimedycznej.config.util.RPLApiEndpointUtil;
 import org.back.systemklinikimedycznej.cure.dto.MedicineDto;
 import org.back.systemklinikimedycznej.cure.dto.MedicineListDto;
 import org.back.systemklinikimedycznej.cure.repositories.entities.Medicine;
+import org.back.systemklinikimedycznej.cure.web_client.enums.SpecimenType;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class MedicineWebClient {
         return this.webClient.get()
                 .uri(uriBuilder -> uriBuilder.path("/public")
                         .queryParam("name",name)
+                        .queryParam("specimenTypeEnum", SpecimenType.HUMAN.getName())
                         .queryParam("subjectRolesIds",1)
                         .queryParam("isAdvancedSearch",false)
                         .queryParam("size",pageSize)

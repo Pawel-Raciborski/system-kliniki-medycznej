@@ -24,23 +24,23 @@ public class PersonalDetailsValidator {
         validatePhoneNotExist(personalDetailsDto.phoneNumber());
     }
 
-    public void validatePeselNotExist(String pesel) {
+    private void validatePeselNotExist(String pesel) {
         Optional<PersonalDetails> foundPersonalDetailsOpt = personalDetailsRepository.findByPesel(pesel);
         checkPeselNotExist(foundPersonalDetailsOpt.isPresent());
     }
 
-    public void validatePhoneNotExist(String phoneNumber) {
+    private void validatePhoneNotExist(String phoneNumber) {
         Optional<PersonalDetails> foundPersonalDetailsOpt = personalDetailsRepository.findByPhoneNumber(phoneNumber);
         checkPhoneNumberNotExist(foundPersonalDetailsOpt.isPresent());
     }
 
-    public void checkPeselNotExist(boolean peselExist) {
+    private void checkPeselNotExist(boolean peselExist) {
         if (peselExist) {
             throw new PeselExistsException("Błędny pesel", HttpStatus.CONFLICT);
         }
     }
 
-    public void checkPhoneNumberNotExist(boolean phoneExist) {
+    private void checkPhoneNumberNotExist(boolean phoneExist) {
         if (phoneExist) {
             throw new PhoneExistsException("Numer telefonu jest zajęty!", HttpStatus.CONFLICT);
         }
