@@ -2,6 +2,7 @@ package org.back.systemklinikimedycznej.account.repositories.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.back.systemklinikimedycznej.role.repository.entities.AccountRole;
 
 import java.time.LocalDateTime;
 import java.util.Set;

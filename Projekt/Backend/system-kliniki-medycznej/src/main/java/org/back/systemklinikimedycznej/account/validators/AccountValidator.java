@@ -2,7 +2,7 @@ package org.back.systemklinikimedycznej.account.validators;
 
 import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.account.dto.AccountDto;
-import org.back.systemklinikimedycznej.account.exceptions.UserEmailAlreadyExistException;
+import org.back.systemklinikimedycznej.account.exceptions.AccountEmailAlreadyExistException;
 import org.back.systemklinikimedycznej.account.exceptions.UsernameAlreadyExistException;
 import org.back.systemklinikimedycznej.account.repositories.AccountRepository;
 import org.back.systemklinikimedycznej.account.repositories.entities.Account;
@@ -35,7 +35,7 @@ public class AccountValidator {
 
     private void checkEmailNotExist(boolean emailExist) {
         if(emailExist){
-            throw new UserEmailAlreadyExistException("Email zajęty!", HttpStatus.CONFLICT);
+            throw new AccountEmailAlreadyExistException("Email zajęty!", HttpStatus.CONFLICT);
         }
     }
 

@@ -2,7 +2,6 @@ package org.back.systemklinikimedycznej.role.repository.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.back.systemklinikimedycznej.account.repositories.entities.AccountRole;
 
 import java.util.Set;
 
@@ -20,9 +19,9 @@ public class Role {
     private String name;
     private String description;
 
-    @OneToMany(mappedBy = "role")
+    @OneToMany(mappedBy = "role", cascade = CascadeType.REMOVE)
     private Set<RolePermission> rolePermissions;
 
-    @OneToMany(mappedBy = "role")
+    @OneToMany(mappedBy = "role", cascade = CascadeType.REMOVE)
     private Set<AccountRole> accountRoles;
 }

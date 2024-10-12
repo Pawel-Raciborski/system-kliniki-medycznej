@@ -1,9 +1,15 @@
 package org.back.systemklinikimedycznej.role.repository.entities;
 
 import jakarta.persistence.*;
+import lombok.*;
 
+@Getter
+@Setter
+@Builder
 @Entity
 @Table(name = "role_permission")
+@NoArgsConstructor
+@AllArgsConstructor
 public class RolePermission {
 
     @Id
