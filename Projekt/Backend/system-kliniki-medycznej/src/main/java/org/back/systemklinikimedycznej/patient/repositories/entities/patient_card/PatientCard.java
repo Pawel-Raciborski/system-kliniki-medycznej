@@ -43,4 +43,8 @@ public class PatientCard {
 
     @OneToMany(mappedBy = "patientCard")
     private Set<Appointment> appointments;
+
+    public void removePersonalDetailsId() {
+        this.setPatientDetails(null);
+    }
 }

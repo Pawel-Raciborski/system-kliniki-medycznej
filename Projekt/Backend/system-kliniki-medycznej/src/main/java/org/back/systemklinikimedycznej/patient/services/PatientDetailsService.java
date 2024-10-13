@@ -8,6 +8,7 @@ import org.back.systemklinikimedycznej.patient.exceptions.PersonalDetailsExcepti
 import org.back.systemklinikimedycznej.patient.repositories.PatientDetailsRepository;
 import org.back.systemklinikimedycznej.patient.repositories.entities.PatientDetails;
 import org.back.systemklinikimedycznej.patient.repositories.entities.patient_card.PatientCard;
+import org.back.systemklinikimedycznej.patient.util.PatientCardManagerUtil;
 import org.back.systemklinikimedycznej.patient.util.PatientDetailsManagerUtil;
 import org.back.systemklinikimedycznej.patient.validators.PatientDetailsValidator;
 import org.springframework.http.HttpStatus;
@@ -45,5 +46,15 @@ public class PatientDetailsService {
         PatientDetailsManagerUtil.updatePatientDetails(patientDetailsToUpdate,collectedPatientData);
 
         return patientDetailsRepository.save(patientDetailsToUpdate);
+    }
+
+    public PatientDetails delete(String pesel) {
+        PatientCard patientCard = patientCardService.findPatientCardWithPesel(pesel);
+        PatientDetails patientDetailsToRemove = patientCard.getPatientDetails();
+
+        patientCard.removePersonalDetailsId();
+        patientDetailsRepository.delete(patientDetailsToRemove);
+
+        return patientDetailsToRemove;
     }
 }

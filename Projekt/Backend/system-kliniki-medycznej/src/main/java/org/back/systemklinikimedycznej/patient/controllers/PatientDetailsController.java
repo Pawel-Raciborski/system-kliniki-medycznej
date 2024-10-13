@@ -41,4 +41,13 @@ public class PatientDetailsController {
 
         return ResponseEntity.ok(updatedPatientDetails);
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<PatientDetailsDto> delete(
+            @RequestBody PatientPesel patientPesel
+    ){
+        PatientDetailsDto removedPatientDetails = PatientDetailsMapper.INSTANCE.mapFromEntity(patientDetailsService.delete(patientPesel.pesel()));
+
+        return ResponseEntity.ok(removedPatientDetails);
+    }
 }
