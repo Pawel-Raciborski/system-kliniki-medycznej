@@ -17,4 +17,13 @@ public interface PatientCardRepository extends JpaRepository<PatientCard, UUID> 
     WHERE a.email = :patientEmail
     """)
     Optional<PatientCard> findCardForPatientWithEmail(@Param("patientEmail") String patientEmail);
+
+
+    @Query("""
+    SELECT pt FROM PatientCard pt
+    JOIN pt.patient p
+    JOIN p.personalDetails pd
+    WHERE pd.pesel = :pesel
+    """)
+    Optional<PatientCard> findCardForPatientWithPesel(@Param("pesel") String pesel);
 }

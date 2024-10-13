@@ -1,6 +1,7 @@
 package org.back.systemklinikimedycznej.patient.repositories.entities.patient_card;
 
 import jakarta.persistence.*;
+import lombok.*;
 import org.back.systemklinikimedycznej.appointment.repositories.entities.Appointment;
 import org.back.systemklinikimedycznej.patient.repositories.entities.Patient;
 import org.back.systemklinikimedycznej.patient.repositories.entities.PatientDetails;
@@ -10,8 +11,13 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
+@Getter
+@Setter
+@Builder
 @Entity
 @Table(name = "patient_card")
+@NoArgsConstructor
+@AllArgsConstructor
 public class PatientCard {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

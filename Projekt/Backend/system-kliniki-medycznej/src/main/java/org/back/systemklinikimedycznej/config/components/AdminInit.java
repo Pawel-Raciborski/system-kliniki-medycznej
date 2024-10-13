@@ -9,7 +9,6 @@ import org.back.systemklinikimedycznej.role.services.AccountRoleService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Scanner;
 
 @Component

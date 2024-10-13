@@ -1,13 +1,19 @@
 package org.back.systemklinikimedycznej.patient.repositories.entities;
 
 import jakarta.persistence.*;
+import lombok.*;
 import org.back.systemklinikimedycznej.personal_details.repositories.entities.PersonalDetails;
 import org.back.systemklinikimedycznej.account.repositories.entities.Account;
 
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
+@Builder
 @Entity
 @Table(name = "patient")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
