@@ -27,7 +27,18 @@ public class PatientDetailsController {
     public ResponseEntity<PatientDetailsDto> getPatientDetails(
             @RequestBody PatientPesel patientPesel
     ){
-        PatientDetailsDto patientDetailsDto = PatientDetailsMapper.INSTANCE.mapFromEntity(patientDetailsService.findPatientDetailsByPesel(patientPesel));
+        PatientDetailsDto patientDetailsDto = PatientDetailsMapper.INSTANCE.mapFromEntity(patientDetailsService.findPatientDetailsByPesel(patientPesel.pesel()));
         return ResponseEntity.ok(patientDetailsDto);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<PatientDetailsDto> updatePatientDetails(
+            @RequestBody CollectedPatientData collectedPatientData
+    ){
+        PatientDetailsDto updatedPatientDetails = PatientDetailsMapper.INSTANCE.mapFromEntity(
+                patientDetailsService.update(collectedPatientData)
+        );
+
+        return ResponseEntity.ok(updatedPatientDetails);
     }
 }

@@ -13,4 +13,10 @@ public class PatientDetailsManagerUtil {
                 .patientCard(patientCard)
                 .build();
     }
+
+    public static void updatePatientDetails(PatientDetails patientDetailsToUpdate, CollectedPatientData collectedPatientData) {
+        patientDetailsToUpdate.setBloodType(collectedPatientData.getEnumBloodType());
+        patientDetailsToUpdate.setHeightInCm(collectedPatientData.heightInCm());
+        patientDetailsToUpdate.setWeightInKg(collectedPatientData.weightInKg());
+    }
 }

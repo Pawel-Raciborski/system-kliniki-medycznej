@@ -2,6 +2,7 @@ package org.back.systemklinikimedycznej.patient.services;
 
 import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.patient.controllers.dto.CollectedPatientData;
+import org.back.systemklinikimedycznej.patient.controllers.dto.PatientDetailsDto;
 import org.back.systemklinikimedycznej.patient.controllers.dto.PatientPesel;
 import org.back.systemklinikimedycznej.patient.exceptions.PersonalDetailsException;
 import org.back.systemklinikimedycznej.patient.repositories.PatientDetailsRepository;
@@ -33,9 +34,16 @@ public class PatientDetailsService {
         return savedPatientDetails;
     }
 
-    public PatientDetails findPatientDetailsByPesel(PatientPesel patientPesel) {
-        String pesel = patientPesel.pesel();
+    public PatientDetails findPatientDetailsByPesel(String pesel) {
         return patientDetailsRepository.findPatientDetailsByPesel(pesel)
                 .orElseThrow(() -> new PersonalDetailsException("Nie znaleziono danych dla pacjenta o peselu %s".formatted(pesel), HttpStatus.NOT_FOUND));
+    }
+
+    public PatientDetails update(CollectedPatientData collectedPatientData) {
+        PatientDetails patientDetailsToUpdate = findPatientDetailsByPesel(collectedPatientData.patientPesel());
+
+        PatientDetailsManagerUtil.updatePatientDetails(patientDetailsToUpdate,collectedPatientData);
+
+        return patientDetailsRepository.save(patientDetailsToUpdate);
     }
 }
