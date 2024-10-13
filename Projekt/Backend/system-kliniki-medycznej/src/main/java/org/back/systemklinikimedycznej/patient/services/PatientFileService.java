@@ -20,4 +20,8 @@ public class PatientFileService {
         Path patientDirectory = PATIENTS.resolve(Paths.get(patientPesel));
         return directoryService.createDirectory(patientDirectory);
     }
+
+    public void deleteFile(Path fileToRemove) {
+        directoryService.removeDirectory(fileToRemove);
+    }
 }

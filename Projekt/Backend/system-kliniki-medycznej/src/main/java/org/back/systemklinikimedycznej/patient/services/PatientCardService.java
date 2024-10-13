@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -35,5 +37,20 @@ public class PatientCardService {
         patientCardValidator.validatePatientCardNotExistForPatient(patient);
 
         return patientCardRepository.save(initialPatientCard);
+    }
+
+    @Transactional
+    public void deleteCardForPatient(Patient patientToRemove) {
+        PatientCard patientCard = findPatientCardWithPesel(patientToRemove.getPersonalDetails().getPesel());
+
+        Path fileToRemove = Paths.get(patientCard.getPatientDataFilesPath());
+        patientFileService.deleteFile(fileToRemove);
+
+        patientCardRepository.delete(patientCard);
+    }
+
+    private PatientCard findPatientCardWithPesel(String pesel) {
+        return patientCardRepository.findCardForPatientWithPesel(pesel)
+                .orElseThrow(() -> new PatientCardException("Nie znaleziono karty dla pacjena o peselu %s",HttpStatus.NOT_FOUND));
     }
 }

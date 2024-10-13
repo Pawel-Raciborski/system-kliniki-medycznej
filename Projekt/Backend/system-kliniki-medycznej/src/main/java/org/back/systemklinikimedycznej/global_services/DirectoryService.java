@@ -1,5 +1,6 @@
 package org.back.systemklinikimedycznej.global_services;
 
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -19,6 +20,14 @@ public class DirectoryService {
         System.out.println("creating");
         try {
             return Files.createDirectory(finalPath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void removeDirectory(Path fileToRemove) {
+        try {
+            FileUtils.deleteDirectory(fileToRemove.toFile());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

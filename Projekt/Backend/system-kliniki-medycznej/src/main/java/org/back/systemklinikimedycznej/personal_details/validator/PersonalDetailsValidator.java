@@ -1,7 +1,6 @@
 package org.back.systemklinikimedycznej.personal_details.validator;
 
 import lombok.RequiredArgsConstructor;
-import org.back.systemklinikimedycznej.exceptions.GlobalAppException;
 import org.back.systemklinikimedycznej.personal_details.dto.PersonalDetailsDto;
 import org.back.systemklinikimedycznej.personal_details.exceptions.PeselExistsException;
 import org.back.systemklinikimedycznej.personal_details.exceptions.PhoneExistsException;
@@ -11,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service

@@ -1,6 +1,6 @@
 package org.back.systemklinikimedycznej.patient.mapper;
 
-import org.back.systemklinikimedycznej.patient.controllers.dto.RegisteredPatientData;
+import org.back.systemklinikimedycznej.patient.controllers.dto.PatientData;
 import org.back.systemklinikimedycznej.patient.repositories.entities.Patient;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,5 +15,5 @@ public interface PatientMapper {
     @Mappings({
             @Mapping(target = "personalDetails.address.city", source = "personalDetails.address.city.name"),
     })
-    RegisteredPatientData mapFromEntity(Patient patient);
+    PatientData mapFromEntity(Patient patient);
 }
