@@ -49,7 +49,7 @@ public class PatientCardService {
         patientCardRepository.delete(patientCard);
     }
 
-    private PatientCard findPatientCardWithPesel(String pesel) {
+    public PatientCard findPatientCardWithPesel(String pesel) {
         return patientCardRepository.findCardForPatientWithPesel(pesel)
                 .orElseThrow(() -> new PatientCardException("Nie znaleziono karty dla pacjena o peselu %s",HttpStatus.NOT_FOUND));
     }
