@@ -2,11 +2,14 @@ package org.back.systemklinikimedycznej.patient.services;
 
 import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.patient.controllers.dto.CollectedPatientData;
+import org.back.systemklinikimedycznej.patient.controllers.dto.PatientPesel;
+import org.back.systemklinikimedycznej.patient.exceptions.PersonalDetailsException;
 import org.back.systemklinikimedycznej.patient.repositories.PatientDetailsRepository;
 import org.back.systemklinikimedycznej.patient.repositories.entities.PatientDetails;
 import org.back.systemklinikimedycznej.patient.repositories.entities.patient_card.PatientCard;
 import org.back.systemklinikimedycznej.patient.util.PatientDetailsManagerUtil;
 import org.back.systemklinikimedycznej.patient.validators.PatientDetailsValidator;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,10 +27,15 @@ public class PatientDetailsService {
         patientDetailsValidator.validatePersonalDetailsNotExistForPatientCard(patientCard);
 
         PatientDetails patientDetailsToCreate = PatientDetailsManagerUtil.buildPatientDetails(patientCard, collectedPatientData);
-
         PatientDetails savedPatientDetails = patientDetailsRepository.save(patientDetailsToCreate);
 
         patientCard.setPatientDetails(patientDetailsToCreate);
         return savedPatientDetails;
+    }
+
+    public PatientDetails findPatientDetailsByPesel(PatientPesel patientPesel) {
+        String pesel = patientPesel.pesel();
+        return patientDetailsRepository.findPatientDetailsByPesel(pesel)
+                .orElseThrow(() -> new PersonalDetailsException("Nie znaleziono danych dla pacjenta o peselu %s".formatted(pesel), HttpStatus.NOT_FOUND));
     }
 }
