@@ -13,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class PersonalDetailsService {
@@ -24,7 +22,7 @@ public class PersonalDetailsService {
 
     @Transactional
     public PersonalDetails create(PersonalDetailsDto personalDetailsDto) {
-        personalDetailsValidator.validatePeselAndPhoneNumber(personalDetailsDto);
+        personalDetailsValidator.validatePeselAndPhoneNumber(personalDetailsDto.pesel(),personalDetailsDto.phoneNumber());
 
         Address createdAddress = addressService.create(personalDetailsDto.address());
         PersonalDetails personalDetailsToCreate = PersonalDetailsManagerUtil.buildPersonalDetailsWithAddress(personalDetailsDto,createdAddress);
@@ -46,4 +44,8 @@ public class PersonalDetailsService {
                 .orElseThrow(() -> new GlobalAppException("Nie znaleziono danych z podanym PESELEM", HttpStatus.NOT_FOUND));
     }
 
+    public void deletePersonalDetails(PersonalDetails personalDetailsToRemove) {
+        addressService.deleteAddressIfNecessary(personalDetailsToRemove.getAddress());
+        personalDetailsRepository.delete(personalDetailsToRemove);
+    }
 }

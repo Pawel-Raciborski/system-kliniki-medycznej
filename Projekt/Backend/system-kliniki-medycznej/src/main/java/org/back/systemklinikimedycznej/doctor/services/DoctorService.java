@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.account.repositories.entities.Account;
 import org.back.systemklinikimedycznej.account.services.AccountService;
 import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorFormDto;
-import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorsInfo;
 import org.back.systemklinikimedycznej.doctor.exceptions.DoctorNotExistException;
 import org.back.systemklinikimedycznej.doctor.repositories.DoctorRepository;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
@@ -13,8 +12,6 @@ import org.back.systemklinikimedycznej.doctor.util.DoctorManagerUtil;
 import org.back.systemklinikimedycznej.doctor.validators.DoctorValidator;
 import org.back.systemklinikimedycznej.personal_details.repositories.entities.PersonalDetails;
 import org.back.systemklinikimedycznej.personal_details.services.PersonalDetailsService;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,8 +53,10 @@ public class DoctorService {
     @Transactional
     public void delete(String pwzNumber) {
         Doctor doctorToRemove = findByPwzNumber(pwzNumber);
+        PersonalDetails personalDetailsToRemove = doctorToRemove.getPersonalDetails();
 
         doctorRepository.deleteById(doctorToRemove.getId());
+        personalDetailsService.deletePersonalDetails(personalDetailsToRemove);
     }
 
     public Doctor findByPwzNumber(String pwzNumber) {

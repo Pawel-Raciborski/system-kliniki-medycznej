@@ -20,4 +20,11 @@ public interface PatientDetailsRepository extends JpaRepository<PatientDetails,L
     WHERE personalDetails.pesel = :pesel
     """)
     Optional<PatientDetails> findPatientDetailsByPesel(@Param("pesel") String pesel);
+
+    @Query("""
+    SELECT count(pd) FROM PersonalDetails as pd
+    JOIN pd.address as a
+    WHERE a.id = :addressId
+    """)
+    Long countRefencedAddress(@Param("addressId") Long addressId);
 }

@@ -19,9 +19,13 @@ public class PersonalDetailsValidator {
     private final PersonalDetailsRepository personalDetailsRepository;
 
     @Transactional
-    public void validatePeselAndPhoneNumber(PersonalDetailsDto personalDetailsDto) {
-        validatePeselNotExist(personalDetailsDto.pesel());
-        validatePhoneNotExist(personalDetailsDto.phoneNumber());
+    public void validatePeselAndPhoneNumber(String pesel, String phoneNumber) {
+        if(Objects.nonNull(pesel)){
+            validatePeselNotExist(pesel);
+        }
+        if(Objects.nonNull(phoneNumber)){
+            validatePhoneNotExist(phoneNumber);
+        }
     }
 
     private void validatePeselNotExist(String pesel) {
@@ -36,7 +40,7 @@ public class PersonalDetailsValidator {
 
     private void checkPeselNotExist(boolean peselExist) {
         if (peselExist) {
-            throw new PeselExistsException("Błędny pesel", HttpStatus.CONFLICT);
+            throw new PeselExistsException("Podany pesel jest już zajęty", HttpStatus.CONFLICT);
         }
     }
 

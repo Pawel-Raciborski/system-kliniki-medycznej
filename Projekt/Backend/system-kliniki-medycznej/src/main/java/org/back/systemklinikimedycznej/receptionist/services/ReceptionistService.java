@@ -32,8 +32,10 @@ public class ReceptionistService {
 
     public void delete(String email) {
         Receptionist receptionistToRemove = findByEmail(email);
+        PersonalDetails personalDetailsToRemove = receptionistToRemove.getPersonalDetails();
 
         receptionistRepository.delete(receptionistToRemove);
+        personalDetailsService.deletePersonalDetails(personalDetailsToRemove);
     }
 
     private Receptionist findByEmail(String email) {

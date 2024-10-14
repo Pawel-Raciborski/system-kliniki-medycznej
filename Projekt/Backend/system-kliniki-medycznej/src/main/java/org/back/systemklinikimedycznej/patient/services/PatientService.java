@@ -48,9 +48,11 @@ public class PatientService {
     @Transactional
     public void delete(PatientPesel patientPesel) {
         Patient patientToRemove = findByPesel(patientPesel.pesel());
+        PersonalDetails personalDetailsToRemove = patientToRemove.getPersonalDetails();
 
         patientCardService.deleteCardForPatient(patientToRemove);
         patientRepository.delete(patientToRemove);
+        personalDetailsService.deletePersonalDetails(personalDetailsToRemove);
     }
 
     public Patient findByPesel(String pesel) {
