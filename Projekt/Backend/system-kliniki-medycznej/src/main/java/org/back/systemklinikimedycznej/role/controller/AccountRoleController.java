@@ -1,6 +1,8 @@
 package org.back.systemklinikimedycznej.role.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.back.systemklinikimedycznej.account.repositories.entities.Account;
+import org.back.systemklinikimedycznej.account.services.AccountService;
 import org.back.systemklinikimedycznej.role.controller.dto.AccountRoleDto;
 import org.back.systemklinikimedycznej.role.controller.dto.RoleDto;
 import org.back.systemklinikimedycznej.role.mapper.AccountRoleMapper;
@@ -17,18 +19,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountRoleController {
     private final AccountRoleService accountRoleService;
+    private final AccountService accountService;
     @PostMapping("/create")
     public ResponseEntity<AccountRoleDto> create(
             @RequestParam(name = "username") String username,
             @RequestParam(name = "roleName") String roleName){
-        AccountRoleDto accountRoleDto = AccountRoleMapper.INSTANCE.mapFromEntity(accountRoleService.processAccountRoleCreation(username,roleName));
+        Account accountForAddRole =  accountService.findByUsername(username);
+        AccountRoleDto accountRoleDto = AccountRoleMapper.INSTANCE.mapFromEntity(accountRoleService.processAccountRoleCreation(accountForAddRole,roleName));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(accountRoleDto);
     }
 
     @GetMapping
     public ResponseEntity<List<RoleDto>> getAccountRoles(@RequestParam(name = "username") String username){
-        List<RoleDto> allUserRoles = accountRoleService.findAllAccountRoles(username).stream().map(RoleMapper.INSTANCE::mapFromEntity).toList();
+        Account account = accountService.findByUsername(username);
+        List<RoleDto> allUserRoles = accountRoleService.findAllAccountRoles(account).stream().map(RoleMapper.INSTANCE::mapFromEntity).toList();
 
         return ResponseEntity.ok(allUserRoles);
     }
@@ -38,7 +43,8 @@ public class AccountRoleController {
             @RequestParam(name = "username") String username,
             @RequestParam(name = "roleName") String roleName
     ){
-        AccountRoleDto removedAccountRole = AccountRoleMapper.INSTANCE.mapFromEntity(accountRoleService.delete(username,roleName));
+        Account account = accountService.findByUsername(username);
+        AccountRoleDto removedAccountRole = AccountRoleMapper.INSTANCE.mapFromEntity(accountRoleService.delete(account,roleName));
 
         return ResponseEntity.ok(removedAccountRole);
     }

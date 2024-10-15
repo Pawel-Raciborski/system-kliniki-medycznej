@@ -12,7 +12,7 @@ public interface RoleMapper {
     RoleMapper INSTANCE = Mappers.getMapper(RoleMapper.class);
 
     @Mappings(
-            @Mapping(target = "roleName",source = "name")
+            @Mapping(target = "name",source = "name")
     )
     RoleDto mapFromEntity(Role role);
 }

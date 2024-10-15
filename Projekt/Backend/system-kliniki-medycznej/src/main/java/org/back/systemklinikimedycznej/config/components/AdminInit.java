@@ -24,7 +24,7 @@ public class AdminInit implements CommandLineRunner {
         if(adminNotExist(numberOfAdminAccounts)){
             AccountDto accountToCreate = createAdminAccount();
             Account createdAdminAccount = accountService.create(accountToCreate);
-            addBasicAdminRoles(createdAdminAccount.getUsername());
+            addBasicAdminRoles(createdAdminAccount);
         }
     }
 
@@ -32,8 +32,8 @@ public class AdminInit implements CommandLineRunner {
         return adminAccounts == 0;
     }
 
-    private void addBasicAdminRoles(String username) {
-        accountRoleService.processAccountRoleCreation(username,"ADMIN");
+    private void addBasicAdminRoles(Account account) {
+        accountRoleService.processAccountRoleCreation(account,"ADMIN");
     }
 
 

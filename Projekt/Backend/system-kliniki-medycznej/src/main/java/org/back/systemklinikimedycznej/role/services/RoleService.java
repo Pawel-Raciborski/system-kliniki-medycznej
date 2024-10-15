@@ -21,7 +21,7 @@ public class RoleService {
 
     @Transactional
     public Role create(RoleDto roleDto) {
-        roleValidator.validateNotExistRoleWithName(roleDto.roleName().toUpperCase());
+        roleValidator.validateNotExistRoleWithName(roleDto.name().toUpperCase());
 
         Role roleToCreate = RoleManagementUtil.buildRoleWithName(roleDto);
 

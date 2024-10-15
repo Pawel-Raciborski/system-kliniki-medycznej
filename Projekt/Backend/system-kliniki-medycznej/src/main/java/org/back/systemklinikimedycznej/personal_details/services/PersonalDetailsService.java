@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.address.repositories.entities.Address;
 import org.back.systemklinikimedycznej.address.services.AddressService;
 import org.back.systemklinikimedycznej.exceptions.GlobalAppException;
+import org.back.systemklinikimedycznej.patient.exceptions.PersonalDetailsException;
 import org.back.systemklinikimedycznej.personal_details.util.PersonalDetailsManagerUtil;
 import org.back.systemklinikimedycznej.personal_details.validator.PersonalDetailsValidator;
 import org.back.systemklinikimedycznej.personal_details.dto.PersonalDetailsDto;
@@ -20,6 +21,14 @@ public class PersonalDetailsService {
     private final PersonalDetailsValidator personalDetailsValidator;
     private final AddressService addressService;
 
+    /**
+     * <h4>Creates person personal details.</h4>
+     *
+     * <p>This method creates personal details</p>
+     *
+     * @param personalDetailsDto data with personal details
+     * @return Created personal details
+     * */
     @Transactional
     public PersonalDetails create(PersonalDetailsDto personalDetailsDto) {
         personalDetailsValidator.validatePeselAndPhoneNumber(personalDetailsDto.pesel(),personalDetailsDto.phoneNumber());
@@ -47,5 +56,10 @@ public class PersonalDetailsService {
     public void deletePersonalDetails(PersonalDetails personalDetailsToRemove) {
         addressService.deleteAddressIfNecessary(personalDetailsToRemove.getAddress());
         personalDetailsRepository.delete(personalDetailsToRemove);
+    }
+
+    public PersonalDetails findByPhoneNumber(String phoneNumber){
+        return personalDetailsRepository.findByPhoneNumber(phoneNumber)
+                .orElseThrow(() -> new PersonalDetailsException("Nie znaleziono danych z podanym numerem telefonu!",HttpStatus.NOT_FOUND));
     }
 }

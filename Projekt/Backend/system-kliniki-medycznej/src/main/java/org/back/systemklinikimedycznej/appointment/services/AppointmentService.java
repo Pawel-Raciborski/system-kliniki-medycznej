@@ -17,7 +17,7 @@ public class AppointmentService {
 
     @Transactional
     public Appointment createForRegisteredUser(AppointmentDto appointmentDto) {
-        PatientCard patientCard = patientCardService.findCardForPatientWithEmail(appointmentDto.patientEmail());
+        PatientCard patientCard = patientCardService.findPatientCardWithPesel(appointmentDto.patientPesel());
 
         return null;
     }

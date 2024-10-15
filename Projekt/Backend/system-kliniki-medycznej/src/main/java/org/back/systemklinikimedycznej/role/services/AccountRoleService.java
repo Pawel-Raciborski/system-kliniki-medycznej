@@ -23,11 +23,10 @@ public class AccountRoleService {
     private final AccountRoleValidator accountRoleValidator;
     private final AccountRoleRepository accountRoleRepository;
     @Transactional
-    public AccountRole processAccountRoleCreation(String username, String roleName) {
-        Account accountToAddRole = accountService.findByUsername(username);
+    public AccountRole processAccountRoleCreation(Account account, String roleName) {
         Role roleToAdd = roleService.findByName(roleName);
 
-        AccountRole accountRoleToCreate = AccountRoleManagerUtil.buildAccountRole(accountToAddRole, roleToAdd);
+        AccountRole accountRoleToCreate = AccountRoleManagerUtil.buildAccountRole(account, roleToAdd);
 
         accountRoleValidator.validateAccountRoleNotExist(accountRoleToCreate);
 
@@ -35,13 +34,12 @@ public class AccountRoleService {
     }
 
 
-    public List<Role> findAllAccountRoles(String username) {
-        return accountRoleRepository.findAllAccountRoles(username);
+    public List<Role> findAllAccountRoles(Account account) {
+        return accountRoleRepository.findAllAccountRoles(account.getUsername());
     }
 
     @Transactional
-    public AccountRole delete(String username, String roleName) {
-        Account account= accountService.findByUsername(username);
+    public AccountRole delete(Account account, String roleName) {
         Role role = roleService.findByName(roleName);
         AccountRole accountRoleToRemove = findByAccountAndRole(account,role);
 

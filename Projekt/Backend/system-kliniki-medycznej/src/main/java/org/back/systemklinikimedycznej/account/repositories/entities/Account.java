@@ -27,6 +27,6 @@ public class Account {
     @Column(name = "date_time_of_creation")
     private LocalDateTime dateTimeOfCreation;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
     private Set<AccountRole> accountRoles;
 }

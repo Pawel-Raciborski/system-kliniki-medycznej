@@ -34,4 +34,9 @@ public class AccountService {
                                 HttpStatus.NOT_FOUND)
                 );
     }
+
+    public Account findByEmail(String email){
+        return accountRepository.findByEmail(email)
+                .orElseThrow(() -> new AccountException("Nie znaleziono konta z podanym adresem email!",HttpStatus.NOT_FOUND));
+    }
 }

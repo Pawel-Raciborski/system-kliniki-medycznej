@@ -12,6 +12,9 @@ import org.back.systemklinikimedycznej.doctor.util.DoctorManagerUtil;
 import org.back.systemklinikimedycznej.doctor.validators.DoctorValidator;
 import org.back.systemklinikimedycznej.personal_details.repositories.entities.PersonalDetails;
 import org.back.systemklinikimedycznej.personal_details.services.PersonalDetailsService;
+import org.back.systemklinikimedycznej.role.enums.BasicAppRoles;
+import org.back.systemklinikimedycznej.role.services.AccountRoleService;
+import org.back.systemklinikimedycznej.role.services.RoleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +31,7 @@ public class DoctorService {
     private final DoctorRepository doctorRepository;
     private final CalendarService calendarService;
     private final DoctorSpecializationsService doctorSpecializationsService;
+    private final AccountRoleService accountRoleService;
 
     @Transactional
     public Doctor create(DoctorFormDto doctorFormDto) {
@@ -38,6 +42,8 @@ public class DoctorService {
 
         Doctor doctorToCreate = DoctorManagerUtil.buildDoctor(doctorFormDto, createdDoctorAccount, doctorPersonalDetails);
         Doctor createdDoctor = saveDoctor(doctorToCreate);
+
+        accountRoleService.processAccountRoleCreation(createdDoctorAccount, BasicAppRoles.DOCTOR.name());
 
         return postDoctorCreateOperations(doctorFormDto, createdDoctor);
     }
