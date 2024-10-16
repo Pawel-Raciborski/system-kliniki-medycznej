@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DoctorInfo} from '../../../../doctor/domain/doctor-info';
 import {DoctorService} from '../../../../doctor/services/doctor.service';
+import {MatDialog} from '@angular/material/dialog';
+import {CreateDoctorComponent} from '../create-doctor/create-doctor.component';
 
 @Component({
   selector: 'app-doctor-list',
@@ -20,10 +22,13 @@ export class DoctorListComponent implements OnInit{
     })
   }
 
-  constructor(private doctorService: DoctorService) {
+  constructor(
+    private doctorService: DoctorService,
+    private dialog: MatDialog
+  ) {
   }
 
   openAddDoctorModal() {
-
+    this.dialog.open(CreateDoctorComponent);
   }
 }

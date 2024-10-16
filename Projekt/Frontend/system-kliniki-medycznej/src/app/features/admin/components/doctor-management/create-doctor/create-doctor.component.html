@@ -1,0 +1,97 @@
+<div class="container-fluid">
+  <div class="row p-3">
+    <div class="col-md-12">
+      <h2 class="text-dark">Dodawanie lekarza</h2>
+    </div>
+    <hr class="mt-2">
+  </div>
+  <mat-dialog-content>
+    <div class="row">
+      <form>
+        <div class="row border rounded-3">
+          <div class="col-md-12">
+            <div class="row mt-3">
+              <mat-card-title>
+                <h5>Dane logowania</h5>
+              </mat-card-title>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Nazwa użytkownika</mat-label>
+                  <input matInput/>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Adres email</mat-label>
+                  <input matInput/>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Hasło</mat-label>
+                  <input matInput/>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Powtórz hasło</mat-label>
+                  <input matInput/>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3 border rounded-3">
+          <div class="col-md-12">
+            <div class="row mt-3">
+              <mat-card-title>
+                <h5>Dane osobowe</h5>
+              </mat-card-title>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Imię</mat-label>
+                  <input matInput/>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Pesel</mat-label>
+                  <input matInput/>
+                </mat-form-field>
+                <div class="row p-1 mb-2">
+                  <mat-label>Wybierz płeć</mat-label>
+                  <mat-radio-group aria-label="Select an option">
+                    <mat-radio-button value="MALE">Mężczyzna</mat-radio-button>
+                    <mat-radio-button value="FEMALE">Kobieta</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <mat-form-field>
+                  <mat-label>Data urodzenia</mat-label>
+                  <input matInput type="date" placeholder="dd/mm/rrrr"/>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Nazwisko</mat-label>
+                  <input matInput/>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Numer telefonu</mat-label>
+                  <input matInput placeholder="+48 123 456 789"/>
+                </mat-form-field>
+                <div class="row">
+                  <mat-label>Wybierz zdjęcie</mat-label>
+                  <input type="file">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-12 text-end">
+            <button class="btn btn-outline-dark mx-3">Zamknij</button>
+            <button class="btn btn-success">Dodaj</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </mat-dialog-content>
+</div>
