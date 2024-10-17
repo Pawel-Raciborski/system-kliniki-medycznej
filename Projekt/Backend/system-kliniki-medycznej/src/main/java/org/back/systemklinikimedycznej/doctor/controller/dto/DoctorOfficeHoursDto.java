@@ -6,6 +6,7 @@ import java.time.LocalTime;
 public record DoctorOfficeHoursDto(
         DayOfWeek day,
         LocalTime startHour,
-        LocalTime endHour
+        LocalTime endHour,
+        Integer durationInMinutes
 ) {
 }

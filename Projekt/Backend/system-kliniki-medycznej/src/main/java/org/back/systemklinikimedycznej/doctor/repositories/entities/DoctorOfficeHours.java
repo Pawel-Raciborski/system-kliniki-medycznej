@@ -29,6 +29,8 @@ public class DoctorOfficeHours {
     private LocalTime startHour;
     @Column(name="end_time")
     private LocalTime endHour;
+    @Column(name="duration_in_minutes")
+    private Integer durationInMinutes;
     @Column(name="modified_date")
     private LocalDate modifiedDate;
 }

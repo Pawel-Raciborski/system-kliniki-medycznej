@@ -14,6 +14,7 @@ public class OfficeHoursManagerUtil {
         return doctorOfficeHours.withStartHour(updatedOfficeHours.startTime())
                 .withEndHour(updatedOfficeHours.endTime())
                 .withDay(updatedOfficeHours.day())
+                .withDurationInMinutes(updatedOfficeHours.durationInMinutes())
                 .withModifiedDate(LocalDate.now());
     }
 
@@ -24,6 +25,7 @@ public class OfficeHoursManagerUtil {
                 .day(officeHoursDto.day())
                 .doctor(doctorToAddOfficeHours)
                 .modifiedDate(LocalDate.now())
+                .durationInMinutes(officeHoursDto.durationInMinutes())
                 .build();
     }
 }

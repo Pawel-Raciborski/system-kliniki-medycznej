@@ -14,6 +14,7 @@ public interface DoctorMapper {
     DoctorMapper INSTANCE = Mappers.getMapper(DoctorMapper.class);
 
     @Mappings({
+            @Mapping(target = "pesel", source = "personalDetails.pesel"),
             @Mapping(target = "name", source = "personalDetails.name"),
             @Mapping(target = "surname", source = "personalDetails.surname"),
             @Mapping(target = "email", source = "account.email"),
