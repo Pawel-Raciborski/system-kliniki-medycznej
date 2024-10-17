@@ -3,7 +3,7 @@ package org.back.systemklinikimedycznej.doctor.services;
 import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.account.repositories.entities.Account;
 import org.back.systemklinikimedycznej.account.services.AccountService;
-import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorFormDto;
+import org.back.systemklinikimedycznej.doctor.controller.dto.RegisterDoctorDetails;
 import org.back.systemklinikimedycznej.doctor.exceptions.DoctorNotExistException;
 import org.back.systemklinikimedycznej.doctor.repositories.DoctorRepository;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
@@ -14,7 +14,6 @@ import org.back.systemklinikimedycznej.personal_details.repositories.entities.Pe
 import org.back.systemklinikimedycznej.personal_details.services.PersonalDetailsService;
 import org.back.systemklinikimedycznej.role.enums.BasicAppRoles;
 import org.back.systemklinikimedycznej.role.services.AccountRoleService;
-import org.back.systemklinikimedycznej.role.services.RoleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,18 +33,18 @@ public class DoctorService {
     private final AccountRoleService accountRoleService;
 
     @Transactional
-    public Doctor create(DoctorFormDto doctorFormDto) {
-        doctorValidator.validatePwzNumber(doctorFormDto.pwzNumber());
+    public Doctor create(RegisterDoctorDetails registerDoctorDetails) {
+        doctorValidator.validatePwzNumber(registerDoctorDetails.pwzNumber());
 
-        Account createdDoctorAccount = accountService.create(doctorFormDto.registerAccountData());
-        PersonalDetails doctorPersonalDetails = personalDetailsService.create(doctorFormDto.personalDetails());
+        Account createdDoctorAccount = accountService.create(registerDoctorDetails.registerAccountData());
+        PersonalDetails doctorPersonalDetails = personalDetailsService.create(registerDoctorDetails.personalDetails());
 
-        Doctor doctorToCreate = DoctorManagerUtil.buildDoctor(doctorFormDto, createdDoctorAccount, doctorPersonalDetails);
+        Doctor doctorToCreate = DoctorManagerUtil.buildDoctor(registerDoctorDetails, createdDoctorAccount, doctorPersonalDetails);
         Doctor createdDoctor = saveDoctor(doctorToCreate);
 
         accountRoleService.processAccountRoleCreation(createdDoctorAccount, BasicAppRoles.DOCTOR.name());
 
-        return postDoctorCreateOperations(doctorFormDto, createdDoctor);
+        return postDoctorCreateOperations(registerDoctorDetails, createdDoctor);
     }
 
     @Transactional
@@ -75,10 +74,10 @@ public class DoctorService {
         return doctorRepository.save(doctorToCreate);
     }
 
-    public Doctor postDoctorCreateOperations(DoctorFormDto doctorFormDto, Doctor createdDoctor) {
+    public Doctor postDoctorCreateOperations(RegisterDoctorDetails registerDoctorDetails, Doctor createdDoctor) {
         calendarService.createCalendarForDoctor(createdDoctor);
 
-        List<DoctorSpecialization> doctorSpecializations = doctorSpecializationsService.addSpecializationToDoctor(createdDoctor, doctorFormDto.doctorSpecializations());
+        List<DoctorSpecialization> doctorSpecializations = doctorSpecializationsService.addSpecializationToDoctor(createdDoctor, registerDoctorDetails.doctorSpecializations());
 
         return createdDoctor.withDoctorSpecializations(new HashSet<>(doctorSpecializations));
     }

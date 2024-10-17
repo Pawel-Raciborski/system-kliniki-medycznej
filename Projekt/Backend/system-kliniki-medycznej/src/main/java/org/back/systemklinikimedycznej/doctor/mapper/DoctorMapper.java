@@ -1,5 +1,6 @@
 package org.back.systemklinikimedycznej.doctor.mapper;
 
+import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorDetails;
 import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorDto;
 import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorInfo;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
@@ -32,4 +33,11 @@ public interface DoctorMapper {
            @Mapping(target="description",source = "description")
     })
     DoctorInfo mapToDoctorInfo(Doctor doctor);
+
+    @Mappings({
+            @Mapping(target = "username", source = "account.username"),
+            @Mapping(target = "email", source = "account.email"),
+            @Mapping(target = "personalDetails.address.city", source = "personalDetails.address.city.name"),
+    })
+    DoctorDetails mapToDoctorDetails(Doctor byPwzNumber);
 }

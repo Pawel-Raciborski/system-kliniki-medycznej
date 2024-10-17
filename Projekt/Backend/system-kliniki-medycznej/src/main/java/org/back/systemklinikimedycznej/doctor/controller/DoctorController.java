@@ -1,10 +1,12 @@
 package org.back.systemklinikimedycznej.doctor.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorDetails;
 import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorDto;
-import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorFormDto;
+import org.back.systemklinikimedycznej.doctor.controller.dto.RegisterDoctorDetails;
 import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorsInfo;
 import org.back.systemklinikimedycznej.doctor.mapper.DoctorMapper;
+import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.doctor.services.DoctorSearchingService;
 import org.back.systemklinikimedycznej.doctor.services.DoctorService;
 import org.springframework.http.HttpStatus;
@@ -19,12 +21,18 @@ public class DoctorController {
     private final DoctorSearchingService doctorInfoService;
 
     @PostMapping("/create")
-    public ResponseEntity<DoctorDto> create(@RequestBody DoctorFormDto doctorFormDto) {
+    public ResponseEntity<DoctorDto> create(@RequestBody RegisterDoctorDetails doctorToRegisterData) {
         DoctorDto registeredDoctor = DoctorMapper.INSTANCE.mapToDto(
-                doctorService.create(doctorFormDto)
+                doctorService.create(doctorToRegisterData)
         );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(registeredDoctor);
+    }
+
+    @GetMapping("/{pwzNumber}")
+    public ResponseEntity<DoctorDetails> getDoctor(@PathVariable(name = "pwzNumber") String pwzNumber){
+        DoctorDetails doctorDetails = DoctorMapper.INSTANCE.mapToDoctorDetails(doctorService.findByPwzNumber(pwzNumber));
+        return ResponseEntity.ok(doctorDetails);
     }
 
     @PutMapping("/update-pwzNumber")

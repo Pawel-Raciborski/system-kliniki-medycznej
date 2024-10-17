@@ -2,7 +2,7 @@ package org.back.systemklinikimedycznej.doctor.util;
 
 import lombok.experimental.UtilityClass;
 import org.back.systemklinikimedycznej.account.repositories.entities.Account;
-import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorFormDto;
+import org.back.systemklinikimedycznej.doctor.controller.dto.RegisterDoctorDetails;
 import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorInfo;
 import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorsInfo;
 import org.back.systemklinikimedycznej.doctor.mapper.DoctorMapper;
@@ -14,13 +14,13 @@ import java.util.List;
 @UtilityClass
 public class DoctorManagerUtil {
 
-    public static Doctor buildDoctor(DoctorFormDto doctorFormDto, Account createdDoctorAccount, PersonalDetails doctorPersonalDetails) {
+    public static Doctor buildDoctor(RegisterDoctorDetails registerDoctorDetails, Account createdDoctorAccount, PersonalDetails doctorPersonalDetails) {
         return Doctor.builder()
                 .account(createdDoctorAccount)
                 .personalDetails(doctorPersonalDetails)
-                .description(doctorFormDto.description())
-                .pwzNumber(doctorFormDto.pwzNumber())
-                .dateOfEmployment(doctorFormDto.dateOfEmployment())
+                .description(registerDoctorDetails.description())
+                .pwzNumber(registerDoctorDetails.pwzNumber())
+                .dateOfEmployment(registerDoctorDetails.dateOfEmployment())
                 .build();
     }
 

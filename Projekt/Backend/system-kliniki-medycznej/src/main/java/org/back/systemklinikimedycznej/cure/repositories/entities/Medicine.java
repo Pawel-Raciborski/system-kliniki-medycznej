@@ -2,7 +2,7 @@ package org.back.systemklinikimedycznej.cure.repositories.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.back.systemklinikimedycznej.patient.repositories.entities.patient_disease.PatientDiseaseMedicine;
+import org.back.systemklinikimedycznej.patient.repositories.entities.patient_disease.Hospitalization;
 
 import java.util.Set;
 
@@ -45,5 +45,5 @@ public class Medicine {
     private String targetSpecies;
 
     @OneToMany(mappedBy = "medicine")
-    private Set<PatientDiseaseMedicine> patientDiseaseMedicines;
+    private Set<Hospitalization> hospitalizations;
 }

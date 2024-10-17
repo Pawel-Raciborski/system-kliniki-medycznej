@@ -5,6 +5,7 @@ public record DoctorInfo(
         String name,
         String surname,
         String email,
+        String pwzNumber,
         String phoneNumber,
         String description
 ) {

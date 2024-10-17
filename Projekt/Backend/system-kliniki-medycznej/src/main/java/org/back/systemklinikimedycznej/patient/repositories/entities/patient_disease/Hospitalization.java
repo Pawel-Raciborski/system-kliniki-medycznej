@@ -6,8 +6,8 @@ import org.back.systemklinikimedycznej.cure.repositories.entities.Medicine;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "patient_disease_medicine")
-public class PatientDiseaseMedicine {
+@Table(name = "hospitalization")
+public class Hospitalization {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

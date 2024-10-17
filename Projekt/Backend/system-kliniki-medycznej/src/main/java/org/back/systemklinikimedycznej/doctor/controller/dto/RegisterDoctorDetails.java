@@ -6,7 +6,7 @@ import org.back.systemklinikimedycznej.account.dto.AccountDto;
 import java.time.LocalDate;
 import java.util.List;
 
-public record DoctorFormDto(
+public record RegisterDoctorDetails(
         AccountDto registerAccountData,
         PersonalDetailsDto personalDetails,
         String pwzNumber,

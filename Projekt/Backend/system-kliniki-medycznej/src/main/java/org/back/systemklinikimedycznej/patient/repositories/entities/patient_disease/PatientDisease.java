@@ -29,5 +29,5 @@ public class PatientDisease {
     private LocalDate finishCureDate;
 
     @OneToMany(mappedBy = "patientDisease")
-    private Set<PatientDiseaseMedicine> patientDiseaseMedicines;
+    private Set<Hospitalization> hospitalizations;
 }

@@ -5,6 +5,7 @@ import org.back.systemklinikimedycznej.personal_details.dto.PersonalDetailsDto;
 import java.util.List;
 
 public record DoctorDto(
+        String pesel,
         String name,
         String surname,
         String email,
