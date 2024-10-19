@@ -2,6 +2,8 @@ package org.back.systemklinikimedycznej.account.services;
 
 import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.account.dto.AccountDto;
+import org.back.systemklinikimedycznej.account.dto.AccountInfo;
+import org.back.systemklinikimedycznej.account.dto.ChangePasswordDto;
 import org.back.systemklinikimedycznej.account.exceptions.AccountException;
 import org.back.systemklinikimedycznej.account.repositories.AccountRepository;
 import org.back.systemklinikimedycznej.account.repositories.entities.Account;
@@ -19,7 +21,7 @@ public class AccountService {
 
     @Transactional
     public Account create(AccountDto accountDto) {
-        accountValidator.validateEmailAndUsername(accountDto);
+        accountValidator.validateEmailAndUsername(accountDto.email(),accountDto.username());
 
         Account accountToRegister = AccountManagerUtil.buildUserFromRegistrationForm(accountDto);
 
@@ -38,5 +40,23 @@ public class AccountService {
     public Account findByEmail(String email){
         return accountRepository.findByEmail(email)
                 .orElseThrow(() -> new AccountException("Nie znaleziono konta z podanym adresem email!",HttpStatus.NOT_FOUND));
+    }
+
+    @Transactional
+    public void changePassword(ChangePasswordDto changePasswordForm) {
+        Account accountToChangePassword = findByEmail(changePasswordForm.userEmail());
+
+        accountValidator.validatePasswordEqual(accountToChangePassword.getPassword(),changePasswordForm.previousPassword());
+
+        AccountManagerUtil.updatePassword(accountToChangePassword,changePasswordForm.newPassword());
+        accountRepository.save(accountToChangePassword);
+    }
+
+    @Transactional
+    public Account updateAccountDetails(Account accountToUpdate, AccountInfo accountInfo) {
+        accountValidator.validateEmailAndUsername(accountInfo.newEmail(),accountInfo.newUsername());
+        AccountManagerUtil.updateAccountDetails(accountToUpdate, accountInfo.newUsername(), accountInfo.newEmail());
+
+        return accountRepository.save(accountToUpdate);
     }
 }
