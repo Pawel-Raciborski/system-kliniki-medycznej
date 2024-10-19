@@ -29,6 +29,8 @@ export class DoctorListComponent implements OnInit{
   }
 
   openAddDoctorModal() {
-    this.dialog.open(CreateDoctorComponent);
+    this.dialog.open(CreateDoctorComponent).afterClosed().subscribe(data => {
+      console.log(data);
+    });
   }
 }

@@ -7,8 +7,8 @@
   </div>
   <mat-dialog-content>
     <div class="row">
-      <form>
-        <div class="row border rounded-3">
+      <form [formGroup]="doctorForm">
+        <div class="row border rounded-3" formGroupName="registerAccountData">
           <div class="col-md-12">
             <div class="row mt-3">
               <mat-card-title>
@@ -19,27 +19,27 @@
               <div class="col-md-6">
                 <mat-form-field appearance="outline">
                   <mat-label>Nazwa użytkownika</mat-label>
-                  <input matInput/>
+                  <input matInput formControlName="username"/>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                   <mat-label>Adres email</mat-label>
-                  <input matInput/>
+                  <input matInput formControlName="email"/>
                 </mat-form-field>
               </div>
               <div class="col-md-6">
                 <mat-form-field appearance="outline">
                   <mat-label>Hasło</mat-label>
-                  <input matInput/>
+                  <input matInput formControlName="password"/>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                   <mat-label>Powtórz hasło</mat-label>
-                  <input matInput/>
+                  <input matInput formControlName="passwordConfirmation"/>
                 </mat-form-field>
               </div>
             </div>
           </div>
         </div>
-        <div class="row mt-3 border rounded-3">
+        <div class="row mt-3 border rounded-3" formGroupName="personalDetails">
           <div class="col-md-12">
             <div class="row mt-3">
               <mat-card-title>
@@ -50,45 +50,117 @@
               <div class="col-md-6">
                 <mat-form-field appearance="outline">
                   <mat-label>Imię</mat-label>
-                  <input matInput/>
+                  <input matInput formControlName="name"/>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                   <mat-label>Pesel</mat-label>
-                  <input matInput/>
+                  <input matInput formControlName="pesel"/>
                 </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Numer PWZ</mat-label>
+                  <input matInput [formControl]="pwzNumber"/>
+                </mat-form-field>
+
                 <div class="row p-1 mb-2">
                   <mat-label>Wybierz płeć</mat-label>
-                  <mat-radio-group aria-label="Select an option">
+                  <mat-radio-group aria-label="Select an option" formControlName="gender">
                     <mat-radio-button value="MALE">Mężczyzna</mat-radio-button>
                     <mat-radio-button value="FEMALE">Kobieta</mat-radio-button>
                   </mat-radio-group>
                 </div>
-                <mat-form-field>
-                  <mat-label>Data urodzenia</mat-label>
-                  <input matInput type="date" placeholder="dd/mm/rrrr"/>
-                </mat-form-field>
+                <!--                rgb(68, 71, 78)-->
+                <div class="row">
+                  <div class="form-group mb-3">
+                    <label for="exampleInputEmail">Data urodzenia</label>
+                    <input type="date" class="form-control p-3 bg-dark-subtle" id="exampleInputEmail"
+                           aria-describedby="emailHelp" placeholder="dd/mm/rrrr" formControlName="birthDate">
+                  </div>
+                </div>
+
               </div>
               <div class="col-md-6">
                 <mat-form-field appearance="outline">
                   <mat-label>Nazwisko</mat-label>
-                  <input matInput/>
+                  <input matInput formControlName="surname"/>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                   <mat-label>Numer telefonu</mat-label>
-                  <input matInput placeholder="+48 123 456 789"/>
+                  <input matInput placeholder="+48 123 456 789" formControlName="phoneNumber"/>
                 </mat-form-field>
+
                 <div class="row">
-                  <mat-label>Wybierz zdjęcie</mat-label>
+                  <mat-label>Wybierz zdjęcie profilowe</mat-label>
                   <input type="file">
                 </div>
+
               </div>
+            </div>
+            <div class="row" formGroupName="address">
+              <div class="col-md-6">
+                <mat-label>Ulica</mat-label>
+                <mat-form-field appearance="outline">
+                  <input matInput formControlName="street"/>
+                </mat-form-field>
+                <!--TODO postal code-->
+                <div class="row">
+                  <mat-label>Kod pocztowy</mat-label>
+                  <p>
+                    <mat-form-field class="w-25" appearance="outline">
+                      <input matInput maxlength="2"/>
+                    </mat-form-field>
+                    -
+                    <mat-form-field class="w-50" appearance="outline">
+                      <input matInput maxlength="3"/>
+                    </mat-form-field>
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <mat-label>Numer mieszkania</mat-label>
+                <mat-form-field appearance="outline">
+                  <input matInput formControlName="apartmentNumber"/>
+                </mat-form-field>
+
+                <mat-label>Miasto</mat-label>
+                <mat-form-field appearance="outline">
+                  <input matInput formControlName="city"/>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-12 text-center">
+            <mat-form-field class="w-100">
+              <mat-label>Opis</mat-label>
+              <textarea matInput formControlName="description"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <mat-card-title>
+            <h5>Specjalizacje lekarza</h5>
+          </mat-card-title>
+          <div class="col-md-12">
+            <div class="row mt-4 mb-4">
+              <div class="col-md-12 text-center">
+                <button class="btn btn-outline-primary w-100" (click)="addSpecialization()">Dodaj</button>
+              </div>
+            </div>
+            <div class="row mt-4 mb-4 p-3" formArrayName="doctorSpecializations">
+              @for (doctorSpecialization of doctorSpecializations.controls; let i = $index; track i) {
+                <div class="col-md-4 p-2 border text-center" [formGroupName]="i">
+                  <p>{{ doctorSpecialization.value.data.name }}</p>
+                </div>
+              }
             </div>
           </div>
         </div>
         <div class="row mt-3">
           <div class="col-md-12 text-end">
             <button class="btn btn-outline-dark mx-3">Zamknij</button>
-            <button class="btn btn-success">Dodaj</button>
+            <button class="btn btn-success" (click)="onFormSubmit()">Dodaj</button>
           </div>
         </div>
       </form>

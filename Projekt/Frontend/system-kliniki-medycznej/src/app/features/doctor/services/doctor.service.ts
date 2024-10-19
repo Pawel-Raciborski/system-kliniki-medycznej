@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {DoctorInfo} from '../domain/doctor-info';
+import {DoctorDetails} from '../domain/doctor-details';
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +39,51 @@ export class DoctorService {
     ];
 
     return of(doctors);
+  }
+
+  findByPwzNumber(pwzNumber: number) {
+    const doctorDetails: DoctorDetails = {
+      username: "jan_kowalski",
+      email: "jan.kowalski@mail.com",
+      personalDetails: {
+        pesel: "93817263611",
+        name: "Jan",
+        surname: "Kowalski",
+        birthDate: "10-05-1993",
+        gender: null,
+        phoneNumber: "+48 726 361 631",
+        address: {
+          street: "Mickiewicza 6",
+          apartmentNumber: "6/12",
+          postalCode: "10-100",
+          city: "Warszawa"
+        }
+      },
+      description: "Lekarz z 5cio letnim doświadczeniem w Kardiologii. Do każdego pacjenta podchodzą z wyrozumiałością",
+      doctorSpecializations: [
+        {
+          name: "Sercowe coś",
+          description: "Specjalizacja w tym czyms",
+          realizedDate: "01-01-2018"
+        },
+        {
+          name: "Kardiologia",
+          description: "5 letnie doświadczenie",
+          realizedDate: "01-01-2018"
+        }
+      ],
+      doctorOfficeHours: [
+        {
+          day: "PONIEDZIAŁEK",
+          startHour: "09:00",
+          endHour: "16:00",
+          durationInMinutes: 30
+        }
+      ],
+      pwzNumber: "245183",
+      dateOfEmployment: "02-10-2024"
+    }
+
+    return of(doctorDetails);
   }
 }

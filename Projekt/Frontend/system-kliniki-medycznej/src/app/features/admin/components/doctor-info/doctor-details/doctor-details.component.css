@@ -1,0 +1,19 @@
+.profile-image{
+  height: 20rem;
+  width: 20rem;
+  object-fit: contain;
+}
+
+.office-hours-style{
+  color: #666;
+  margin: 0;
+}
+
+.office-hours-card{
+}
+
+.office-hours-card:hover{
+  transition: .2s ease-in-out;
+  background-color: #c8c8c8;
+  cursor: pointer;
+}

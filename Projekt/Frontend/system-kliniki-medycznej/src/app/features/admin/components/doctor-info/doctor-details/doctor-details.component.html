@@ -1,0 +1,218 @@
+<div class="container-fluid p-3">
+  <app-header-title [title]="'Dane lekarza'"></app-header-title>
+  <div class="row border">
+    <form [formGroup]="doctorDetailsForm">
+      <div class="col-md-12">
+        <div class="row mb-3 g-2 border-bottom p-3">
+          <!--          TODO account start-->
+          <div class="col-md-6">
+            <h5 class="text-black-50">Dane logowania</h5>
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label " for="username">Nazwa użytkownika</label>
+                  <input class="form-control" type="text" id="username" formControlName="username">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label " for="pwzNumber">Numer PWZ</label>
+                  <input class="form-control" type="text" id="pwzNumber" formControlName="pwzNumber">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label " for="email">Adres email</label>
+                  <input class="form-control" type="text" id="email" formControlName="email">
+                </div>
+              </div>
+            </div>
+            <!--          TODO account end-->
+          </div>
+          <div class="col-md-6" formGroupName="changePasswordForm">
+            <h5 class="text-black-50">Zmiana hasła</h5>
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label " for="current-password">Stare hasło</label>
+                  <input class="form-control" type="password" id="current-password" autocomplete="current-password"
+                         formControlName="currentPassword">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label " for="new-password">Nowe hasło</label>
+                  <input class="form-control" type="password" id="new-password" name="new-password"
+                         autocomplete="new-password" formControlName="newPassword">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label " for="confirm-password">Powtórz hasło</label>
+                  <input class="form-control" type="password" id="confirm-password" name="confirm-password"
+                         autocomplete="new-password" formControlName="confirmPassword">
+                </div>
+              </div>
+              <div class="col-md-12 text-end">
+                <button (click)="changePassword()" class="btn btn-success">Zapisz</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3 g-2">
+          <div class="col-md-8 p-3">
+            <div class="row" formGroupName="personalDetails">
+              <h5 class="text-black-50">Dane osobowe</h5>
+              <div class="row mt-3">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label " for="pesel">Pesel</label>
+                    <input class="form-control" type="text" id="pesel" formControlName="pesel">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label" for="name">Imię</label>
+                    <input class="form-control" type="text" id="name" formControlName="name">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label" for="name">Nazwisko</label>
+                    <input class="form-control" type="text" id="surname" formControlName="surname">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label" for="phoneNumber">Numer telefonu</label>
+                    <input class="form-control" type="text" id="phoneNumber"
+                           formControlName="phoneNumber">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <p class="form-label">Płeć</p>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="gender" id="male"
+                             value="MALE" formControlName="gender">
+                      <label class="form-check-label" for="male">Mężczyzna</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="gender" id="female"
+                             value="FEMALE" formControlName="gender">
+                      <label class="form-check-label" for="female">Kobieta</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label" for="birthDate">Data urodzenia</label>
+                    <input class="form-control" type="date" id="birthDate" formControlName="birthDate">
+                  </div>
+                </div>
+              </div>
+              <h5 class="text-black-50">Adres zamieszkania</h5>
+              <div class="row" formGroupName="address">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label" for="street">Ulica</label>
+                    <input class="form-control" type="text" id="street" formControlName="street">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label" for="apartmentNumber">Numer mieszkania/Domu</label>
+                    <input class="form-control" type="text" id="apartmentNumber"
+                           formControlName="apartmentNumber">
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label" for="postalCode">Kod pocztowy</label>
+                    <input class="form-control" type="text" id="postalCode"
+                           formControlName="postalCode">
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label" for="city">Miasto</label>
+                    <input class="form-control" type="text" id="city" formControlName="city">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="row">
+                <div class="col-md-12 ">
+                  <div class="mb-3">
+                    <label class="form-label" for="description">Opis</label>
+                    <textarea class="form-control" id="description" formControlName="description"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="row mt-3">
+                <div class="col-md-12 text-end">
+                  <button class="btn btn-success">Zapisz</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-2 p-3">
+            <div class="row mt-3">
+              <h4 class="text-black-50">Zdjęcie profilowe</h4>
+              <div class="col-md-12 text-center">
+                <img class="profile-image" src="assets/images/doctor_profile_image.webp" alt="Lekarz"/>
+              </div>
+              <div class="col-md-12 mt-3 text-center">
+                <button class="btn btn-outline-primary w-25">Zmień</button>
+              </div>
+            </div>
+
+            <div class="row mt-5 justify-content-center" formArrayName="doctorOfficeHours">
+              <h6 class="text-black-50"><b>Godziny pracy</b></h6>
+              @for (officeHour of doctorOfficeHours.controls; let i = $index; track i) {
+                <div class="col-md-8 p-3 border rounded-4 m-2 office-hours-card" [formGroupName]="i"
+                     (click)="showDetails(officeHour)">
+                  <div class="row mb-2">
+                    <p class="office-hours-style m-0"><strong>Dzień: </strong> {{ officeHour.value.day }}</p>
+                  </div>
+                  <div class="col-md-12">
+                    <p class="m-0 text-dark"><b>Godzina otwarcia:</b> {{ officeHour.value.startHour }}</p>
+                  </div>
+                  <div class="col-md-12">
+                    <p class="m-0 text-dark"><b>Godzina zamknięcia:</b> {{ officeHour.value.endHour }}</p>
+                  </div>
+                  <div class="col-md-12">
+                    <p class="m-0 text-dark"><b>Czas wizyty:</b> {{ officeHour.value.durationInMinutes }}</p>
+                  </div>
+                </div>
+              }
+              <div class="row">
+                <div class="col-md-12 text-center mt-3">
+                  <button class="btn btn-outline-success">Dodaj</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 g-2 p-3">
+            <h4 class="text-black-50">Specjalizacje</h4>
+            <div class="row g-2">
+              <div class="col-md-6">
+                dwad
+              </div>
+              <div class="col-md-6">
+                dwad
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
