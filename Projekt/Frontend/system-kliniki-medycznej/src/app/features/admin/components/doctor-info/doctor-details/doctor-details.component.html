@@ -177,10 +177,20 @@
             <div class="row mt-5 justify-content-center" formArrayName="doctorOfficeHours">
               <h6 class="text-black-50"><b>Godziny pracy</b></h6>
               @for (officeHour of doctorOfficeHours.controls; let i = $index; track i) {
-                <div class="col-md-8 p-3 border rounded-4 m-2 office-hours-card" [formGroupName]="i"
-                     (click)="showDetails(officeHour)">
+                <div class="col-md-8 p-3 border rounded-4 m-2" [formGroupName]="i">
                   <div class="row mb-2">
-                    <p class="office-hours-style m-0"><strong>Dzień: </strong> {{ officeHour.value.day }}</p>
+                    <div class="col-md-10">
+                      <p class="office-hours-style m-0"><strong>Dzień: </strong> {{ officeHour.value.day }}</p>
+                    </div>
+                    @if (userService.hasRole('DOCTOR')) {
+                      <div [matMenuTriggerFor]="menu" class="col-md-2 rounded-5 office-hours-card text-center">
+                        <i class="bi bi-three-dots-vertical"></i>
+                        <mat-menu #menu="matMenu" class="text-center">
+                          <button mat-menu-item (click)="showOfficeHourDetails(officeHour)">Edytuj</button>
+                          <button class="text-bg-danger" mat-menu-item (click)="delete(i)">Usuń</button>
+                        </mat-menu>
+                      </div>
+                    }
                   </div>
                   <div class="col-md-12">
                     <p class="m-0 text-dark"><b>Godzina otwarcia:</b> {{ officeHour.value.startHour }}</p>
@@ -193,21 +203,50 @@
                   </div>
                 </div>
               }
-              <div class="row">
-                <div class="col-md-12 text-center mt-3">
-                  <button class="btn btn-outline-success">Dodaj</button>
+              @if (userService.hasRole('DOCTOR')) {
+                <div class="row">
+                  <div class="col-md-12 text-center mt-3">
+                    <button class="btn btn-outline-success" (click)="addOfficeHours()">Dodaj</button>
+                  </div>
                 </div>
-              </div>
+              }
             </div>
           </div>
-          <div class="col-md-12 g-2 p-3">
+          <div class="col-md-12 g-2 p-3" formGroupName="doctorSpecializations">
             <h4 class="text-black-50">Specjalizacje</h4>
-            <div class="row g-2">
-              <div class="col-md-6">
-                dwad
+            <div class="row g-2 mt-3">
+              <div class="col-md-12 mt-3 text-center">
+                <button class="btn btn-primary w-25" (click)="addDoctorSpecialization()">Dodaj</button>
               </div>
-              <div class="col-md-6">
-                dwad
+              <div class="col-md-12 mt-3">
+                <table class="table border table-hover pointer">
+                  <thead>
+                  <tr>
+                    <th>Nazwa</th>
+                    <th>Opis</th>
+                    <th>Data realizacji</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    @for (doctorSpecialization of doctorSpecializations.controls; let i = $index; track i) {
+                      <tr [formGroupName]="i">
+                        <td>{{ doctorSpecialization.value.name }}</td>
+                        <td>{{ doctorSpecialization.value.description }}</td>
+                        <td>{{ doctorSpecialization.value.realizedDate }}</td>
+                        <td>
+                          <div [matMenuTriggerFor]="specializationMenu" class="col-md-4 rounded-5 office-hours-card text-center">
+                            <i class="bi bi-three-dots-vertical"></i>
+                            <mat-menu #specializationMenu="matMenu" class="text-center">
+                              <button mat-menu-item (click)="showDoctorSpecializationDetails(doctorSpecialization)">Edytuj</button>
+                              <button class="text-bg-danger" mat-menu-item (click)="deleteDoctorSpecialization(i)">Usuń</button>
+                            </mat-menu>
+                          </div>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

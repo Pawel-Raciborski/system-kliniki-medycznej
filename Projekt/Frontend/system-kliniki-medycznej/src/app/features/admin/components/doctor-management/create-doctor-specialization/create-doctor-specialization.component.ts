@@ -1,6 +1,6 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {MatDialogContainer, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogContainer, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 import {MatCardTitle} from '@angular/material/card';
 import {MatFormField, MatFormFieldModule, MatLabel} from '@angular/material/form-field';
 import {MatInput, MatInputModule} from '@angular/material/input';
@@ -26,18 +26,13 @@ import {provideNativeDateAdapter} from '@angular/material/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateDoctorSpecializationComponent {
-  doctorSpecializationFormGroup: FormGroup = new FormGroup({
-    name : new FormControl('', Validators.required),
-    description : new FormControl('', Validators.required),
-    realizedDate : new FormControl('', Validators.required),
-  });
 
-  constructor(private dialogRef: MatDialogRef<CreateDoctorSpecializationComponent>) {
+  constructor(private dialogRef: MatDialogRef<CreateDoctorSpecializationComponent>, @Inject(MAT_DIALOG_DATA) public doctorSpecializationFormGroup: FormGroup) {
   }
 
   onSubmit(){
-    this.dialogRef.close({
-      data: this.doctorSpecializationFormGroup.value
-    });
+    this.dialogRef.close(
+    {...this.doctorSpecializationFormGroup.value}
+    );
   }
 }

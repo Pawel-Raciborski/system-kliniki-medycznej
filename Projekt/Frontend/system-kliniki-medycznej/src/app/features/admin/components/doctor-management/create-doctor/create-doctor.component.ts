@@ -16,6 +16,7 @@ import {
 } from '../create-doctor-specialization/create-doctor-specialization.component';
 import {FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {DoctorSpecialization} from '../../../../doctor/domain/doctor-specialization';
+import {DoctorSpecializationService} from '../../../../doctor-specialization/services/doctor-specialization.service';
 
 @Component({
   selector: 'app-create-doctor',
@@ -66,7 +67,7 @@ export class CreateDoctorComponent {
     pwzNumber: new FormControl(''),
     description: new FormControl(''),
     dateOfEmployment: new FormControl(Date.now().toString()),
-    doctorSpecializations: new FormArray([])
+    doctorSpecializations: new FormArray<FormGroup<{name: FormControl<string | null>, description: FormControl<string | null>, realizedDate: FormControl<string | null>}>>([])
   });
 
   private createDoctorSpecializationFormGroup() : FormGroup{
@@ -80,21 +81,24 @@ export class CreateDoctorComponent {
   constructor(
     private dialog: MatDialog,
     private formBuilder: FormBuilder,
-    private dialogRef: MatDialogRef<CreateDoctorComponent>) {
+    private dialogRef: MatDialogRef<CreateDoctorComponent>,
+    private specializationService: DoctorSpecializationService
+    ) {
   }
 
   // TODO need to fix
   addSpecialization() {
-    let matDialogRef = this.dialog.open(CreateDoctorSpecializationComponent);
+    let addSpecializationForm = this.specializationService.buildDoctorSpecialization();
 
-    matDialogRef.beforeClosed().subscribe((data: DoctorSpecialization) => {
+    let matDialogRef = this.dialog.open(CreateDoctorSpecializationComponent,{
+      data: addSpecializationForm
+    });
+
+    matDialogRef.afterClosed().subscribe((data: DoctorSpecialization) => {
       if(data){
         const doctorSpecializations = this.doctorSpecializations;
-        let newFormGroup = this.formBuilder.group({
-          ...data
-        });
+        doctorSpecializations.push(addSpecializationForm);
 
-        doctorSpecializations.push(newFormGroup);
         console.log(doctorSpecializations)
       }
     });
