@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public record AppointmentDto(
         String patientPesel,
-        DoctorInfo selectedDoctor,
+        String selectedDoctorPwzNumber,
         LocalDateTime appointmentDateTime
 
 ) {

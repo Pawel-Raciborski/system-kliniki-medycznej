@@ -1,11 +1,39 @@
 package org.back.systemklinikimedycznej.doctor.controller;
 
+import lombok.RequiredArgsConstructor;
+import org.back.systemklinikimedycznej.doctor.controller.dto.CalendarAppointments;
+import org.back.systemklinikimedycznej.doctor.controller.dto.TodayCalendarAppointments;
+import org.back.systemklinikimedycznej.doctor.enums.CalendarFormatType;
+import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
+import org.back.systemklinikimedycznej.doctor.services.DoctorCalendarService;
+import org.back.systemklinikimedycznej.doctor.services.DoctorService;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @RestController
-@RequestMapping("/doctor/calendar")
+@RequestMapping("/doctors/calendar")
+@RequiredArgsConstructor
 public class DoctorCalendarController {
+    private final DoctorCalendarService doctorCalendarService;
+    private final DoctorService doctorService;
+    @GetMapping("/appointments")
+    public ResponseEntity<CalendarAppointments> getTodayAppointments(
+            @RequestParam(name = "date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date,
+            @RequestParam(name = "pwzNumber") String doctorPwzNumber,
+            @RequestParam(name = "formatType", defaultValue = "week") String calendarFormatType
+            ){
+        Doctor doctor = doctorService.findByPwzNumber(doctorPwzNumber);
+        CalendarAppointments calendarAppointments = doctorCalendarService.findCalendarAppointmentsForADoctor(
+                date,doctor, CalendarFormatType.valueOf(calendarFormatType.toUpperCase())
+        );
 
-
+        return ResponseEntity.ok((calendarAppointments));
+    }
 }

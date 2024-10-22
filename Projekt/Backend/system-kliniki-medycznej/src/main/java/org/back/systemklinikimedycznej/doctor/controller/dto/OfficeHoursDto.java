@@ -4,8 +4,8 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 public record OfficeHoursDto(
-        LocalTime startTime,
-        LocalTime endTime,
+        LocalTime startHour,
+        LocalTime endHour,
         DayOfWeek day,
         Integer durationInMinutes
 ) {

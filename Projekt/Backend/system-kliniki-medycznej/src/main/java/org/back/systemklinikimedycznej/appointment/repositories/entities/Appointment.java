@@ -1,9 +1,7 @@
 package org.back.systemklinikimedycznej.appointment.repositories.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.back.systemklinikimedycznej.appointment.domain.AppointmentStatus;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.calendar.DoctorCalendar;
@@ -13,6 +11,9 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
+@Getter
+@Setter
+@With
 @Builder
 @Entity
 @Table(name = "appointment")

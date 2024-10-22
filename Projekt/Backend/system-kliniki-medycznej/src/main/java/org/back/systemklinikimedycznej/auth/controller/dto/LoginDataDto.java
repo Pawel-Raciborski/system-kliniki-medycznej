@@ -8,6 +8,6 @@ public record LoginDataDto(
         String sessionId,
         String username,
         String email,
-        List<RoleDto> roles
+        List<String> roles
 ) {
 }

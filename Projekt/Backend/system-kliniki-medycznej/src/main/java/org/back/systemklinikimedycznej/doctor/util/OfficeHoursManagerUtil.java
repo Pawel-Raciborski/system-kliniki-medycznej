@@ -11,8 +11,8 @@ import java.time.LocalDate;
 public class OfficeHoursManagerUtil {
 
     public static DoctorOfficeHours withUpdatedFields(DoctorOfficeHours doctorOfficeHours, OfficeHoursDto updatedOfficeHours) {
-        return doctorOfficeHours.withStartHour(updatedOfficeHours.startTime())
-                .withEndHour(updatedOfficeHours.endTime())
+        return doctorOfficeHours.withStartHour(updatedOfficeHours.startHour())
+                .withEndHour(updatedOfficeHours.endHour())
                 .withDay(updatedOfficeHours.day())
                 .withDurationInMinutes(updatedOfficeHours.durationInMinutes())
                 .withModifiedDate(LocalDate.now());
@@ -20,8 +20,8 @@ public class OfficeHoursManagerUtil {
 
     public static DoctorOfficeHours buildDoctorOfficeHours(Doctor doctorToAddOfficeHours, OfficeHoursDto officeHoursDto) {
         return DoctorOfficeHours.builder()
-                .endHour(officeHoursDto.endTime())
-                .startHour(officeHoursDto.startTime())
+                .endHour(officeHoursDto.endHour())
+                .startHour(officeHoursDto.startHour())
                 .day(officeHoursDto.day())
                 .doctor(doctorToAddOfficeHours)
                 .modifiedDate(LocalDate.now())
