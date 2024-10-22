@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {ReceptionistInfo} from '../model/receptionist-info';
+import {RegisterReceptionistForm} from '../model/register-receptionist-form';
+import {ReceptionistDto} from '../model/receptionist-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -54,5 +56,17 @@ export class ReceptionistService {
     ];
 
     return of(receptionistList);
+  }
+
+  register(registerReceptionistForm: RegisterReceptionistForm): Observable<ReceptionistInfo> {
+    let receptionistInfo: ReceptionistInfo = {
+      id: 12,
+      name: registerReceptionistForm.personalDetails.name,
+      surname: registerReceptionistForm.personalDetails.surname,
+      dateOfEmployment: registerReceptionistForm.dateOfEmployment,
+      email: registerReceptionistForm.registerAccountData.email,
+      phoneNumber: registerReceptionistForm.personalDetails.phoneNumber
+    };
+    return of(receptionistInfo);
   }
 }

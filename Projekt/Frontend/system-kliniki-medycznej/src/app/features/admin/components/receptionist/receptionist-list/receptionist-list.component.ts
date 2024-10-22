@@ -5,6 +5,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {
   AddReceptionistDialogComponent
 } from '../../../../receptionist/dialogs/add-receptionist-dialog/add-receptionist-dialog.component';
+import {RegisterReceptionistForm} from '../../../../receptionist/model/register-receptionist-form';
 
 @Component({
   selector: 'app-receptionist-list',
@@ -13,7 +14,7 @@ import {
   templateUrl: './receptionist-list.component.html',
   styleUrl: './receptionist-list.component.css'
 })
-export class ReceptionistListComponent implements OnInit{
+export class ReceptionistListComponent implements OnInit {
   private receptionists!: ReceptionistInfo[]
 
   constructor(
@@ -29,14 +30,20 @@ export class ReceptionistListComponent implements OnInit{
   }
 
 
-
   openAddReceptionistDialog() {
-    this.dialog.open(AddReceptionistDialogComponent,{
-      width: '500px'
-    })
+    this.dialog.open(AddReceptionistDialogComponent, {
+      width: '700px',
+    }).afterClosed().subscribe((receptionistToRegister: RegisterReceptionistForm) => {
+      console.log(receptionistToRegister);
+      this.receptionistService.register(receptionistToRegister).subscribe(registeredReceptionist => {
+        console.log(registeredReceptionist);
+        this.receptionists.push(registeredReceptionist);
+        console.log(this.receptionists);
+      });
+    });
   }
 
-  get getReceptionists(){
+  get getReceptionists() {
     return this.receptionists;
   }
 

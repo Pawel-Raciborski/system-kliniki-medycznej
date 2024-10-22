@@ -12,7 +12,7 @@ export class FormGeneratorService {
     return this.formBuilder.group({
       registerAccountData: this.createRegisterAccountForm(),
       personalDetails: this.createPersonalDetailsForm(),
-      dateOfEmployment: new FormControl('')
+      dateOfEmployment: new FormControl(this.getCurrentDate())
     });
   }
 
@@ -20,6 +20,7 @@ export class FormGeneratorService {
     return this.formBuilder.group({
       username: new FormControl(''),
       password: new FormControl(''),
+      passwordConfirm: new FormControl(''),
       email: new FormControl(''),
     });
   }
@@ -43,5 +44,9 @@ export class FormGeneratorService {
       postalCode: new FormControl(''),
       city: new FormControl('')
     });
+  }
+
+  private getCurrentDate() {
+    return new Date().toLocaleDateString().replaceAll(".","-");
   }
 }
