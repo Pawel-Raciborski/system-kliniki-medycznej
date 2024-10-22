@@ -66,9 +66,13 @@ export class CreateDoctorComponent {
     }),
     pwzNumber: new FormControl(''),
     description: new FormControl(''),
-    dateOfEmployment: new FormControl(Date.now().toString()),
+    dateOfEmployment: new FormControl(this.getCurrentDate()),
     doctorSpecializations: new FormArray<FormGroup<{name: FormControl<string | null>, description: FormControl<string | null>, realizedDate: FormControl<string | null>}>>([])
   });
+
+  private getCurrentDate() {
+    return new Date().toLocaleDateString().replaceAll(".","-");
+  }
 
   private createDoctorSpecializationFormGroup() : FormGroup{
     return new FormGroup({

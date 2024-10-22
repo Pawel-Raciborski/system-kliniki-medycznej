@@ -4,6 +4,9 @@ import {
   DoctorManagementPageComponent
 } from '../components/doctor-management/doctor-management-page/doctor-management-page.component';
 import {DoctorDetailsComponent} from '../components/doctor-info/doctor-details/doctor-details.component';
+import {
+  ReceptionistManagementPageComponent
+} from '../components/receptionist/receptionist-management-page/receptionist-management-page.component';
 
 export const adminRoutes: Routes = [
   {
@@ -12,11 +15,15 @@ export const adminRoutes: Routes = [
     component: AdminMainPageComponent
   },
   {
-    path:'doctor-management',
-    component: DoctorManagementPageComponent
+    path:'doctors',
+    component: DoctorManagementPageComponent,
   },
   {
-    path: 'doctors/:pwzNumber',
-    component: DoctorDetailsComponent,
+    path:'doctors/:pwzNumber',
+    component: DoctorDetailsComponent
+  },
+  {
+    path:'receptionists',
+    component: ReceptionistManagementPageComponent
   }
 ];

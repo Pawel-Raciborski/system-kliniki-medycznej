@@ -17,6 +17,7 @@ export class DoctorService {
         name: 'John',
         surname: 'Doe',
         email: 'john.doe@example.com',
+        pwzNumber: '123456',
         phoneNumber: '555-1234',
         description: 'Expert in cardiology with 15 years of experience.'
       },
@@ -25,6 +26,7 @@ export class DoctorService {
         name: 'Jane',
         surname: 'Smith',
         email: 'jane.smith@example.com',
+        pwzNumber: '432142',
         phoneNumber: '555-5678',
         description: 'Specialist in neurology and brain surgery.'
       },
@@ -33,6 +35,7 @@ export class DoctorService {
         name: 'Emily',
         surname: 'Johnson',
         email: 'emily.johnson@example.com',
+        pwzNumber: '531342',
         phoneNumber: '555-9876',
         description: 'Experienced pediatrician with a focus on child healthcare.'
       }

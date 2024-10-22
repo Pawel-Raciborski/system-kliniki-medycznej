@@ -1,9 +1,8 @@
-export interface DoctorInfo {
+export interface ReceptionistInfo {
   id : number;
   name: string;
   surname: string;
   email: string;
-  pwzNumber: string;
   phoneNumber: string;
-  description: string;
+  dateOfEmployment: string;
 }

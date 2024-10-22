@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {HeaderTitleComponent} from '../../../../header-title/header-title.component';
 import {Role} from '../../../../roles/domain/role';
 import {UserService} from '../../../../auth/services/user.service';
@@ -17,6 +17,7 @@ import {RoleService} from '../../../../roles/services/role.service';
 })
 export class UserRolesComponent implements OnInit{
   roles: Role[] = [];
+  @Input() username!: string;
   constructor(
     private userService: UserService,
     private dialog: MatDialog,

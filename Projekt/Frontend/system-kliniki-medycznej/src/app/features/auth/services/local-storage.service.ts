@@ -13,10 +13,10 @@ export class LocalStorageService {
       username: 'jan_kowalski',
       email: 'jan.kowalski@mail.com',
       roles: [
-        {
-          name: 'DOCTOR',
-          description: 'Rola lekarza'
-        },
+        // {
+        //   name: 'DOCTOR',
+        //   description: 'Rola lekarza'
+        // },
         {
           name: 'ADMIN',
           description: 'Administrator'
