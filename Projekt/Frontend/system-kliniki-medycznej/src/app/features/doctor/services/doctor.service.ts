@@ -73,12 +73,12 @@ export class DoctorService {
         }
       ],
       doctorOfficeHours: [
-        // {
-        //   day: "PONIEDZIAŁEK",
-        //   startHour: "09:00",
-        //   endHour: "16:00",
-        //   durationInMinutes: 30
-        // }
+        {
+          day: "PONIEDZIAŁEK",
+          startHour: "09:00",
+          endHour: "16:00",
+          durationInMinutes: 30
+        }
       ],
       pwzNumber: "245183",
       dateOfEmployment: "02-10-2024"

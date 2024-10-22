@@ -1,0 +1,32 @@
+<div class="container-fluid p-4">
+  <app-header-title [title]="'Lista roli'"></app-header-title>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        @for (availableRoleName of availableRoles; track availableRoleName) {
+          <div class="col-md-12 text-center p-1 border m-1 cursor-pointer change-color-on-hover" (click)="addRole(availableRoleName)">
+            <p>{{ availableRoleName }}</p>
+          </div>
+        }
+      </div>
+
+      @if(hasSelectedRole){
+        <div class="row">
+          <h4>Wybrane role</h4>
+
+          @for (roleName of selectedRolesToAdd; track roleName){
+            <div class="col-md-12 text-center p-1 border m-1 cursor-pointer remove-color" (click)="removeRole(roleName)">
+              <p>{{roleName}}</p>
+            </div>
+          }
+        </div>
+      }
+    </div>
+    <div class="col-md-12 mt-3 text-end">
+      <button class="btn btn-danger m-2" (click)="cancel()">Anuluj</button>
+      @if(hasSelectedRole){
+        <button class="btn btn-success" (click)="submitRoles()">Dodaj</button>
+      }
+    </div>
+  </div>
+</div>

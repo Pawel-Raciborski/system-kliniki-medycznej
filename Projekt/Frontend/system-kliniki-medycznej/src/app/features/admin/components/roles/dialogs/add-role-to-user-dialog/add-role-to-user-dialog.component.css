@@ -1,0 +1,25 @@
+.cursor-pointer{
+  cursor: pointer;
+}
+
+.change-color-on-hover{
+  background-color: #2A9865FF;
+  color: white;
+  transition: .2s;
+}
+
+.change-color-on-hover:hover{
+  background-color: #087643DD;
+  color: white;
+}
+
+.remove-color{
+  background-color: #ED4656FF;
+  color: white;
+  transition: .2s;
+}
+
+.remove-color:hover{
+  background-color: #DC3545FF;
+  color: white;
+}

@@ -12,10 +12,14 @@ export class UserService {
   }
 
   public hasRole(roleName: string){
-    return this.userRoles.some(value => value === roleName);
+    return this.userRoleNames.some(value => value === roleName);
   }
 
-  get userRoles(): string[]{
-    return this.loggedUser.roles;
+  get userRoleNames(): string[]{
+    return this.loggedUser.roles.map((role) => role.name);
+  }
+
+  get username(): string{
+    return this.loggedUser.username;
   }
 }

@@ -1,0 +1,28 @@
+<div class="container p-3">
+  <h5 class="text-black-50">Przypisane role</h5>
+  <div class="row mt-3">
+    <div class="col-md-12 text-center">
+      <button class="btn btn-primary w-25" (click)="addRole()">Dodaj rolę</button>
+    </div>
+    <div class="col-md-12 mt-3">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>Nazwa</th>
+          <th>Opis</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+          @for(role of roles; track role.name){
+            <tr>
+              <td>{{role.name}}</td>
+              <td>{{role.description}}</td>
+              <td class="text-end"><button (click)="remove(role.name)" class="border-0 rounded-5 remove-color"><i class="bi bi-trash"></i></button></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

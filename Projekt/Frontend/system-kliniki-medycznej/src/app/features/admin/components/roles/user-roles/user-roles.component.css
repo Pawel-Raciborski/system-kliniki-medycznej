@@ -1,0 +1,8 @@
+.remove-color{
+  background-color: #ED4656FF;
+  transition: .2s;
+}
+
+.remove-color:hover{
+  background-color: #DC3545FF;
+}

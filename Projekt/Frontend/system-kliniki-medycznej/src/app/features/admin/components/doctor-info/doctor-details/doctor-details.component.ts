@@ -21,6 +21,7 @@ import {DoctorSpecializationService} from '../../../../doctor-specialization/ser
 import {
   CreateDoctorSpecializationComponent
 } from '../../doctor-management/create-doctor-specialization/create-doctor-specialization.component';
+import {UserRolesComponent} from '../../roles/user-roles/user-roles.component';
 
 @Component({
   selector: 'app-doctor-details',
@@ -34,7 +35,8 @@ import {
     NgOptimizedImage,
     MatMenuTrigger,
     MatMenu,
-    MatMenuItem
+    MatMenuItem,
+    UserRolesComponent
   ],
   templateUrl: './doctor-details.component.html',
   styleUrl: './doctor-details.component.css'
