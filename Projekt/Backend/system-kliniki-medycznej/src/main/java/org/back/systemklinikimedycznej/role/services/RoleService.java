@@ -53,4 +53,8 @@ public class RoleService {
     public List<Role> getAllRoles() {
         return roleRepository.findAll();
     }
+
+    public List<Role> findRolesNotIn(List<String> assignedRoleNames) {
+        return roleRepository.findRolesNotIn(assignedRoleNames);
+    }
 }

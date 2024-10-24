@@ -16,7 +16,7 @@ public class AuthManagerUtil {
                 .sessionId(UUID.randomUUID())
                 .username(account.getUsername())
                 .email(account.getEmail())
-                .roles(roles.stream().map(Role::getName).distinct().toList())
+                .roles(roles)
                 .build();
     }
 }

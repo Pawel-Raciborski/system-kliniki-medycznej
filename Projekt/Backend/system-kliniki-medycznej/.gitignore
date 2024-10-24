@@ -33,3 +33,4 @@ build/
 .vscode/
 
 patients/
+/src/main/resources/keys/

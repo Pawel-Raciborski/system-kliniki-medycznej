@@ -52,4 +52,9 @@ public class AccountRoleService {
                 .orElseThrow(() -> new AccountRoleException("Nie znaleziono roli przypisanej do tego konta", HttpStatus.NOT_FOUND));
     }
 
+    public List<String> findAvailableRolesToAddForAccount(Account account) {
+        List<String> assignedRoleNames = account.getAccountRoles().stream().map(accountRole -> accountRole.getRole().getName()).distinct().toList();
+
+        return roleService.findRolesNotIn(assignedRoleNames).stream().map(Role::getName).toList();
+    }
 }

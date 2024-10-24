@@ -33,9 +33,17 @@ public class AccountRoleController {
     @GetMapping
     public ResponseEntity<List<RoleDto>> getAccountRoles(@RequestParam(name = "username") String username){
         Account account = accountService.findByUsername(username);
-        List<RoleDto> allUserRoles = accountRoleService.findAllAccountRoles(account).stream().map(RoleMapper.INSTANCE::mapFromEntity).toList();
+        List<RoleDto> userRoles = accountRoleService.findAllAccountRoles(account).stream().map(RoleMapper.INSTANCE::mapFromEntity).toList();
 
-        return ResponseEntity.ok(allUserRoles);
+        return ResponseEntity.ok(userRoles);
+    }
+
+    @GetMapping("/available")
+    public ResponseEntity<List<String>> getAvailableRolesForUser(@RequestParam(name="username") String username){
+        Account account = accountService.findByUsername(username);
+
+        List<String> availableUserRolesToAdd = accountRoleService.findAvailableRolesToAddForAccount(account);
+        return ResponseEntity.ok(availableUserRolesToAdd);
     }
 
     @DeleteMapping("/delete")

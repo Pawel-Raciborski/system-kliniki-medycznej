@@ -11,5 +11,5 @@ public record LoginData(
         UUID sessionId,
         String username,
         String email,
-        List<String> roles) {
+        List<Role> roles) {
 }

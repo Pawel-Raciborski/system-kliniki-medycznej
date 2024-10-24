@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.appointment.controllers.dto.AppointmentDto;
 import org.back.systemklinikimedycznej.appointment.controllers.dto.AppointmentInfo;
 import org.back.systemklinikimedycznej.appointment.mappers.AppointmentMapper;
-import org.back.systemklinikimedycznej.appointment.repositories.entities.Appointment;
 import org.back.systemklinikimedycznej.appointment.services.AppointmentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,7 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
     @PostMapping("/schedule-appointment")
     public ResponseEntity<AppointmentInfo> create(@RequestBody AppointmentDto appointmentDto){
-        AppointmentInfo scheduledAppointment = AppointmentMapper.APPOINTMENT_MAPPER.mapToAppointmentInfo(appointmentService.createScheduledAppointmentForRegisteredUser(appointmentDto));
+        AppointmentInfo scheduledAppointment = AppointmentMapper.APPOINTMENT_MAPPER.mapToAppointmentInfo(appointmentService.createScheduledAppointment(appointmentDto));
         return ResponseEntity.status(HttpStatus.CREATED).body(scheduledAppointment);
     }
 

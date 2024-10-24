@@ -24,7 +24,7 @@ public class AppointmentService {
     private final DoctorService doctorService;
 
     @Transactional
-    public Appointment createScheduledAppointmentForRegisteredUser(AppointmentDto appointmentDto) {
+    public Appointment createScheduledAppointment(AppointmentDto appointmentDto) {
         PatientCard patientCard = patientCardService.findPatientCardWithPesel(appointmentDto.patientPesel());
         Doctor doctor= doctorService.findByPwzNumber(appointmentDto.selectedDoctorPwzNumber());
 
