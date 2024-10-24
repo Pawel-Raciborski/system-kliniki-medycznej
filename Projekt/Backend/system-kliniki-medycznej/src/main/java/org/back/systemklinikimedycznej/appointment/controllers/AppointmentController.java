@@ -22,5 +22,4 @@ public class AppointmentController {
         AppointmentInfo scheduledAppointment = AppointmentMapper.APPOINTMENT_MAPPER.mapToAppointmentInfo(appointmentService.createScheduledAppointment(appointmentDto));
         return ResponseEntity.status(HttpStatus.CREATED).body(scheduledAppointment);
     }
-
 }

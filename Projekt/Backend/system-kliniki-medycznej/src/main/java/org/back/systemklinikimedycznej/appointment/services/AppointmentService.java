@@ -8,6 +8,7 @@ import org.back.systemklinikimedycznej.appointment.repositories.entities.Appoint
 import org.back.systemklinikimedycznej.appointment.util.AppointmentManagerUtil;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.doctor.services.DoctorService;
+import org.back.systemklinikimedycznej.patient.repositories.entities.Patient;
 import org.back.systemklinikimedycznej.patient.repositories.entities.patient_card.PatientCard;
 import org.back.systemklinikimedycznej.patient.services.PatientCardService;
 import org.springframework.stereotype.Service;

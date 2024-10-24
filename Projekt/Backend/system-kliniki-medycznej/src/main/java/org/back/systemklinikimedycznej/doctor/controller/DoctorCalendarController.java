@@ -1,8 +1,8 @@
 package org.back.systemklinikimedycznej.doctor.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.back.systemklinikimedycznej.config.util.DateFormatter;
 import org.back.systemklinikimedycznej.doctor.controller.dto.CalendarAppointments;
-import org.back.systemklinikimedycznej.doctor.controller.dto.TodayCalendarAppointments;
 import org.back.systemklinikimedycznej.doctor.enums.CalendarFormatType;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.doctor.services.DoctorCalendarService;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequestMapping("/doctors/calendar")
@@ -24,8 +23,8 @@ public class DoctorCalendarController {
     private final DoctorCalendarService doctorCalendarService;
     private final DoctorService doctorService;
     @GetMapping("/appointments")
-    public ResponseEntity<CalendarAppointments> getTodayAppointments(
-            @RequestParam(name = "date") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date,
+    public ResponseEntity<CalendarAppointments> getAppointments(
+            @RequestParam(name = "date") @DateTimeFormat(pattern = DateFormatter.DATE_FORMAT) LocalDate date,
             @RequestParam(name = "pwzNumber") String doctorPwzNumber,
             @RequestParam(name = "formatType", defaultValue = "week") String calendarFormatType
             ){
