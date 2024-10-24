@@ -2,16 +2,20 @@ package org.back.systemklinikimedycznej.doctor.controller;
 
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
+import org.back.systemklinikimedycznej.config.util.DateFormatter;
+import org.back.systemklinikimedycznej.doctor.controller.dto.AvailableOfficeHours;
 import org.back.systemklinikimedycznej.doctor.controller.dto.OfficeHoursDto;
 import org.back.systemklinikimedycznej.doctor.mapper.OfficeHoursMapper;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.doctor.services.DoctorOfficeHoursService;
 import org.back.systemklinikimedycznej.doctor.services.DoctorService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/doctor/office-hours")
@@ -64,5 +68,16 @@ public class DoctorOfficeHoursController {
         doctorOfficeHoursService.delete(doctorForRemoveOfficeHours, DayOfWeek.valueOf(day));
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/available-working-hours")
+    public ResponseEntity<AvailableOfficeHours> getDoctorAvailableHours(
+            @RequestParam(name="pwzNumber") String doctorPwzNumber,
+            @RequestParam(name="date") @DateTimeFormat(pattern=DateFormatter.DATE_FORMAT) LocalDate appointmentDate
+            ){
+        Doctor doctor = doctorService.findByPwzNumber(doctorPwzNumber);
+        AvailableOfficeHours availableOfficeHours = doctorOfficeHoursService.findAvailableHoursInGivenDayForDoctor(doctor, appointmentDate);
+
+        return ResponseEntity.ok(availableOfficeHours);
     }
 }

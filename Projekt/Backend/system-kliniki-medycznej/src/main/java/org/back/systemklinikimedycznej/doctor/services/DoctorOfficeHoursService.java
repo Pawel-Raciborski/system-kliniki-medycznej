@@ -1,6 +1,8 @@
 package org.back.systemklinikimedycznej.doctor.services;
 
 import lombok.RequiredArgsConstructor;
+import org.back.systemklinikimedycznej.appointment.services.AppointmentService;
+import org.back.systemklinikimedycznej.doctor.controller.dto.AvailableOfficeHours;
 import org.back.systemklinikimedycznej.doctor.controller.dto.OfficeHoursDto;
 import org.back.systemklinikimedycznej.doctor.exceptions.DoctorOfficeHoursException;
 import org.back.systemklinikimedycznej.doctor.repositories.DoctorOfficeHoursRepository;
@@ -13,12 +15,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class DoctorOfficeHoursService {
     private final DoctorOfficeHoursRepository doctorOfficeHoursRepository;
     private final OfficeHoursValidator officeHoursValidator;
+    private final AppointmentService appointmentService;
 
     @Transactional
     public DoctorOfficeHours add(Doctor doctorToAddOfficeHours, OfficeHoursDto officeHoursDto) {
@@ -49,5 +55,21 @@ public class DoctorOfficeHoursService {
                 .orElseThrow(
                         () -> new DoctorOfficeHoursException("Nie znaleziono dnia [%s] dla podanego doktora".formatted(day),HttpStatus.NOT_FOUND)
                 );
+    }
+
+    @Transactional
+    public AvailableOfficeHours findAvailableHoursInGivenDayForDoctor(Doctor doctor, LocalDate date) {
+        DoctorOfficeHours officeHoursForDoctorForDay = findOfficeHoursForDoctorForDay(doctor, date.getDayOfWeek());
+
+        var result = appointmentService.findBookedAppointmentHoursForADoctorInGivenDay(doctor,date);
+
+        List<String> appointmentOfficeHours = OfficeHoursManagerUtil.buildListOfAppointmentOfficeHours(officeHoursForDoctorForDay)
+                .stream().filter(localTime -> !result.contains(localTime))
+                .map(LocalTime::toString)
+                .toList();
+
+        return AvailableOfficeHours.builder()
+                .officeHours(appointmentOfficeHours)
+                .build();
     }
 }

@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,9 +17,11 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
     @Query("""
     select ap FROM Appointment as ap
     JOIN ap.doctor as d
-    WHERE d.pwzNumber = :pwzNumber AND DATE(ap.appointmentDateTime) BETWEEN :startDate AND :endDate
+    WHERE d.pwzNumber = :pwzNumber
+    AND ap.status IN (org.back.systemklinikimedycznej.appointment.domain.AppointmentStatus.SCHEDULED,org.back.systemklinikimedycznej.appointment.domain.AppointmentStatus.CONFIRMED)
+    AND DATE(ap.appointmentDateTime) BETWEEN :startDate AND :endDate
     """)
-    List<Appointment> findAllBetweenDates(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,@Param("pwzNumber") String pwzNumber);
+    List<Appointment> findAllBetweenDatesForADoctor(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, @Param("pwzNumber") String pwzNumber);
 
     @Query(
     """
@@ -31,4 +35,13 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
     """
     )
     Optional<Appointment> findNextAppointmentForPatient(String pesel, LocalDate currentDate);
+
+    @Query(value = """
+    SELECT DISTINCT app.appointmentDateTime FROM Appointment as app
+    JOIN app.doctor d
+    WHERE d.pwzNumber = :pwzNumber
+    AND DATE(app.appointmentDateTime) = :date
+    AND app.status NOT IN (org.back.systemklinikimedycznej.appointment.domain.AppointmentStatus.CANCELLED)
+    """)
+    List<LocalDateTime> findBookedAppointmentHoursForADoctorInGivenDay(@Param("pwzNumber") String pwzNumber,@Param("date") LocalDate date);
 }

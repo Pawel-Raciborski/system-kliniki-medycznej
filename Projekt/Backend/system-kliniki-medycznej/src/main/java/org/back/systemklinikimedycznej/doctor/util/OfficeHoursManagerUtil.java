@@ -5,7 +5,11 @@ import org.back.systemklinikimedycznej.doctor.controller.dto.OfficeHoursDto;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.DoctorOfficeHours;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.stream.Stream;
 
 @UtilityClass
 public class OfficeHoursManagerUtil {
@@ -27,5 +31,13 @@ public class OfficeHoursManagerUtil {
                 .modifiedDate(LocalDate.now())
                 .durationInMinutes(officeHoursDto.durationInMinutes())
                 .build();
+    }
+
+    public static List<LocalTime> buildListOfAppointmentOfficeHours(DoctorOfficeHours officeHoursForDoctorForDay) {
+        return Stream.iterate(
+                officeHoursForDoctorForDay.getStartHour(),
+                localTime -> !localTime.isAfter(officeHoursForDoctorForDay.getEndHour()),
+                localTime -> localTime.plusMinutes(officeHoursForDoctorForDay.getDurationInMinutes())
+        ).toList();
     }
 }
