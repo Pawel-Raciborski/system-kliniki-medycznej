@@ -25,10 +25,10 @@ public class AccountController {
 
     @PutMapping("/update-account-details")
     public ResponseEntity<AccountInfo> updateAccountDetails(
-            @RequestParam(name = "email") String email,
+            @RequestParam(name = "username") String username,
             @RequestBody AccountInfo newAccountData
     ){
-        Account accountToUpdate = accountService.findByEmail(email);
+        Account accountToUpdate = accountService.findByUsername(username);
         AccountInfo updatedAccountData = AccountMapper.INSTANCE.mapFromAccountToAccountInfo(accountService.updateAccountDetails(accountToUpdate,newAccountData));
 
         return ResponseEntity.ok(updatedAccountData);
