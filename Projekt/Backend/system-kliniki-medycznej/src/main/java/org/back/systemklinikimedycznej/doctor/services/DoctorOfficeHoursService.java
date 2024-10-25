@@ -61,15 +61,9 @@ public class DoctorOfficeHoursService {
     public AvailableOfficeHours findAvailableHoursInGivenDayForDoctor(Doctor doctor, LocalDate date) {
         DoctorOfficeHours officeHoursForDoctorForDay = findOfficeHoursForDoctorForDay(doctor, date.getDayOfWeek());
 
-        var result = appointmentService.findBookedAppointmentHoursForADoctorInGivenDay(doctor,date);
+        var bookedOfficeHours = appointmentService.findBookedAppointmentHoursForADoctorInGivenDay(doctor,date);
 
-        List<String> appointmentOfficeHours = OfficeHoursManagerUtil.buildListOfAppointmentOfficeHours(officeHoursForDoctorForDay)
-                .stream().filter(localTime -> !result.contains(localTime))
-                .map(LocalTime::toString)
-                .toList();
-
-        return AvailableOfficeHours.builder()
-                .officeHours(appointmentOfficeHours)
-                .build();
+        List<LocalTime> appointmentOfficeHours = OfficeHoursManagerUtil.buildListOfAvailableAppointmentOfficeHours(officeHoursForDoctorForDay,bookedOfficeHours);
+        return OfficeHoursManagerUtil.buildAvailableHours(appointmentOfficeHours);
     }
 }

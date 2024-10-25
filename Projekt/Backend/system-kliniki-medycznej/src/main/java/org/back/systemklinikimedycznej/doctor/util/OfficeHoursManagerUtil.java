@@ -1,11 +1,11 @@
 package org.back.systemklinikimedycznej.doctor.util;
 
 import lombok.experimental.UtilityClass;
+import org.back.systemklinikimedycznej.doctor.controller.dto.AvailableOfficeHours;
 import org.back.systemklinikimedycznej.doctor.controller.dto.OfficeHoursDto;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.DoctorOfficeHours;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -33,11 +33,17 @@ public class OfficeHoursManagerUtil {
                 .build();
     }
 
-    public static List<LocalTime> buildListOfAppointmentOfficeHours(DoctorOfficeHours officeHoursForDoctorForDay) {
+    public static List<LocalTime> buildListOfAvailableAppointmentOfficeHours(DoctorOfficeHours officeHoursForDoctorForDay, List<LocalTime> bookedOfficeHours) {
         return Stream.iterate(
                 officeHoursForDoctorForDay.getStartHour(),
                 localTime -> !localTime.isAfter(officeHoursForDoctorForDay.getEndHour()),
                 localTime -> localTime.plusMinutes(officeHoursForDoctorForDay.getDurationInMinutes())
-        ).toList();
+        ).filter(localTime -> !bookedOfficeHours.contains(localTime)).toList();
+    }
+
+    public static AvailableOfficeHours buildAvailableHours(List<LocalTime> appointmentOfficeHours) {
+        return AvailableOfficeHours.builder()
+                .officeHours(appointmentOfficeHours)
+                .build();
     }
 }
