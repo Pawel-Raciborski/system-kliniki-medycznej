@@ -1,5 +1,6 @@
 package org.back.systemklinikimedycznej.receptionist.mapper;
 
+import org.back.systemklinikimedycznej.receptionist.controller.dto.ReceptionistDetails;
 import org.back.systemklinikimedycznej.receptionist.controller.dto.ReceptionistDto;
 import org.back.systemklinikimedycznej.receptionist.repositories.entities.Receptionist;
 import org.mapstruct.Mapper;
@@ -22,4 +23,11 @@ public interface ReceptionistMapper {
             @Mapping(target = "city", source = "personalDetails.address.city.name"),
     })
     ReceptionistDto mapFromEntity(Receptionist receptionist);
+
+    @Mappings({
+            @Mapping(target = "username", source = "account.username"),
+            @Mapping(target = "email", source = "account.email"),
+            @Mapping(target = "personalDetails.address.city", source = "personalDetails.address.city.name"),
+    })
+    ReceptionistDetails mapFromEntityToReceptionistDetails(Receptionist receptionist);
 }

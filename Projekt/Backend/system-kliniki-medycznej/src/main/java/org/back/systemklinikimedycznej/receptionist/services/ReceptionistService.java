@@ -5,6 +5,7 @@ import org.back.systemklinikimedycznej.account.repositories.entities.Account;
 import org.back.systemklinikimedycznej.account.services.AccountService;
 import org.back.systemklinikimedycznej.personal_details.repositories.entities.PersonalDetails;
 import org.back.systemklinikimedycznej.personal_details.services.PersonalDetailsService;
+import org.back.systemklinikimedycznej.receptionist.controller.dto.ReceptionistDetails;
 import org.back.systemklinikimedycznej.receptionist.controller.dto.RegisterReceptionistForm;
 import org.back.systemklinikimedycznej.receptionist.exceptions.ReceptionistNotFoundException;
 import org.back.systemklinikimedycznej.receptionist.repositories.ReceptionistRepository;
@@ -23,12 +24,13 @@ public class ReceptionistService {
     private final PersonalDetailsService personalDetailsService;
     private final ReceptionistRepository receptionistRepository;
     private final AccountRoleService accountRoleService;
+
     @Transactional
     public Receptionist register(RegisterReceptionistForm registerReceptionistForm) {
         Account createdReceptionistAccount = accountService.create(registerReceptionistForm.registerAccountData());
         PersonalDetails personalDetails = personalDetailsService.create(registerReceptionistForm.personalDetails());
 
-        Receptionist receptionistToAdd = ReceptionistManagementUtil.buildReceptionist(createdReceptionistAccount, personalDetails,registerReceptionistForm.dateOfEmployment());
+        Receptionist receptionistToAdd = ReceptionistManagementUtil.buildReceptionist(createdReceptionistAccount, personalDetails, registerReceptionistForm.dateOfEmployment());
 
         accountRoleService.processAccountRoleCreation(createdReceptionistAccount, BasicAppRoles.RECEPTIONIST.name());
         return receptionistRepository.save(receptionistToAdd);
@@ -45,5 +47,10 @@ public class ReceptionistService {
     private Receptionist findByEmail(String email) {
         return receptionistRepository.findByAccount_Email(email)
                 .orElseThrow(() -> new ReceptionistNotFoundException("Nie znaleziono recepcjonisty z podanym emailem!", HttpStatus.NOT_FOUND));
+    }
+
+    public Receptionist findById(Long receptionistId) {
+        return receptionistRepository.findById(receptionistId).orElseThrow(
+                () -> new ReceptionistNotFoundException(("Nie znaleziono recepcjonisty z podanym id"), HttpStatus.NOT_FOUND));
     }
 }

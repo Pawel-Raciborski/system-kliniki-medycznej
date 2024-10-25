@@ -1,6 +1,7 @@
 package org.back.systemklinikimedycznej.receptionist.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.back.systemklinikimedycznej.receptionist.controller.dto.ReceptionistDetails;
 import org.back.systemklinikimedycznej.receptionist.controller.dto.ReceptionistDto;
 import org.back.systemklinikimedycznej.receptionist.controller.dto.RegisterReceptionistForm;
 import org.back.systemklinikimedycznej.receptionist.mapper.ReceptionistMapper;
@@ -15,18 +16,28 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ReceptionistController {
     private final ReceptionistService receptionistService;
+
     @PostMapping("/create")
     public ResponseEntity<ReceptionistDto> create(
             @RequestBody RegisterReceptionistForm registerReceptionistForm
-            ){
+    ) {
         ReceptionistDto createdReceptionist = ReceptionistMapper.INSTANCE.mapFromEntity(receptionistService.register(registerReceptionistForm));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdReceptionist);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ReceptionistDetails> getReceptionist(@PathVariable("id") Long receptionistId) {
+        ReceptionistDetails receptionistDetails = ReceptionistMapper.INSTANCE.mapFromEntityToReceptionistDetails(
+                receptionistService.findById(receptionistId)
+        );
+
+        return ResponseEntity.ok(receptionistDetails);
+    }
+
     @DeleteMapping("/delete")
     public ResponseEntity<Void> delete(
-            @RequestParam(name="email") String email
-    ){
+            @RequestParam(name = "email") String email
+    ) {
         receptionistService.delete(email);
 
         return ResponseEntity.ok().build();
