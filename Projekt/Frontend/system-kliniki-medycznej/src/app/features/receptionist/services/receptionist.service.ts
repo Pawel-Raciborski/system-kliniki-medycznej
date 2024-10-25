@@ -3,6 +3,7 @@ import {Observable, of} from 'rxjs';
 import {ReceptionistInfo} from '../model/receptionist-info';
 import {RegisterReceptionistForm} from '../model/register-receptionist-form';
 import {ReceptionistDto} from '../model/receptionist-dto';
+import {ReceptionistDetails} from '../model/receptionist-details';
 
 @Injectable({
   providedIn: 'root'
@@ -68,5 +69,30 @@ export class ReceptionistService {
       phoneNumber: registerReceptionistForm.personalDetails.phoneNumber
     };
     return of(receptionistInfo);
+  }
+
+  findById(id: number) {
+    console.log(`id: ${id}`);
+    let receptionistDetails: ReceptionistDetails = {
+      username: "jan_kowalski",
+      email: "jan.kowalski@mail.com",
+      personalDetails: {
+        pesel: "93817263611",
+        name: "Jan",
+        surname: "Kowalski",
+        birthDate: "10-05-1993",
+        gender: null,
+        phoneNumber: "+48 726 361 631",
+        address: {
+          street: "Mickiewicza 6",
+          apartmentNumber: "6/12",
+          postalCode: "10-100",
+          city: "Warszawa"
+        }
+      },
+      dateOfEmployment: '02-10-2024'
+    }
+
+    return of(receptionistDetails);
   }
 }

@@ -6,6 +6,7 @@ import {
   AddReceptionistDialogComponent
 } from '../../../../receptionist/dialogs/add-receptionist-dialog/add-receptionist-dialog.component';
 import {RegisterReceptionistForm} from '../../../../receptionist/model/register-receptionist-form';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-receptionist-list',
@@ -19,7 +20,8 @@ export class ReceptionistListComponent implements OnInit {
 
   constructor(
     private receptionistService: ReceptionistService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) {
   }
 
@@ -34,12 +36,13 @@ export class ReceptionistListComponent implements OnInit {
     this.dialog.open(AddReceptionistDialogComponent, {
       width: '700px',
     }).afterClosed().subscribe((receptionistToRegister: RegisterReceptionistForm) => {
-      console.log(receptionistToRegister);
-      this.receptionistService.register(receptionistToRegister).subscribe(registeredReceptionist => {
-        console.log(registeredReceptionist);
-        this.receptionists.push(registeredReceptionist);
-        console.log(this.receptionists);
-      });
+      if(receptionistToRegister){
+        this.receptionistService.register(receptionistToRegister).subscribe(registeredReceptionist => {
+          console.log(registeredReceptionist);
+          this.receptionists.push(registeredReceptionist);
+          console.log(this.receptionists);
+        });
+      }
     });
   }
 
@@ -48,6 +51,6 @@ export class ReceptionistListComponent implements OnInit {
   }
 
   showReceptionistDetails(receptionist: ReceptionistInfo) {
-
+    this.router.navigate(["admin/receptionists", receptionist.id]);
   }
 }

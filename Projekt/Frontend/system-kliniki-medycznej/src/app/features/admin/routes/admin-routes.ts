@@ -7,6 +7,9 @@ import {DoctorDetailsComponent} from '../components/doctor-info/doctor-details/d
 import {
   ReceptionistManagementPageComponent
 } from '../components/receptionist/receptionist-management-page/receptionist-management-page.component';
+import {
+  ReceptionistProfileComponent
+} from '../../receptionist/components/receptionist-profile/receptionist-profile.component';
 
 export const adminRoutes: Routes = [
   {
@@ -25,5 +28,9 @@ export const adminRoutes: Routes = [
   {
     path:'receptionists',
     component: ReceptionistManagementPageComponent
+  },
+  {
+    path: 'receptionists/:id',
+    component: ReceptionistProfileComponent,
   }
 ];

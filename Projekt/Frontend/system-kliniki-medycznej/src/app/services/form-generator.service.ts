@@ -1,5 +1,8 @@
-import { Injectable } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {Injectable} from '@angular/core';
+import {FormBuilder, FormControl} from '@angular/forms';
+import {PersonalDetails} from '../features/personal-details/domain/personal-details';
+import {AccountInfo} from '../features/account/model/account-info';
+import formatDate from '../config/constants/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -48,5 +51,53 @@ export class FormGeneratorService {
 
   private getCurrentDate() {
     return new Date().toLocaleDateString().replaceAll(".","-");
+  }
+
+  patchValues(personalDetails: PersonalDetails) {
+    let formGroup = this.createPersonalDetailsForm();
+
+    formGroup.patchValue({
+      pesel: personalDetails.pesel,
+      name: personalDetails.name,
+      surname: personalDetails.surname,
+      phoneNumber: personalDetails.phoneNumber,
+      birthDate:  formatDate(personalDetails.birthDate),
+      gender: personalDetails.gender,
+      address: personalDetails.address,
+    })
+
+    return formGroup;
+  }
+
+  patchAccountValues(account: AccountInfo) {
+    let accountForm = this.createAccountFormWithPasswordChange();
+
+    accountForm.patchValue({
+      accountForm: {...account}
+    });
+
+    return accountForm;
+  }
+
+  createAccountForm(){
+    return this.formBuilder.group({
+      username: new FormControl(''),
+      email: new FormControl('')
+    })
+  }
+
+  createPasswordChangeForm(){
+    return this.formBuilder.group({
+      currentPassword: new FormControl(''),
+      newPassword: new FormControl(''),
+      confirmNewPassword: new FormControl(''),
+    })
+  }
+
+  private createAccountFormWithPasswordChange() {
+    return this.formBuilder.group({
+      accountForm: this.createAccountForm(),
+      changePasswordForm: this.createPasswordChangeForm()
+    });
   }
 }

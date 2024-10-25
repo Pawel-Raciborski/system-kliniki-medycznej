@@ -1,0 +1,54 @@
+<form [formGroup]="accountForm">
+  <div class="row">
+    <!--          TODO account start-->
+    <div class="col-md-6" formGroupName="accountForm">
+      <h5 class="text-black-50">Dane logowania</h5>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label " for="username">Nazwa użytkownika</label>
+            <input class="form-control" type="text" id="username" formControlName="username">
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label " for="email">Adres email</label>
+            <input class="form-control" type="text" id="email" formControlName="email">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 text-end">
+        <button (click)="updateAccountData()" class="btn btn-success">Zapisz</button>
+      </div>
+      <!--          TODO account end-->
+    </div>
+    <div class="col-md-6" formGroupName="changePasswordForm">
+      <h5 class="text-black-50">Zmiana hasła</h5>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label " for="current-password">Stare hasło</label>
+            <input class="form-control" type="password" id="current-password" autocomplete="current-password"
+                   formControlName="currentPassword">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label " for="new-password">Nowe hasło</label>
+            <input class="form-control" type="password" id="new-password" name="new-password"
+                   autocomplete="new-password" formControlName="newPassword">
+          </div>
+          <div class="mb-3">
+            <label class="form-label " for="confirm-password">Powtórz hasło</label>
+            <input class="form-control" type="password" id="confirm-password" name="confirm-password"
+                   autocomplete="new-password" formControlName="confirmNewPassword">
+          </div>
+        </div>
+        <div class="col-md-12 text-end">
+          <button (click)="changePassword()" class="btn btn-success">Zapisz</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

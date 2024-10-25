@@ -17,7 +17,7 @@
       </thead>
       <tbody>
         @for (receptionist of getReceptionists; track receptionist.id) {
-          <tr (click)="showReceptionistDetails(receptionist)">
+          <tr class="cursor-pointer" (click)="showReceptionistDetails(receptionist)">
             <td>{{ receptionist.id }}</td>
             <td>{{ receptionist.name }}</td>
             <td>{{ receptionist.surname }}</td>

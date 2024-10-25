@@ -19,7 +19,7 @@
       </thead>
       <tbody>
         @for (doctor of doctors; track doctor.id) {
-          <tr (click)="showDoctorDetails(doctor)">
+          <tr class="cursor-pointer" (click)="showDoctorDetails(doctor)">
             <td>{{ doctor.id }}</td>
             <td>{{ doctor.name }}</td>
             <td>{{ doctor.surname }}</td>

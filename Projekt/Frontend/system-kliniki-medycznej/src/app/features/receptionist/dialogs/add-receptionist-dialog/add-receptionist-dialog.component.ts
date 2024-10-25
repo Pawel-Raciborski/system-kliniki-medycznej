@@ -37,4 +37,8 @@ export class AddReceptionistDialogComponent {
     {...this.registerReceptionistForm.value}
     );
   }
+
+  onCancel() {
+    this.dialogRef.close();
+  }
 }
