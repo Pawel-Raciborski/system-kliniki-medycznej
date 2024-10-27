@@ -10,6 +10,8 @@ import {
 import {
   ReceptionistProfileComponent
 } from '../../receptionist/components/receptionist-profile/receptionist-profile.component';
+import {PatientsManagementComponent} from '../../patient/components/patients-management/patients-management.component';
+import {PatientProfileComponent} from '../../patient/components/patient-profile/patient-profile.component';
 
 export const adminRoutes: Routes = [
   {
@@ -32,5 +34,13 @@ export const adminRoutes: Routes = [
   {
     path: 'receptionists/:id',
     component: ReceptionistProfileComponent,
+  },
+  {
+    path:'patients',
+    component: PatientsManagementComponent
+  },
+  {
+    path: 'patients/:id',
+    component: PatientProfileComponent
   }
 ];

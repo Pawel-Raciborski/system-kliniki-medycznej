@@ -21,7 +21,7 @@ import {DoctorSpecializationService} from '../../../../doctor-specialization/ser
 import {
   CreateDoctorSpecializationComponent
 } from '../../doctor-management/create-doctor-specialization/create-doctor-specialization.component';
-import {UserRolesComponent} from '../../roles/user-roles/user-roles.component';
+import {AccountRolesComponent} from '../../../../account-role/components/account-roles/account-roles.component';
 
 @Component({
   selector: 'app-doctor-details',
@@ -36,7 +36,7 @@ import {UserRolesComponent} from '../../roles/user-roles/user-roles.component';
     MatMenuTrigger,
     MatMenu,
     MatMenuItem,
-    UserRolesComponent
+    AccountRolesComponent
   ],
   templateUrl: './doctor-details.component.html',
   styleUrl: './doctor-details.component.css'

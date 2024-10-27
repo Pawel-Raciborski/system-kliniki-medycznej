@@ -28,6 +28,7 @@ export class AccountComponent implements OnInit {
 
   ngOnInit(): void {
     this.accountSignal = signal(this.account);
+    console.log(this.accountSignal());
     this.accountForm = this.formGeneratorService.patchAccountValues(this.account);
   }
 

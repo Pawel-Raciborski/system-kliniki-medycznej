@@ -1,0 +1,26 @@
+<div class="row mt-5">
+  <h3>Lista pacjentów</h3>
+
+  <section>
+    <table class="table table-hover mt-4">
+      <thead>
+      <th>Id</th>
+      <th>Imię</th>
+      <th>Nazwisko</th>
+      <th>Numer telefonu</th>
+      </thead>
+      <tbody>
+        @for (patient of patients; track patient.id) {
+          <tr class="cursor-pointer" (click)="showPatientDetails(patient)">
+            <td>{{ patient.id }}</td>
+            <td>{{ patient.personalDetails.name }}</td>
+            <td>{{ patient.personalDetails.surname }}</td>
+            <td>{{ patient.personalDetails.phoneNumber }}</td>
+          </tr>
+
+        }
+      </tbody>
+    </table>
+  </section>
+</div>
+

@@ -7,7 +7,7 @@ import {MatRadioButton, MatRadioGroup} from '@angular/material/radio';
 import {MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 import {
   AddRoleToUserDialogComponent
-} from '../../../admin/components/roles/dialogs/add-role-to-user-dialog/add-role-to-user-dialog.component';
+} from '../../../account-role/dialogs/add-role-to-user-dialog/add-role-to-user-dialog.component';
 
 @Component({
   selector: 'app-add-receptionist-dialog',

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {FormBuilder, FormControl} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {PersonalDetails} from '../features/personal-details/domain/personal-details';
 import {AccountInfo} from '../features/account/model/account-info';
 import formatDate from '../config/constants/utils';
@@ -53,9 +53,7 @@ export class FormGeneratorService {
     return new Date().toLocaleDateString().replaceAll(".","-");
   }
 
-  patchValues(personalDetails: PersonalDetails) {
-    let formGroup = this.createPersonalDetailsForm();
-
+  patchPersonalDetails(formGroup:FormGroup, personalDetails: PersonalDetails) {
     formGroup.patchValue({
       pesel: personalDetails.pesel,
       name: personalDetails.name,
@@ -64,9 +62,7 @@ export class FormGeneratorService {
       birthDate:  formatDate(personalDetails.birthDate),
       gender: personalDetails.gender,
       address: personalDetails.address,
-    })
-
-    return formGroup;
+    });
   }
 
   patchAccountValues(account: AccountInfo) {

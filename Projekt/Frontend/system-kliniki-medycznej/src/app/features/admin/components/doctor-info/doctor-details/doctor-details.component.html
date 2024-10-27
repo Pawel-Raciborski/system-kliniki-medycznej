@@ -235,11 +235,16 @@
                         <td>{{ doctorSpecialization.value.description }}</td>
                         <td>{{ doctorSpecialization.value.realizedDate }}</td>
                         <td>
-                          <div [matMenuTriggerFor]="specializationMenu" class="col-md-4 rounded-5 office-hours-card text-center">
+                          <div [matMenuTriggerFor]="specializationMenu"
+                               class="col-md-4 rounded-5 office-hours-card text-center">
                             <i class="bi bi-three-dots-vertical"></i>
                             <mat-menu #specializationMenu="matMenu" class="text-center">
-                              <button mat-menu-item (click)="showDoctorSpecializationDetails(doctorSpecialization)">Edytuj</button>
-                              <button class="text-bg-danger" mat-menu-item (click)="deleteDoctorSpecialization(i)">Usuń</button>
+                              <button mat-menu-item (click)="showDoctorSpecializationDetails(doctorSpecialization)">
+                                Edytuj
+                              </button>
+                              <button class="text-bg-danger" mat-menu-item (click)="deleteDoctorSpecialization(i)">
+                                Usuń
+                              </button>
                             </mat-menu>
                           </div>
                         </td>
@@ -253,9 +258,9 @@
         </div>
       </div>
     </form>
-    @if(userService.hasRole('ADMIN')){
+    @if (userService.hasRole('ADMIN')) {
       <div class="col-md-12 mt-3">
-        <app-user-roles></app-user-roles>
+        <app-account-roles [username]="doctorDetailsForm.controls['username'].value"/>
       </div>
     }
   </div>

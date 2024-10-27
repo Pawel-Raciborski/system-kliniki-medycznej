@@ -7,6 +7,8 @@ import {ReceptionistDetails} from '../../model/receptionist-details';
 import {ReceptionistService} from '../../services/receptionist.service';
 import {AccountComponent} from '../../../account/components/account/account.component';
 import {AccountInfo} from '../../../account/model/account-info';
+import {PersonalDetails} from '../../../personal-details/domain/personal-details';
+import {AccountRolesComponent} from '../../../account-role/components/account-roles/account-roles.component';
 
 @Component({
   selector: 'app-receptionist-profile',
@@ -14,7 +16,8 @@ import {AccountInfo} from '../../../account/model/account-info';
   imports: [
     HeaderTitleComponent,
     PersonalDetailsComponent,
-    AccountComponent
+    AccountComponent,
+    AccountRolesComponent
   ],
   templateUrl: './receptionist-profile.component.html',
   styleUrl: './receptionist-profile.component.css'
@@ -39,5 +42,9 @@ export class ReceptionistProfileComponent implements OnInit {
       username: this.receptionist.username,
       email: this.receptionist.email
     };
+  }
+
+  get getPersonalDetails(): PersonalDetails {
+    return this.receptionist.personalDetails;
   }
 }

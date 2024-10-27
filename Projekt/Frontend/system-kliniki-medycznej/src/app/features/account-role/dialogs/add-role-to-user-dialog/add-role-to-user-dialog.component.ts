@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {RoleService} from '../../../../../roles/services/role.service';
-import {HeaderTitleComponent} from '../../../../../header-title/header-title.component';
+import {RoleService} from '../../../roles/services/role.service';
+import {HeaderTitleComponent} from '../../../header-title/header-title.component';
 import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
