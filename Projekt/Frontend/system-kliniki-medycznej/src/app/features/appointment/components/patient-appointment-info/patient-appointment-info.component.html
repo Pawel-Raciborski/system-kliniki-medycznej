@@ -1,0 +1,29 @@
+<div class="card">
+  <div class="card-header bg-dark text-light">
+    <h4>Najbliższa wizyta</h4>
+  </div>
+  <div class="card-body bg-light">
+    <div class="card-title">
+      <h6>Numer wizyty: <span class="text-primary">{{appointmentInfo.id}}</span></h6>
+      <hr/>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card-title">
+          <b>Dane lekarza</b>
+        </div>
+        <p class="card-text fw-bold"><span class="hover" (click)="showAppointmentDoctorDetails()" title="Kliknij aby zobaczyć informacje o lekarzu">{{appointmentInfo.doctorName}} {{appointmentInfo.doctorSurname}}</span></p>
+      </div>
+      <div class="col-md-6">
+        <div class="card-title">
+          <b>Inne</b>
+        </div>
+        <p class="card-text"><b>Data:</b> {{appointmentInfo.appointmentDate | date:'MM MMMM yyyy, HH:mm:ss'}}</p>
+        <p class="card-text"><b>Status:</b> {{appointmentInfo.appointmentStatus.toUpperCase()}}</p>
+      </div>
+      <div class="col-md-12 text-end">
+        <button class="btn btn-primary">Szczegóły</button>
+      </div>
+    </div>
+  </div>
+</div>
