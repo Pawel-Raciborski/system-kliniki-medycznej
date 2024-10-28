@@ -22,4 +22,12 @@ export class UserService {
   get username(): string{
     return this.loggedUser.username;
   }
+
+  get email(): string{
+    return this.loggedUser.email;
+  }
+
+  get id(): number{
+    return 1;
+  }
 }

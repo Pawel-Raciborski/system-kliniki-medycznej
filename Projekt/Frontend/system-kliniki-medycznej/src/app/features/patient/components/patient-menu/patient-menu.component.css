@@ -1,0 +1,7 @@
+ul > li > a {
+  color: whitesmoke;
+}
+
+ul > li > a:hover {
+  color: #c1c1c1;
+}
