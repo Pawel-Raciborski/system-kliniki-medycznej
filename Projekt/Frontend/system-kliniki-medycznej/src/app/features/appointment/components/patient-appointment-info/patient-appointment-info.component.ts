@@ -23,10 +23,9 @@ export class PatientAppointmentInfoComponent {
   }
 
   showAppointmentDoctorDetails() {
-
+    this.dialog.open(DoctorInfoDialogComponent,{
+      data: this.appointmentInfo.id,
+      width: '700px'
+    });
   }
 }
-this.dialog.open(DoctorInfoDialogComponent,{
-  data: this.appointmentInfo.id,
-  width: '700px'
-});
