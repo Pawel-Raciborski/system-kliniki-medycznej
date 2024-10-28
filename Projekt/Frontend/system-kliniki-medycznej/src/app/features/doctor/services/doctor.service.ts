@@ -89,4 +89,17 @@ export class DoctorService {
 
     return of(doctorDetails);
   }
+
+  getAppointmentDoctorDetails(appointmentId: string): Observable<DoctorInfo>{
+    let doctorDetails: DoctorInfo = {
+      id: 1,
+      name: "Jan",
+      surname: "Kowalski",
+      email: "jan.kowalski@mail.com",
+      pwzNumber: '123456',
+      phoneNumber: '555-1234',
+      description: 'Expert in cardiology with 15 years of experience.'
+    };
+    return of(doctorDetails);
+  }
 }
