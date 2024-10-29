@@ -31,4 +31,21 @@ export class DoctorSpecializationService {
   delete(specializationName: string) {
 
   }
+
+  getAllAvailableSpecializationNames() : Observable<string[]>{
+    const doctorSpecializations = [
+      "Cardiologist",
+      "Neurologist",
+      "Pediatrician",
+      "Dermatologist",
+      "Oncologist",
+      "Psychiatrist",
+      "Orthopedic Surgeon",
+      "Gastroenterologist",
+      "Endocrinologist",
+      "Ophthalmologist"
+    ];
+
+    return of(doctorSpecializations);
+  }
 }

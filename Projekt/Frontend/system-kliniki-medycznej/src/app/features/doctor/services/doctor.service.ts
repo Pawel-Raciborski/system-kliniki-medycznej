@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable, Optional} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {DoctorInfo} from '../domain/doctor-info';
 import {DoctorDetails} from '../domain/doctor-details';
+import {DoctorSearchOptions} from '../components/search-bar/model/doctor-search-options';
 
 @Injectable({
   providedIn: 'root'
@@ -101,5 +102,28 @@ export class DoctorService {
       description: 'Expert in cardiology with 15 years of experience.'
     };
     return of(doctorDetails);
+  }
+
+  getDoctorsWithSpecifiedOptions(doctorSearchOptions: DoctorSearchOptions): Observable<DoctorInfo[]> {
+    console.log(doctorSearchOptions);
+
+    return of([{
+        id: 2,
+        name: 'Jane',
+        surname: 'Smith',
+        email: 'jane.smith@example.com',
+        pwzNumber: '432142',
+        phoneNumber: '555-5678',
+        description: 'Specialist in neurology and brain surgery.'
+      },
+      {
+        id: 3,
+        name: 'Emily',
+        surname: 'Johnson',
+        email: 'emily.johnson@example.com',
+        pwzNumber: '531342',
+        phoneNumber: '555-9876',
+        description: 'Experienced pediatrician with a focus on child healthcare.'
+      }]);
   }
 }
