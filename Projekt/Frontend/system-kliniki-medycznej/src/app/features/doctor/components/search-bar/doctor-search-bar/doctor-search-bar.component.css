@@ -1,0 +1,5 @@
+.hover-underline:hover{
+  text-decoration: underline;
+  cursor: pointer;
+  width: max-content;
+}

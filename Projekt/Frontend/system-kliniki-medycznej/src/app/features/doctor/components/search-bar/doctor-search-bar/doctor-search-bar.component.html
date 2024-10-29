@@ -1,0 +1,33 @@
+<nav class="navbar navbar-light border-bottom">
+  <div class="col-md-12">
+    <form [formGroup]="doctorSearchForm">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="row">
+            <input id="searchValue" class="form-control form-text" type="search" placeholder="Wyszukaj lekarza..."
+                   formControlName="searchValue">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <button (click)="search()" class="btn btn-outline-success"><i class="bi bi-search mx-1"></i> Wyszukaj</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-md-12">
+    <div class="mt-3 text-end">
+      <span class="form-text hover-underline" (click)="changeAdvancedStatus()">Wyszukiwanie zaawansowane <i class="mx-1"
+                                                                                                            [class]="{
+        'bi-arrow-down-circle': !showAdvancedSearch,
+        'bi-arrow-up-circle': showAdvancedSearch
+        }"></i></span>
+    </div>
+    @if (showAdvancedSearch) {
+      <app-advanced-search-options
+        (advancedFormEmitter)="addAdvancedSearchToForm($event)"></app-advanced-search-options>
+    }
+  </div>
+  <div class="row">
+
+  </div>
+</nav>

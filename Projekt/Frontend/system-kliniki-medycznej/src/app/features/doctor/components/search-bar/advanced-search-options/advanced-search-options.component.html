@@ -1,0 +1,27 @@
+<div class="row mb-4">
+  <div class="col-md-12">
+    <h6 class="modal-title text-black-50">Wyszukiwanie zaawansowane</h6>
+  </div>
+  <form [formGroup]="advancedSearchForm">
+    <div class="row justify-content-center">
+      <div class="col-md-4">
+        <div class="mt-3">
+          <label class="form-label" for="pwzNumber">Numer PWZ</label>
+          <input class="form-control" id="pwzNumber" type="text" formControlName="pwzNumber">
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="mt-3">
+          <label for="selectedSpecializations" class="form-label">Wybierz specjalizacje lekarza</label>
+          <mat-select id="selectedSpecializations" class="form-select" formControlName="selectedSpecializations"
+                      multiple>
+            @for (specialization of availableSpecializations; track specialization) {
+              <mat-option [value]="specialization">{{ specialization }}</mat-option>
+            }
+          </mat-select>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
