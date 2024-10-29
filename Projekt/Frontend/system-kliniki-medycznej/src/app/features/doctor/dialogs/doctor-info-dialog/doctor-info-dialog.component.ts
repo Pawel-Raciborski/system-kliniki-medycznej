@@ -1,7 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogContent} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 import {DoctorInfo} from '../../domain/doctor-info';
 import {DoctorService} from '../../services/doctor.service';
+import {DoctorSpecializationService} from '../../../doctor-specialization/services/doctor-specialization.service';
 
 @Component({
   selector: 'app-doctor-info-dialog',
@@ -12,20 +13,23 @@ import {DoctorService} from '../../services/doctor.service';
   templateUrl: './doctor-info-dialog.component.html',
   styleUrl: './doctor-info-dialog.component.css'
 })
-export class DoctorInfoDialogComponent implements OnInit{
-  doctorInfo!: DoctorInfo;
-
+export class DoctorInfoDialogComponent implements OnInit {
+  doctorSpecializations: string[] = [];
   constructor(
-    private doctorService: DoctorService,
-    @Inject(MAT_DIALOG_DATA) private appointmentId: string
+    @Inject(MAT_DIALOG_DATA) public doctorInfo: DoctorInfo,
+    private doctorSpecializationService: DoctorSpecializationService,
+    private dialogRef: MatDialogRef<DoctorInfoDialogComponent>
   ) {
   }
 
   ngOnInit(): void {
-    console.log(this.appointmentId);
-    this.doctorService.getAppointmentDoctorDetails(this.appointmentId)
-      .subscribe(data => {
-        this.doctorInfo = data;
-      });
+    this.doctorSpecializationService.getAllAvailableSpecializationNames().subscribe(
+      specializationNames => {
+        this.doctorSpecializations = specializationNames;
+      }
+    )
+  }
+  close() {
+    this.dialogRef.close();
   }
 }

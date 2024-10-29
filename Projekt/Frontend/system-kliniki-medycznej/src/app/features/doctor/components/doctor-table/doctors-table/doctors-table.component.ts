@@ -18,7 +18,8 @@ export class DoctorsTableComponent {
 
   showDoctorDetails(doctor: DoctorInfo) {
     this.dialog.open(DoctorInfoDialogComponent,{
-      data: doctor
+      data: doctor,
+      width: '800px'
     });
   }
 }
