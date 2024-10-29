@@ -1,0 +1,24 @@
+<div class="row justify-content-center mb-3">
+  <div class="col-md-8 align-content-center">
+    <p class="text-black-50 m-0"><b>Znaleziono</b> ({{ foundElements }} elementy)</p>
+  </div>
+  <div class="col-md-4">
+    <div class="row">
+      <div class="col-md-5 align-content-center">
+        <p class="form-text text-black-50 m-0">Strona: {{page+1}}</p>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label" for="page">Rozmiar</label>
+        <select class="form-select-sm d-block" id="page" [formControl]="pageSizeControl" aria-label="Rozmiar">
+          <option [value]="pageSize" selected>{{pageSize}}</option>
+          @for (pS of availablePageSizes; track pS){
+            <option [value]="pS">{{pS}}</option>
+          }
+        </select>
+      </div>
+      <div class="col-md-3 align-content-end">
+        <button class="btn btn-success" (click)="savePageSize()">Zapisz</button>
+      </div>
+    </div>
+  </div>
+</div>

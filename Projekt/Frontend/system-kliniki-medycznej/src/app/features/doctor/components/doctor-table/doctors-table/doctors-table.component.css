@@ -1,0 +1,12 @@
+.pointer{
+  cursor: pointer;
+}
+
+.profile{
+  background-color: rgb(33, 37, 41);
+  color: #fafafa;
+}
+
+.profile:hover{
+  background-color: #32363AFF;
+}
