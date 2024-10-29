@@ -1,0 +1,9 @@
+<div class="row">
+  <app-doctor-search-bar (doctorSearchOptionsEmitter)="searchDoctors($event)"></app-doctor-search-bar>
+  <div class="col-md-12 mt-5">
+    <h1>Dostępni lekarze</h1>
+    @for (doc of doctors; track doc.id){
+      <p>{{doc.name}} {{doc.surname}}</p>
+    }
+  </div>
+</div>
