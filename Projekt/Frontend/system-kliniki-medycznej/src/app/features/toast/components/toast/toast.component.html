@@ -1,0 +1,20 @@
+<div
+  class="toast"
+  role="alert"
+  aria-live="assertive"
+  aria-atomic="true"
+  [class.show]="showToast"
+>
+  <div class="toast-header bg-success text-light">
+    <h6 class="me-auto text-light">{{ notification.title }}</h6>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="toast"
+      aria-label="Close"
+      (click)="hide()"
+    ></button>
+  </div>
+  <div class="toast-body" [innerHTML]="notification.message">
+  </div>
+</div>
