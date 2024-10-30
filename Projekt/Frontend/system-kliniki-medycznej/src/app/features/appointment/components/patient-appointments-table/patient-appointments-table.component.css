@@ -1,0 +1,12 @@
+.max-height-400{
+  max-height: 400px;
+  overflow: auto;
+}
+
+.tbody tr:first-child{
+  background-color: #cf2844;
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}

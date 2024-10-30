@@ -23,6 +23,7 @@ export const routes: Routes = [
   {
     path:'patient-panel',
     component: PatientPanelComponent,
-    children: patientRoutes
+    children: patientRoutes,
+
   }
 ];

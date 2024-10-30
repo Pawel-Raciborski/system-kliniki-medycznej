@@ -1,0 +1,28 @@
+<div class="row mt-4">
+  <div class="max-height-400">
+    <table class="table border table-hover align-middle mb-0 bg-white">
+      <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Dane lekarza</th>
+        <th>Data</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody >
+        @for (appointmentInfo of patientAppointments; track appointmentInfo.id) {
+          <tr class="fw-light cursor-pointer">
+            <td class="text-dark fw-normal ">{{ appointmentInfo.id }}</td>
+            <td class="table-light text-center">{{ appointmentInfo.doctorName }} {{ appointmentInfo.doctorSurname }}</td>
+            <td class="text-center">{{ appointmentInfo.appointmentDate | date:'dd MMM yyyy HH:mm:ss' }}</td>
+            <td class="table-light text-center">{{ appointmentInfo.appointmentStatus }}</td>
+            <td class="text-center">
+              <button class="btn btn-outline-primary">Szczegóły</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
