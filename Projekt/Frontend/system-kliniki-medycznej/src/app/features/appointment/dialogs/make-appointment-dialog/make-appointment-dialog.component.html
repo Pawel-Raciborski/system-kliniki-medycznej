@@ -1,0 +1,58 @@
+<div class="container-fluid">
+  <div class="row mt-2 border-bottom">
+    <div class="col-md-10">
+      <h4 class="text-dark">Tworzenie wizyty</h4>
+    </div>
+    <div class="col-md text-end">
+      <button class="btn-close" (click)="close()"></button>
+    </div>
+  </div>
+  <div class="row mt-3 justify-content-center">
+    <div class="col-md-10">
+      <div class="row border-bottom mb-2">
+        <h5 class="text-black-50">Dane lekarza</h5>
+        <div class="col-md-12">
+          <p class="text-dark mb-0"><b>{{ doctorInfo.name }} {{ doctorInfo.surname }}</b></p>
+          <p class="text-muted mb-0">{{ doctorInfo.email }}</p>
+          <p class="text-muted">{{ doctorInfo.phoneNumber }}</p>
+        </div>
+      </div>
+      <form [formGroup]="appointmentForm">
+        <div class="row mb-2">
+          <div class="col-md-12 mb-3">
+            <mat-form-field class="w-100">
+              <mat-label>Wybierz datę wizyty</mat-label>
+              <input matInput
+                     [matDatepicker]="picker"
+                     [matDatepickerFilter]="dateFilter"
+                     formControlName="date">
+              <mat-hint>dd/mm/rrrr</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker color="warn"></mat-datepicker>
+            </mat-form-field>
+          </div>
+          @if (dateFormField.dirty) {
+            <div class="col-md-12">
+              <mat-form-field class="w-100">
+                <mat-label>Wybierz godzinę wizyty</mat-label>
+                <mat-select formControlName="hour">
+                  @for (officeHour of officeHoursForDay(getDay); track officeHour) {
+                    <mat-option [value]="officeHour">{{ officeHour }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+          }
+        </div>
+        <div class="row mb-2 mt-3 justify-content-end">
+          <div class="col-md-2">
+            <button class="btn btn-danger" (click)="close()">Anuluj</button>
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-outline-success" (click)="makeAppointment()">Umów</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
