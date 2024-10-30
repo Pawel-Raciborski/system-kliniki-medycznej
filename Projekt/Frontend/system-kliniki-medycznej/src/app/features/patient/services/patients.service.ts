@@ -126,4 +126,8 @@ export class PatientsService {
 
     return of(account);
   }
+
+  findPatientPesel(email: string):Observable<string> {
+    return of("12473625161");
+  }
 }

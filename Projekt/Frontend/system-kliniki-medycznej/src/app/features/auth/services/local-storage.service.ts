@@ -35,4 +35,11 @@ export class LocalStorageService {
     }
   }
 
+  public getUsername(): string{
+    return this.getLoggedUserJsonData().username;
+  }
+
+  public getEmail(): string {
+    return this.getLoggedUserJsonData().email;
+  }
 }

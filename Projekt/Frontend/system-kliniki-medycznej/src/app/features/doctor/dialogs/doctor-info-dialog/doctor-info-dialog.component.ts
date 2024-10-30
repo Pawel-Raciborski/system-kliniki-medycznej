@@ -1,8 +1,11 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 import {DoctorInfo} from '../../domain/doctor-info';
 import {DoctorService} from '../../services/doctor.service';
 import {DoctorSpecializationService} from '../../../doctor-specialization/services/doctor-specialization.service';
+import {
+  MakeAppointmentDialogComponent
+} from '../../../appointment/dialogs/make-appointment-dialog/make-appointment-dialog.component';
 
 @Component({
   selector: 'app-doctor-info-dialog',
@@ -18,7 +21,8 @@ export class DoctorInfoDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public doctorInfo: DoctorInfo,
     private doctorSpecializationService: DoctorSpecializationService,
-    private dialogRef: MatDialogRef<DoctorInfoDialogComponent>
+    private dialogRef: MatDialogRef<DoctorInfoDialogComponent>,
+    private dialog: MatDialog
   ) {
   }
 
@@ -31,5 +35,14 @@ export class DoctorInfoDialogComponent implements OnInit {
   }
   close() {
     this.dialogRef.close();
+  }
+
+  openAppointmentDialog() {
+    this.dialog.open(MakeAppointmentDialogComponent, {
+      data: this.doctorInfo,
+      width: '700px'
+    }).afterClosed().subscribe(notification => {
+      this.dialogRef.close(notification);
+    });
   }
 }

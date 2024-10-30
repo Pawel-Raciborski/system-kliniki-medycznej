@@ -28,4 +28,23 @@ export class OfficeHoursService {
   create(officeHoursToCreate: OfficeHours) : Observable<OfficeHours> {
     return of(officeHoursToCreate);
   }
+
+
+  findDoctorWorkingDays(pwzNumber: string) : Observable<{day:number, hours: string[]}[]>{
+    let workingDaysWithHours = [
+      {
+        day: 1,
+        hours: ["09:00","09:30","11:30","13:30","16:00"]
+      },
+      {
+        day: 2,
+        hours: ["10:00","11:30","12:00","13:30","16:00"]
+      },
+      {
+        day: 3,
+        hours: ["13:30","14:00","15:30","16:00"]
+      }
+    ]
+    return of(workingDaysWithHours);
+  }
 }

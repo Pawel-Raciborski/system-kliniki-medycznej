@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {PatientAppointmentInfo} from '../model/patient-appointment-info';
 
@@ -7,7 +7,8 @@ import {PatientAppointmentInfo} from '../model/patient-appointment-info';
 })
 export class AppointmentService {
 
-  constructor() { }
+  constructor() {
+  }
 
   findPatientNextAppointment(email: string): Observable<PatientAppointmentInfo> {
     let patientAppointmentInfo: PatientAppointmentInfo = {
@@ -19,5 +20,9 @@ export class AppointmentService {
     };
 
     return of(patientAppointmentInfo);
+  }
+
+  createAppointment(appointmentDateTime: { patientPesel: string, date: string, hour: string, doctorPwzNumber: string }) {
+    console.log(appointmentDateTime);
   }
 }
