@@ -1,0 +1,12 @@
+<ul class="pagination justify-content-center mt-3">
+  <li class="page-item">
+    <button [class]="{
+    'disabled': page===0
+    }" class="page-link" (click)="decreaseValue()">Poprzednia</button>
+  </li>
+  <li [class]="{
+  'disabled': disableNext
+  }" class="page-item">
+    <button class="page-link" (click)="increaseValue()">Następna</button>
+  </li>
+</ul>
