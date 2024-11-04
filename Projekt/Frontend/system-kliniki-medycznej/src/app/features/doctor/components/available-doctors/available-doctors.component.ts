@@ -8,6 +8,7 @@ import {DoctorsTableComponent} from '../doctor-table/doctors-table/doctors-table
 import {ToastComponent} from '../../../toast/components/toast/toast.component';
 import {ToastListComponent} from '../../../toast/components/toast-list/toast-list.component';
 import {DatePipe} from '@angular/common';
+import {PaginationBarComponent} from '../../../pagination/components/pagination-bar/pagination-bar.component';
 
 @Component({
   selector: 'app-available-doctors',
@@ -17,22 +18,25 @@ import {DatePipe} from '@angular/common';
     TableOptionsComponent,
     DoctorsTableComponent,
     ToastComponent,
-    ToastListComponent
+    ToastListComponent,
+    PaginationBarComponent
   ],
   templateUrl: './available-doctors.component.html',
   styleUrl: './available-doctors.component.css'
 })
 export class AvailableDoctorsComponent implements OnInit {
   doctors: DoctorInfo[] = [];
-  page = 0;
-  pageSize = 10;
+  paginationOptions : { page: number; pageSize: number } = {
+    page: 0,
+    pageSize: 10,
+  }
   notification!: {title:string,message:string} | null;
 
   constructor(private doctorService: DoctorService) {
   }
 
   ngOnInit(): void {
-    this.doctorService.getPagedDoctors(this.page,this.pageSize).subscribe(doctors => {
+    this.doctorService.getPagedDoctors(this.paginationOptions).subscribe(doctors => {
       this.doctors = doctors;
     })
   }
@@ -46,7 +50,7 @@ export class AvailableDoctorsComponent implements OnInit {
   }
 
   updatePageSize(newPageSize: number) {
-    this.pageSize = newPageSize;
+    this.paginationOptions.pageSize = newPageSize;
   }
 
   addNotification(appointmentCreatedInfo: {appointmentInfo:{appointmentCreated: boolean, date: string, hour: string}, doctor: {name:string, surname: string}}) {
@@ -61,7 +65,7 @@ export class AvailableDoctorsComponent implements OnInit {
     message: string
   } {
     let title = "Utworzono wizytę";
-    let date = new DatePipe('pl').transform(appointmentDate,'d MMM y');
+    let date = new DatePipe('pl').transform(Date.parse(appointmentDate),'d MMM y');
 
     let message = `<p class="text-dark">Utworzono wizytę na godzinę <b>${hour}</b>, dnia: <b>${date}</b> do lekarza <b>${doctor.name} ${doctor.surname}</b></p>`;
 
@@ -72,5 +76,20 @@ export class AvailableDoctorsComponent implements OnInit {
     if(hide){
       this.notification = null;
     }
+  }
+
+  changePage(newPage: number) {
+    if(newPage !== +this.paginationOptions.page){
+      this.paginationOptions.page = newPage;
+      this.doctorService.getPagedDoctors(this.paginationOptions).subscribe(
+        data => {
+          this.doctors = data;
+        }
+      );
+    }
+  }
+
+  hasArrayPageSize() {
+    return this.doctors.length !== this.paginationOptions.pageSize;
   }
 }

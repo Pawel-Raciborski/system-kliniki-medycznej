@@ -127,7 +127,7 @@ export class MakeAppointmentDialogComponent implements OnInit {
 
   formatDate(date: string) {
     let formatedDate: string = new DatePipe('pl').transform(date, 'dd-MM-yyyy') || '';
-    console.log(date);
+    console.log(formatedDate);
 
     return formatedDate;
   }

@@ -1,17 +1,22 @@
 <div class="row">
   <app-doctor-search-bar (doctorSearchOptionsEmitter)="searchDoctors($event)"></app-doctor-search-bar>
   <div class="col-md-12 mt-5">
-    <h2 class="accordion-header">Dostępni lekarze</h2>
     <div class="row justify-content-center">
       <div class="col-md-10">
-        <app-table-options (pageSizeEmitter)="updatePageSize($event)" [page]="page" [pageSize]="pageSize"
+        <h3 class="card-title fw-light">Dostępni lekarze</h3>
+        <app-table-options (pageSizeEmitter)="updatePageSize($event)"
+                           [paginationOptions]="paginationOptions"
                            [foundElements]="doctors.length"></app-table-options>
         <app-doctors-table [doctors]="doctors"
                            (notificationMessageEmitter)="addNotification($event)"></app-doctors-table>
         <div class="row mt-3 justify-content-center">
-          <div class="col-md-6 text-center">
-            <button>Wstecz</button>
-            <button>Dalej</button>
+          <div class="col-md-6">
+            <app-pagination-bar
+              [page]="paginationOptions.page"
+              (pageValueEmitter)="changePage($event)"
+              [disableNext]="hasArrayPageSize()"
+            ></app-pagination-bar>
+            <!--[nextDisabled]="hasArrayPageSize()"-->
           </div>
         </div>
       </div>

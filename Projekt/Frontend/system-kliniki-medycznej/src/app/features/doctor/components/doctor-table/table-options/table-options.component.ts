@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 
 @Component({
@@ -12,21 +12,19 @@ import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 })
 export class TableOptionsComponent implements OnInit {
   @Input() foundElements = 0;
-  @Input({required: true}) page!: number;
-  @Input({required: true}) pageSize!: number;
+  @Input({required: true}) paginationOptions!: { page: number; pageSize: number };
   pageSizeControl!: FormControl;
   @Output() pageSizeEmitter = new EventEmitter<number>();
   availablePageSizes = [
-    '5',
-    '10',
-    '20'
+    5,
+    10,
+    20
   ];
-
   ngOnInit(): void {
-    this.pageSizeControl = new FormControl<number>(this.pageSize);
+    this.pageSizeControl = new FormControl<number>(+this.paginationOptions.pageSize);
   }
 
-  savePageSize() {
+  updateValue() {
     this.pageSizeEmitter.emit(this.pageSizeControl.value);
   }
 }

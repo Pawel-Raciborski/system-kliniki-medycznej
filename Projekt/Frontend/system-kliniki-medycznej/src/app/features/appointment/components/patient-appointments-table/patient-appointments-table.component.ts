@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {PatientAppointmentInfo} from '../../model/patient-appointment-info';
 import {
   DoctorSearchBarComponent
@@ -6,6 +6,9 @@ import {
 import {DoctorsTableComponent} from '../../../doctor/components/doctor-table/doctors-table/doctors-table.component';
 import {TableOptionsComponent} from '../../../doctor/components/doctor-table/table-options/table-options.component';
 import {DatePipe} from '@angular/common';
+import {PaginationBarComponent} from '../../../pagination/components/pagination-bar/pagination-bar.component';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatTable} from '@angular/material/table';
 
 @Component({
   selector: 'app-patient-appointments-table',
@@ -14,14 +17,20 @@ import {DatePipe} from '@angular/common';
     DoctorSearchBarComponent,
     DoctorsTableComponent,
     TableOptionsComponent,
-    DatePipe
+    DatePipe,
+    PaginationBarComponent,
+    MatPaginator,
+    MatTable,
+    MatColumnDef,
+    MatHeaderCell,
+    MatCell,
+    MatCellDef,
+    MatHeaderCellDef
   ],
   templateUrl: './patient-appointments-table.component.html',
   styleUrl: './patient-appointments-table.component.css'
 })
-export class PatientAppointmentsTableComponent {
+export class PatientAppointmentsTableComponent{
   @Input({required: true}) patientAppointments!: PatientAppointmentInfo[];
-  @Input() page = 0;
-  @Input() pageSize = 10;
 
 }

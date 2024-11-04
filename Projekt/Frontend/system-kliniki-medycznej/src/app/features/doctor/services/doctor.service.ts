@@ -11,7 +11,7 @@ import {DoctorSearchOptions} from '../components/search-bar/model/doctor-search-
 export class DoctorService {
   constructor(private httpClient: HttpClient) { }
 
-  getPagedDoctors(page: number,pageSize: number): Observable<DoctorInfo[]>{
+  getPagedDoctors(paginationOptions: { page: number; pageSize: number }): Observable<DoctorInfo[]>{
     const doctors: DoctorInfo[] = [
       {
         id: 1,
@@ -41,7 +41,6 @@ export class DoctorService {
         description: 'Experienced pediatrician with a focus on child healthcare.'
       }
     ];
-
     return of(doctors);
   }
 

@@ -12,7 +12,7 @@ export class PaginationBarComponent {
   @Input() disableNext: boolean = false;
   @Output() pageValueEmitter = new EventEmitter<number>();
 
-  decreaseValue() {
+  decreasePage() {
     this.page--;
     if(this.page < 0){
       this.page = 0;
@@ -20,7 +20,7 @@ export class PaginationBarComponent {
     this.pageValueEmitter.emit(+this.page);
   }
 
-  increaseValue() {
+  increasePage() {
     this.page++;
     this.pageValueEmitter.emit(+this.page);
   }

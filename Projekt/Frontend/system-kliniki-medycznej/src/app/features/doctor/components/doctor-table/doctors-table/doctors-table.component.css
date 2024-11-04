@@ -10,3 +10,8 @@
 .profile:hover{
   background-color: #32363AFF;
 }
+
+.max-height-400{
+  max-height: 400px;
+  overflow: auto;
+}

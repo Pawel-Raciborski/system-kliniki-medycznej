@@ -1,0 +1,15 @@
+<app-table-options
+[paginationOptions]="paginationOptions"
+[foundElements]="patientAppointments.length"
+(pageSizeEmitter)="updateAppointmentPageSize($event)"
+>
+
+</app-table-options>
+<app-patient-appointments-table
+  [patientAppointments]="patientAppointments">
+</app-patient-appointments-table>
+<app-pagination-bar
+  [page]="paginationOptions.page"
+  [disableNext]="hasArrayPageSize()"
+  (pageValueEmitter)="updateUpcomingAppointmentsPage($event)"
+></app-pagination-bar>

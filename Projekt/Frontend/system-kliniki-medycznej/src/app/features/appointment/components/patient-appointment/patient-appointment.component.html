@@ -2,16 +2,13 @@
   <div class="col-md-12 mt-5">
     <div class="row justify-content-center mb-4">
       <div class="col-md-10">
+        <div class="row mb-5">
+          <h2 class="fw-light">Panel wizyt</h2>
+        </div>
         <div class="row">
           <h4 class="card-title fw-light"><i class="bi bi-calendar-date"></i> Nadchodzące wizyty</h4>
         </div>
-        <app-patient-appointments-table [patientAppointments]="patientAppointments"></app-patient-appointments-table>
-        <div class="row mt-3 justify-content-center">
-          <div class="col-md-6 text-center">
-            <button>Wstecz</button>
-            <button>Dalej</button>
-          </div>
-        </div>
+        <app-upcoming-appointments [patientPesel]="patientPesel"></app-upcoming-appointments>
       </div>
     </div>
 
@@ -20,13 +17,7 @@
         <div class="row">
           <h4 class="card-title fw-light"><i class="bi bi-calendar-date"></i> Wizyty odbyte</h4>
         </div>
-        <app-patient-appointments-table [patientAppointments]="patientAppointments"></app-patient-appointments-table>
-        <div class="row mt-3 justify-content-center">
-          <div class="col-md-6 text-center">
-            <button>Wstecz</button>
-            <button>Dalej</button>
-          </div>
-        </div>
+        <app-finished-appointments [patientPesel]="patientPesel"></app-finished-appointments>
       </div>
     </div>
   </div>

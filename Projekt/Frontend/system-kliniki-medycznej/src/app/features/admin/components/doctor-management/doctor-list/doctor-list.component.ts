@@ -14,11 +14,13 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class DoctorListComponent implements OnInit{
   doctors: DoctorInfo[] = [];
-  page:number = 0;
-  pageSize: number = 10;
+  paginationOptions: { page: number; pageSize: number } = {
+    page: 0,
+    pageSize: 10,
+  }
 
   ngOnInit() {
-    this.doctorService.getPagedDoctors(this.page,this.pageSize).subscribe((data) => {
+    this.doctorService.getPagedDoctors(this.paginationOptions).subscribe((data) => {
       this.doctors = data;
     })
   }
@@ -27,7 +29,6 @@ export class DoctorListComponent implements OnInit{
     private doctorService: DoctorService,
     private dialog: MatDialog,
     private router: Router,
-    private activeRoute: ActivatedRoute,
   ) {
   }
 

@@ -1,39 +1,41 @@
-<table class="table table-hover align-middle mb-0 bg-white">
-  <thead>
-  <tr>
-    <th>Nazwa</th>
-    <th>Numer PWZ</th>
-    <th>Opis</th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody class="pointer">
-    @for (doctor of doctors; track doctor.id) {
-      <tr>
-        <td>
-          <div class="d-flex align-items-center">
-            <img src="assets/images/doctor_profile_image.webp"
-                 alt=""
-                 style="width: 45px; height: 45px"
-                 class="rounded-circle"
-            />
-            <div class="ms-3">
-              <p class="fw-bold mb-1">{{ doctor.name }} {{ doctor.surname }}</p>
-              <p class="text-muted mb-0">{{ doctor.email }}</p>
-              <p class="text-muted mb-0">{{ doctor.phoneNumber }}</p>
+<div class="max-height-400">
+  <table class="table table-hover align-middle mb-0 bg-white">
+    <thead class="table-dark">
+    <tr>
+      <th>Nazwa</th>
+      <th>Numer PWZ</th>
+      <th>Opis</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody class="pointer">
+      @for (doctor of doctors; track doctor.id) {
+        <tr>
+          <td>
+            <div class="d-flex align-items-center">
+              <img src="assets/images/doctor_profile_image.webp"
+                   alt=""
+                   style="width: 45px; height: 45px"
+                   class="rounded-circle"
+              />
+              <div class="ms-3">
+                <p class="fw-bold mb-1">{{ doctor.name }} {{ doctor.surname }}</p>
+                <p class="text-muted mb-0">{{ doctor.email }}</p>
+                <p class="text-muted mb-0">{{ doctor.phoneNumber }}</p>
+              </div>
             </div>
-          </div>
-        </td>
-        <td>
-          <p class="fw-normal mb-1">{{ doctor.pwzNumber }}</p>
-        </td>
-        <td>
-          <p class="text-muted">{{ doctor.description }}</p>
-        </td>
-        <td>
-          <button class="btn profile" (click)="showDoctorDetails(doctor)">Profil</button>
-        </td>
-      </tr>
-    }
-  </tbody>
-</table>
+          </td>
+          <td class="text-center">
+            <p class="fw-normal mb-1">{{ doctor.pwzNumber }}</p>
+          </td>
+          <td class="bg-light">
+            <p class="text-muted">{{ doctor.description }}</p>
+          </td>
+          <td class="text-center">
+            <button class="btn profile" (click)="showDoctorDetails(doctor)">Profil</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
