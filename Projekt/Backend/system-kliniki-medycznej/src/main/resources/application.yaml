@@ -18,3 +18,11 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+project:
+  default-image: doctors/default_profile_image.webp
+  doctor: doctors/
+  patients: patients/
+
+base:
+  url: "https://localhost:8443/clinic/"
