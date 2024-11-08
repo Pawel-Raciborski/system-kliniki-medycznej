@@ -13,7 +13,7 @@
         <tr>
           <td>
             <div class="d-flex align-items-center">
-              <img src="assets/images/doctor_profile_image.webp"
+              <img [src]="doctor.profileImagePath"
                    alt=""
                    style="width: 45px; height: 45px"
                    class="rounded-circle"
@@ -32,7 +32,7 @@
             <p class="text-muted">{{ doctor.description }}</p>
           </td>
           <td class="text-center">
-            <button class="btn profile" (click)="showDoctorDetails(doctor)">Profil</button>
+            <button class="btn profile" (click)="navigate(doctor)">Profil</button>
           </td>
         </tr>
       }

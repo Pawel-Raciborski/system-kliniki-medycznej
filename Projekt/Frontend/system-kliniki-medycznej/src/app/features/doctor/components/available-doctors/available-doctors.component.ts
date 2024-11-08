@@ -9,6 +9,7 @@ import {ToastComponent} from '../../../toast/components/toast/toast.component';
 import {ToastListComponent} from '../../../toast/components/toast-list/toast-list.component';
 import {DatePipe} from '@angular/common';
 import {PaginationBarComponent} from '../../../pagination/components/pagination-bar/pagination-bar.component';
+import {DateFormatterService} from '../../../../services/date-formatter.service';
 
 @Component({
   selector: 'app-available-doctors',
@@ -32,7 +33,7 @@ export class AvailableDoctorsComponent implements OnInit {
   }
   notification!: {title:string,message:string} | null;
 
-  constructor(private doctorService: DoctorService) {
+  constructor(private doctorService: DoctorService, private dateFormatterService: DateFormatterService) {
   }
 
   ngOnInit(): void {
@@ -54,18 +55,19 @@ export class AvailableDoctorsComponent implements OnInit {
   }
 
   addNotification(appointmentCreatedInfo: {appointmentInfo:{appointmentCreated: boolean, date: string, hour: string}, doctor: {name:string, surname: string}}) {
-    console.log(appointmentCreatedInfo);
+    console.log(`available-doctors: `,appointmentCreatedInfo);
     if(appointmentCreatedInfo.appointmentInfo.appointmentCreated){
       this.notification = this.buildNotification(appointmentCreatedInfo.appointmentInfo.date,appointmentCreatedInfo.appointmentInfo.hour,appointmentCreatedInfo.doctor);
     }
   }
 
-  private buildNotification(appointmentDate: string,hour: string, doctor: { name: string; surname: string }): {
+  private buildNotification(appointmentDate: string, hour: string, doctor: { name: string; surname: string }): {
     title: string,
     message: string
   } {
     let title = "Utworzono wizytę";
-    let date = new DatePipe('pl').transform(Date.parse(appointmentDate),'d MMM y');
+    let dateToFormat = this.dateFormatterService.parseDate(appointmentDate);
+    let date = new DatePipe('pl').transform(dateToFormat,'d MMM y');
 
     let message = `<p class="text-dark">Utworzono wizytę na godzinę <b>${hour}</b>, dnia: <b>${date}</b> do lekarza <b>${doctor.name} ${doctor.surname}</b></p>`;
 
@@ -92,4 +94,5 @@ export class AvailableDoctorsComponent implements OnInit {
   hasArrayPageSize() {
     return this.doctors.length !== this.paginationOptions.pageSize;
   }
+
 }
