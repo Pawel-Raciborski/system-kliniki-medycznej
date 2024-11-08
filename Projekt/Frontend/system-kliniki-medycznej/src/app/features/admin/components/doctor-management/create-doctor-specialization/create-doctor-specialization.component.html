@@ -5,7 +5,7 @@
     </div>
   </div>
   <hr/>
-  <form [formGroup]="doctorSpecializationFormGroup">
+  <form [formGroup]="form">
     <div class="row mt-4">
       <div class="col-md-12">
         <mat-label>Nazwa specjalności</mat-label>
@@ -33,7 +33,7 @@
     </div>
     <div class="row mt-2">
       <div class="col-md-12 text-end">
-        <div class="btn btn-outline-danger mx-3">Anuluj</div>
+        <div class="btn btn-outline-danger mx-3" (click)="cancel()">Anuluj</div>
         <div class="btn btn-success" (click)="onSubmit()">Zapisz</div>
       </div>
     </div>

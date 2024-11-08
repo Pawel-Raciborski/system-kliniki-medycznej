@@ -1,0 +1,20 @@
+.cursor-pointer{
+  cursor: pointer;
+}
+
+.break-word{
+  overflow-wrap: break-word;
+}
+
+.bg-green{
+  border: 1px solid rgb(29, 166, 102);
+  color: rgb(29, 166, 102);
+  transition: .2s;
+}
+
+.bg-green:hover{
+  border: 1px solid rgb(29, 166, 102);
+  background-color: rgb(29, 166, 102);
+  color: whitesmoke;
+  cursor: pointer;
+}

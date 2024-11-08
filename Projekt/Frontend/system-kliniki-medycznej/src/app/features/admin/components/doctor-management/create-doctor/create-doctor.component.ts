@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {Component} from '@angular/core';
 import {MatDialog, MatDialogContainer, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormField, MatFormFieldModule, MatHint, MatLabel} from '@angular/material/form-field';
 import {MatInput, MatInputModule} from '@angular/material/input';
@@ -14,9 +14,8 @@ import {provideNativeDateAdapter} from '@angular/material/core';
 import {
   CreateDoctorSpecializationComponent
 } from '../create-doctor-specialization/create-doctor-specialization.component';
-import {FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {DoctorSpecialization} from '../../../../doctor/domain/doctor-specialization';
-import {DoctorSpecializationService} from '../../../../doctor-specialization/services/doctor-specialization.service';
 
 @Component({
   selector: 'app-create-doctor',
@@ -40,14 +39,13 @@ import {DoctorSpecializationService} from '../../../../doctor-specialization/ser
   ],
   templateUrl: './create-doctor.component.html',
   styleUrl: './create-doctor.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateDoctorComponent {
   doctorForm: FormGroup = new FormGroup<any>({
     registerAccountData: new FormGroup({
       username: new FormControl(''),
       password: new FormControl(''),
-      passwordConfirmation: new FormControl(''),
+      // passwordConfirmation: new FormControl(''),
       email: new FormControl(''),
     }),
     personalDetails: new FormGroup({
@@ -66,59 +64,84 @@ export class CreateDoctorComponent {
     }),
     pwzNumber: new FormControl(''),
     description: new FormControl(''),
-    dateOfEmployment: new FormControl(this.getCurrentDate()),
-    doctorSpecializations: new FormArray<FormGroup<{name: FormControl<string | null>, description: FormControl<string | null>, realizedDate: FormControl<string | null>}>>([])
+    dateOfEmployment: new FormControl('')
   });
+  doctorSpecializations: DoctorSpecialization[] = [];
+  profileImage: File | null = null;
 
-  private getCurrentDate() {
-    return new Date().toLocaleDateString().replaceAll(".","-");
-  }
-
-  private createDoctorSpecializationFormGroup() : FormGroup{
-    return new FormGroup({
-      name : new FormControl(''),
-      description: new FormControl(''),
-      realizedDate : new FormControl(''),
-    });
-  }
 
   constructor(
     private dialog: MatDialog,
-    private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<CreateDoctorComponent>,
-    private specializationService: DoctorSpecializationService
-    ) {
+  ) {
   }
 
-  // TODO need to fix
   addSpecialization() {
-    let addSpecializationForm = this.specializationService.buildDoctorSpecialization();
-
-    let matDialogRef = this.dialog.open(CreateDoctorSpecializationComponent,{
-      data: addSpecializationForm
-    });
-
-    matDialogRef.afterClosed().subscribe((data: DoctorSpecialization) => {
-      if(data){
-        const doctorSpecializations = this.doctorSpecializations;
-        doctorSpecializations.push(addSpecializationForm);
-
-        console.log(doctorSpecializations)
-      }
-    });
-  }
-
-  get doctorSpecializations(){
-    return this.doctorForm.controls["doctorSpecializations"] as FormArray;
+    this.dialog.open(CreateDoctorSpecializationComponent)
+      .afterClosed()
+      .subscribe((data: DoctorSpecialization) => {
+        if (data) {
+          console.log('Tworzenie specjalizacji', data);
+          this.doctorSpecializations.push(data);
+          console.log(this.doctorSpecializations);
+        }
+      });
   }
 
   onFormSubmit() {
-    this.dialogRef.close({
-      doctorFormDto : this.doctorForm.value
-    });
+    this.doctorForm.addControl('doctorSpecializations', new FormControl(this.doctorSpecializations));
+    this.doctorForm.addControl('profileImage', new FormControl(this.profileImage));
+    this.doctorForm.removeControl('registerAccountData.passwordConfirmation');
+
+    this.dialogRef.close({...this.doctorForm.value});
   }
 
-  get pwzNumber(){
+  get pwzNumber() {
     return this.doctorForm.get('pwzNumber') as FormControl;
   }
+
+  get dateOfEmployment(){
+    return this.doctorForm.get('dateOfEmployment') as FormControl;
+  }
+
+  showSpecializationDetails(doctorSpecialization: DoctorSpecialization) {
+    this.dialog.open(CreateDoctorSpecializationComponent, {data: doctorSpecialization}).afterClosed()
+      .subscribe((editedData: DoctorSpecialization) => {
+        if(editedData){
+          this.updateElement(doctorSpecialization, editedData);
+        }
+      });
+  }
+
+  private updateElement(doctorSpecialization: DoctorSpecialization, editedData: DoctorSpecialization) {
+    let index = this.doctorSpecializations.findIndex(d => d === doctorSpecialization);
+
+    if(index !== -1){
+      this.doctorSpecializations[index] = editedData;
+    }
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+
+    if(input.files && input.files.length > 0){
+      this.profileImage = input.files[0];
+    }
+  }
+
+  formatZipCode(event: KeyboardEvent) {
+    const zipCodeInput = event.target as HTMLInputElement;
+    let value = zipCodeInput.value.replace(/\D/g, '');
+
+    if(value.length > 2){
+      value = value.slice(0,2) + '-' + value.slice(2);
+    }
+
+    zipCodeInput.value = value;
+  }
+
+  cancel() {
+    this.dialogRef.close();
+  }
+
 }

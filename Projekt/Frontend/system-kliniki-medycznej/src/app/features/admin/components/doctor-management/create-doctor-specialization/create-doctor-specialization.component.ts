@@ -6,6 +6,7 @@ import {MatFormField, MatFormFieldModule, MatLabel} from '@angular/material/form
 import {MatInput, MatInputModule} from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {provideNativeDateAdapter} from '@angular/material/core';
+import {DoctorSpecialization} from '../../../../doctor/domain/doctor-specialization';
 
 @Component({
   selector: 'app-create-doctor-specialization',
@@ -26,13 +27,26 @@ import {provideNativeDateAdapter} from '@angular/material/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateDoctorSpecializationComponent {
-
-  constructor(private dialogRef: MatDialogRef<CreateDoctorSpecializationComponent>, @Inject(MAT_DIALOG_DATA) public doctorSpecializationFormGroup: FormGroup) {
+  form:FormGroup = new FormGroup({
+    name: new FormControl(''),
+    description: new FormControl(''),
+    realizedDate: new FormControl(''),
+  });
+  constructor(
+    private dialogRef: MatDialogRef<CreateDoctorSpecializationComponent>,
+    @Inject(MAT_DIALOG_DATA) public doctorSpecialization: DoctorSpecialization) {
+    if(doctorSpecialization){
+      this.form.patchValue(doctorSpecialization);
+    }
   }
 
   onSubmit(){
     this.dialogRef.close(
-    {...this.doctorSpecializationFormGroup.value}
+    {...this.form.value}
     );
+  }
+
+  cancel() {
+    this.dialogRef.close();
   }
 }

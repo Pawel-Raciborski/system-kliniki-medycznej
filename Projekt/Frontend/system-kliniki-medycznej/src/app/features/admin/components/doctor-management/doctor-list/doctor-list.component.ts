@@ -4,6 +4,7 @@ import {DoctorService} from '../../../../doctor/services/doctor.service';
 import {MatDialog} from '@angular/material/dialog';
 import {CreateDoctorComponent} from '../create-doctor/create-doctor.component';
 import {ActivatedRoute, Router} from '@angular/router';
+import {RegisterDoctorForm} from '../../../../doctor/domain/register-doctor-form';
 
 @Component({
   selector: 'app-doctor-list',
@@ -33,12 +34,22 @@ export class DoctorListComponent implements OnInit{
   }
 
   openAddDoctorModal() {
-    this.dialog.open(CreateDoctorComponent).afterClosed().subscribe(data => {
-      console.log(data);
+    this.dialog.open(CreateDoctorComponent).afterClosed().subscribe((doctorToRegisterFormData) => {
+      if(doctorToRegisterFormData){
+        let {profileImage,...doctorToRegister} = doctorToRegisterFormData;
+        console.log(doctorToRegister,profileImage);
+        this.doctorService.create(doctorToRegister,profileImage).subscribe(registeredDoctor => {
+          this.addToArray(registeredDoctor);
+        })
+      }
     });
   }
 
   showDoctorDetails(doctor: DoctorInfo) {
     this.router.navigate(['/admin/doctors',doctor.pwzNumber]);
+  }
+
+  private addToArray(registeredDoctor: DoctorInfo) {
+    this.doctors.push(registeredDoctor);
   }
 }
