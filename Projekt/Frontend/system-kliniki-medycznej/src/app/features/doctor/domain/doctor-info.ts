@@ -6,4 +6,5 @@ export interface DoctorInfo {
   pwzNumber: string;
   phoneNumber: string;
   description: string;
+  profileImagePath: string;
 }

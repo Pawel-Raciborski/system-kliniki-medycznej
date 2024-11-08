@@ -5,6 +5,7 @@ import {OfficeHours} from './office-hours';
 export interface DoctorDetails {
   username: string,
   email: string,
+  profileImagePath: string,
   personalDetails: PersonalDetails,
   description: string,
   doctorSpecializations: DoctorSpecialization[],
