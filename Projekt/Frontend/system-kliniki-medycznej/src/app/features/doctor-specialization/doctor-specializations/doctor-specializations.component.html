@@ -1,0 +1,44 @@
+<div class="row mt-3">
+  <h4 class="text-black-50">Specjalizacje</h4>
+  <div class="row g-2 mt-3">
+    <div class="col-md-12 mt-3 text-center">
+      <button class="btn btn-primary w-25" (click)="addDoctorSpecialization()">Dodaj</button>
+    </div>
+    <div class="col-md-12 mt-3">
+      <table class="table border table-hover pointer">
+        <thead>
+        <tr>
+          <th>Nazwa</th>
+          <th>Opis</th>
+          <th>Data realizacji</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (doctorSpecialization of doctorSpecializations; let i = $index; track i) {
+            <tr>
+              <td>{{ doctorSpecialization.name }}</td>
+              <td>{{ doctorSpecialization.description }}</td>
+              <td>{{ doctorSpecialization.realizedDate | date:'d MMM yyyy'}}</td>
+              <td>
+                <div [matMenuTriggerFor]="specializationMenu"
+                     class="col-md-4 rounded-5 office-hours-card text-center">
+                  <i class="bi bi-three-dots-vertical"></i>
+                  <mat-menu #specializationMenu="matMenu" class="text-center">
+                    <button mat-menu-item (click)="updateDoctorSpecializationDetails(doctorSpecialization)">
+                      Edytuj
+                    </button>
+                    <button class="text-bg-danger" mat-menu-item
+                            (click)="deleteDoctorSpecialization(doctorSpecialization)">
+                      Usuń
+                    </button>
+                  </mat-menu>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
