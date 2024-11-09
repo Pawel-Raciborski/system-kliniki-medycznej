@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Builder
-public record UpcomingAppointmentInfo(
+public record PatientAppointmentInfo(
         UUID id,
         String doctorName,
         String doctorSurname,

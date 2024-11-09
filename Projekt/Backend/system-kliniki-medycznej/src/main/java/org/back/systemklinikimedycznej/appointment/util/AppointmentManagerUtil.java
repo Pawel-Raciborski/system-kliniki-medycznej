@@ -1,6 +1,6 @@
 package org.back.systemklinikimedycznej.appointment.util;
 
-import org.back.systemklinikimedycznej.appointment.controllers.dto.UpcomingAppointmentInfo;
+import org.back.systemklinikimedycznej.appointment.controllers.dto.PatientAppointmentInfo;
 import org.back.systemklinikimedycznej.appointment.domain.AppointmentStatus;
 import org.back.systemklinikimedycznej.appointment.repositories.entities.Appointment;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
@@ -18,8 +18,8 @@ public class AppointmentManagerUtil {
                 .build();
     }
 
-    public static UpcomingAppointmentInfo buildUpcomingAppointmentInfo(Appointment appointment) {
-        return UpcomingAppointmentInfo.builder()
+    public static PatientAppointmentInfo buildUpcomingAppointmentInfo(Appointment appointment) {
+        return PatientAppointmentInfo.builder()
                 .id(appointment.getId())
                 .doctorName(appointment.getDoctor().getPersonalDetails().getName())
                 .doctorSurname(appointment.getDoctor().getPersonalDetails().getSurname())

@@ -1,6 +1,7 @@
 package org.back.systemklinikimedycznej.appointment.repositories;
 
 import org.back.systemklinikimedycznej.appointment.repositories.entities.Appointment;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -44,4 +45,16 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
     AND app.status NOT IN (org.back.systemklinikimedycznej.appointment.domain.AppointmentStatus.CANCELLED)
     """)
     List<LocalDateTime> findBookedAppointmentHoursForADoctorInGivenDay(@Param("pwzNumber") String pwzNumber,@Param("date") LocalDate date);
+
+    @Query("""
+    SELECT app FROM Appointment as app
+    JOIN app.patientCard as pc
+    WHERE pc.patient.personalDetails.pesel = :pesel
+    AND app.status NOT IN (
+    org.back.systemklinikimedycznej.appointment.domain.AppointmentStatus.CANCELLED,
+    org.back.systemklinikimedycznej.appointment.domain.AppointmentStatus.CHECK_OUT,
+    org.back.systemklinikimedycznej.appointment.domain.AppointmentStatus.IN_PROGRESS
+    )
+    """)
+    List<Appointment> findUpcomingAppointments(Pageable pageable, @Param("pesel") String pesel);
 }

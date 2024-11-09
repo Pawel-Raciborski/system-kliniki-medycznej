@@ -31,9 +31,9 @@ public class AppointmentService {
     @Transactional
     public Appointment createScheduledAppointment(AppointmentDto appointmentDto) {
         PatientCard patientCard = patientCardService.findPatientCardWithPesel(appointmentDto.patientPesel());
-        Doctor doctor= doctorService.findByPwzNumber(appointmentDto.selectedDoctorPwzNumber());
+        Doctor doctor= doctorService.findByPwzNumber(appointmentDto.doctorPwzNumber());
 
-        Appointment scheduledAppointment = AppointmentManagerUtil.buildAppointment(patientCard,doctor,appointmentDto.appointmentDateTime())
+        Appointment scheduledAppointment = AppointmentManagerUtil.buildAppointment(patientCard,doctor,LocalDateTime.of(appointmentDto.date(),appointmentDto.hour()))
                 .withStatus(AppointmentStatus.SCHEDULED);
 
         return appointmentRepository.save(scheduledAppointment);
