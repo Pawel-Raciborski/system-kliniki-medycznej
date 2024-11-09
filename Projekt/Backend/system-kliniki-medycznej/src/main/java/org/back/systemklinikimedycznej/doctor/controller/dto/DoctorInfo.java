@@ -7,6 +7,7 @@ public record DoctorInfo(
         String email,
         String pwzNumber,
         String phoneNumber,
-        String description
+        String description,
+        String profileImagePath
 ) {
 }

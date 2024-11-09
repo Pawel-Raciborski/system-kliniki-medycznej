@@ -1,17 +1,19 @@
 package org.back.systemklinikimedycznej.doctor.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorDetails;
-import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorDto;
-import org.back.systemklinikimedycznej.doctor.controller.dto.RegisterDoctorDetails;
-import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorsInfo;
+import org.back.systemklinikimedycznej.doctor.controller.dto.*;
 import org.back.systemklinikimedycznej.doctor.mapper.DoctorMapper;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.doctor.services.DoctorSearchingService;
 import org.back.systemklinikimedycznej.doctor.services.DoctorService;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/doctors")
@@ -21,18 +23,35 @@ public class DoctorController {
     private final DoctorSearchingService doctorInfoService;
 
     @PostMapping("/create")
-    public ResponseEntity<DoctorDto> create(@RequestBody RegisterDoctorDetails doctorToRegisterData) {
-        DoctorDto registeredDoctor = DoctorMapper.INSTANCE.mapToDto(
-                doctorService.create(doctorToRegisterData)
+    public ResponseEntity<DoctorInfo> create(
+            @RequestPart(name = "profileImage", required = false) MultipartFile profileImage,
+            @RequestPart(name = "doctorToRegisterData") RegisterDoctorDetails doctorToRegisterData
+    ) {
+        DoctorInfo registeredDoctor = DoctorMapper.INSTANCE.mapToDoctorInfo(
+                doctorService.create(doctorToRegisterData, profileImage)
         );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(registeredDoctor);
     }
 
     @GetMapping("/{pwzNumber}")
-    public ResponseEntity<DoctorDetails> getDoctor(@PathVariable(name = "pwzNumber") String pwzNumber){
+    public ResponseEntity<DoctorDetails> getDoctor(@PathVariable(name = "pwzNumber") String pwzNumber) {
         DoctorDetails doctorDetails = DoctorMapper.INSTANCE.mapToDoctorDetails(doctorService.findByPwzNumber(pwzNumber));
         return ResponseEntity.ok(doctorDetails);
+    }
+
+    @GetMapping("/{pwzNumber}/{fileName}")
+    public ResponseEntity<Resource> getProfileImage(
+            @PathVariable(name = "pwzNumber") String pwzNumber,
+            @PathVariable(name = "fileName") String fileName
+    ) {
+        Doctor doctor = doctorService.findByPwzNumber(pwzNumber);
+        Resource file = doctorService.getFile(doctor,fileName);
+
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .headers(httpHeaders -> httpHeaders.add(HttpHeaders.CONTENT_TYPE,"image/webp"))
+                .body(file);
     }
 
     @PutMapping("/update-pwzNumber")
@@ -52,20 +71,20 @@ public class DoctorController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<DoctorsInfo> findAllPaged(
-            @RequestParam(name = "page",defaultValue = "0") Integer page,
+    public ResponseEntity<List<DoctorInfo>> findAllPaged(
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
             @RequestParam(name = "sort", defaultValue = "personalDetails.name,ASC") String sort
     ) {
         DoctorsInfo doctorsInfo = doctorInfoService.findAllPaged(page, pageSize, sort);
 
-        return ResponseEntity.ok(doctorsInfo);
+        return ResponseEntity.ok(doctorsInfo.doctors());
     }
 
     @GetMapping("/with-specialization")
     public ResponseEntity<DoctorsInfo> findPagedWithSpecialization(
             @RequestParam(name = "specialization") String specializationName,
-            @RequestParam(name = "page",defaultValue = "0") Integer page,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
         DoctorsInfo doctorsInfo = doctorInfoService.findPagedWithSpecialization(specializationName, page, pageSize);
 

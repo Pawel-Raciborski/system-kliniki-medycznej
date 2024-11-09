@@ -36,24 +36,28 @@ public class DoctorOfficeHoursService {
 
 
     @Transactional
-    public DoctorOfficeHours update(Doctor doctorToUpdateOfficeHours, OfficeHoursDto updatedOfficeHours) {
-        DoctorOfficeHours doctorOfficeHoursToUpdate = findOfficeHoursForDoctorForDay(doctorToUpdateOfficeHours,updatedOfficeHours.day());
-        doctorOfficeHoursToUpdate = OfficeHoursManagerUtil.withUpdatedFields(doctorOfficeHoursToUpdate,updatedOfficeHours);
+    public DoctorOfficeHours update(OfficeHoursDto updatedOfficeHours) {
+        DoctorOfficeHours doctorOfficeHoursToUpdate = findById(updatedOfficeHours.id());
+        doctorOfficeHoursToUpdate = OfficeHoursManagerUtil.withUpdatedFields(doctorOfficeHoursToUpdate, updatedOfficeHours);
 
         return doctorOfficeHoursRepository.save(doctorOfficeHoursToUpdate);
     }
 
+    private DoctorOfficeHours findById(Long id) {
+        return doctorOfficeHoursRepository.findById(id).orElseThrow(() -> new DoctorOfficeHoursException("Nie znaleziono dnia", HttpStatus.NOT_FOUND));
+    }
+
     @Transactional
     public void delete(Doctor doctorForRemoveOfficeHours, DayOfWeek day) {
-        DoctorOfficeHours officeHoursForRemove = findOfficeHoursForDoctorForDay(doctorForRemoveOfficeHours,day);
+        DoctorOfficeHours officeHoursForRemove = findOfficeHoursForDoctorForDay(doctorForRemoveOfficeHours, day);
         doctorOfficeHoursRepository.delete(officeHoursForRemove);
 
     }
 
     public DoctorOfficeHours findOfficeHoursForDoctorForDay(Doctor doctor, DayOfWeek day) {
-        return doctorOfficeHoursRepository.findByDoctorAndDay(doctor,day)
+        return doctorOfficeHoursRepository.findByDoctorAndDay(doctor, day)
                 .orElseThrow(
-                        () -> new DoctorOfficeHoursException("Nie znaleziono dnia [%s] dla podanego doktora".formatted(day),HttpStatus.NOT_FOUND)
+                        () -> new DoctorOfficeHoursException("Nie znaleziono dnia [%s] dla podanego doktora".formatted(day), HttpStatus.NOT_FOUND)
                 );
     }
 
@@ -61,9 +65,9 @@ public class DoctorOfficeHoursService {
     public AvailableOfficeHours findAvailableHoursInGivenDayForDoctor(Doctor doctor, LocalDate date) {
         DoctorOfficeHours officeHoursForDoctorForDay = findOfficeHoursForDoctorForDay(doctor, date.getDayOfWeek());
 
-        var bookedOfficeHours = appointmentService.findBookedAppointmentHoursForADoctorInGivenDay(doctor,date);
+        var bookedOfficeHours = appointmentService.findBookedAppointmentHoursForADoctorInGivenDay(doctor, date);
 
-        List<LocalTime> appointmentOfficeHours = OfficeHoursManagerUtil.buildListOfAvailableAppointmentOfficeHours(officeHoursForDoctorForDay,bookedOfficeHours);
+        List<LocalTime> appointmentOfficeHours = OfficeHoursManagerUtil.buildListOfAvailableAppointmentOfficeHours(officeHoursForDoctorForDay, bookedOfficeHours);
         return OfficeHoursManagerUtil.buildAvailableHours(appointmentOfficeHours);
     }
 }

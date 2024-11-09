@@ -37,11 +37,9 @@ public class DoctorOfficeHoursController {
 
     @PutMapping("/update")
     public ResponseEntity<OfficeHoursDto> update(
-            @RequestParam(name = "pwzNumber") String doctorPwzNumber,
             @RequestBody OfficeHoursDto updatedOfficeHours
     ) {
-        Doctor doctorToUpdateOfficeHours = doctorService.findByPwzNumber(doctorPwzNumber);
-        updatedOfficeHours = OfficeHoursMapper.INSTANCE.mapFromEntity(doctorOfficeHoursService.update(doctorToUpdateOfficeHours, updatedOfficeHours));
+        updatedOfficeHours = OfficeHoursMapper.INSTANCE.mapFromEntity(doctorOfficeHoursService.update(updatedOfficeHours));
 
         return ResponseEntity.ok(updatedOfficeHours);
     }

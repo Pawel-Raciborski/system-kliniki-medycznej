@@ -44,6 +44,9 @@ public class Doctor {
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.REMOVE)
     private Set<DoctorOfficeHours> doctorOfficeHours;
 
+    @Column(name = "profile_image_path")
+    private String profileImagePath;
+
     @Column(name = "pwz_number")
     private String pwzNumber;
 

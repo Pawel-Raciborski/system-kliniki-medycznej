@@ -16,7 +16,8 @@ public record DoctorDto(
         String postalCode,
         String apartmentNumber,
         String city,
-        List<DoctorSpecializationDto> doctorSpecializations
+        List<DoctorSpecializationDto> doctorSpecializations,
+        String profileImagePath
 
 ) {
 }

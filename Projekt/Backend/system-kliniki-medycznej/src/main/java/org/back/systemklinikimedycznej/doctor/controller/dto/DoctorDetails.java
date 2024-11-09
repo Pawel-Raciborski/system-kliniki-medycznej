@@ -9,6 +9,7 @@ import java.util.List;
 public record DoctorDetails(
         String username,
         String email,
+        String profileImagePath,
         PersonalDetailsDto personalDetails,
         String description,
         List<DoctorSpecializationDto> doctorSpecializations,
