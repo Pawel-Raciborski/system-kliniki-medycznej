@@ -5,8 +5,10 @@ import lombok.*;
 import org.back.systemklinikimedycznej.patient.repositories.entities.patient_card.PatientCard;
 import org.back.systemklinikimedycznej.personal_details.repositories.entities.PersonalDetails;
 import org.back.systemklinikimedycznej.account.repositories.entities.Account;
+import org.back.systemklinikimedycznej.prescription.repositories.entities.Prescription;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -32,4 +34,7 @@ public class Patient {
 
     @OneToOne(mappedBy = "patient")
     private PatientCard patientCard;
+
+    @OneToMany(mappedBy = "patient")
+    private Set<Prescription> prescriptions;
 }
