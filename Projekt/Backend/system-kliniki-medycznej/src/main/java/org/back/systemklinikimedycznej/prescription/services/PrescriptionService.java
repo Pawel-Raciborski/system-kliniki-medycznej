@@ -1,2 +1,35 @@
-package org.back.systemklinikimedycznej.prescription.services;public class PrescriptionService {
+package org.back.systemklinikimedycznej.prescription.services;
+
+import lombok.RequiredArgsConstructor;
+import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
+import org.back.systemklinikimedycznej.doctor.services.DoctorService;
+import org.back.systemklinikimedycznej.patient.repositories.entities.Patient;
+import org.back.systemklinikimedycznej.patient.services.PatientService;
+import org.back.systemklinikimedycznej.prescription.dto.CreatePrescriptionForm;
+import org.back.systemklinikimedycznej.prescription.repositories.PrescriptionRepository;
+import org.back.systemklinikimedycznej.prescription.repositories.entities.Prescription;
+import org.back.systemklinikimedycznej.prescription.util.PrescriptionManagerUtil;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+public class PrescriptionService {
+    private final DoctorService doctorService;
+    private final PatientService patientService;
+    private final PrescriptionMedicineService prescriptionMedicineService;
+    private final PrescriptionRepository prescriptionRepository;
+
+    @Transactional
+    public Prescription create(CreatePrescriptionForm createPrescriptionForm) {
+        Doctor doctor = doctorService.findById(createPrescriptionForm.doctorId());
+        Patient patient = patientService.findById(createPrescriptionForm.patientId());
+
+
+        Prescription prescriptionToCreate = PrescriptionManagerUtil.buildPrescription(doctor, patient, createPrescriptionForm.expirationDate(), createPrescriptionForm.description());
+        Prescription savedPrescription = prescriptionRepository.save(prescriptionToCreate);
+        prescriptionMedicineService.savePrescriptionMedicines(savedPrescription,createPrescriptionForm.prescriptionMedicineList());
+
+        return savedPrescription;
+    }
 }
