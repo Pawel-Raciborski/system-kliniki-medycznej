@@ -30,10 +30,17 @@ public class ApplicationConfig {
 
         JavaTimeModule javaTimeModule = new JavaTimeModule();
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter reverseDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter isoDate = DateTimeFormatter.ISO_DATE;
+
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         javaTimeModule.addSerializer(LocalDate.class,new LocalDateSerializer(dateFormatter));
+        javaTimeModule.addSerializer(LocalDate.class,new LocalDateSerializer(isoDate));
+        javaTimeModule.addSerializer(LocalDate.class,new LocalDateSerializer(reverseDate));
+        javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(isoDate));
         javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(dateFormatter));
+        javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(reverseDate));
 
         javaTimeModule.addSerializer(LocalTime.class,new LocalTimeSerializer(timeFormatter));
         javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(timeFormatter));
