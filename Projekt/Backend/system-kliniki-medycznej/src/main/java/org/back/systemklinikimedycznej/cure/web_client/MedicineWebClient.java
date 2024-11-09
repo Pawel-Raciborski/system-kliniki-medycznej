@@ -11,6 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MedicineWebClient {
@@ -18,7 +19,10 @@ public class MedicineWebClient {
 
     public MedicineWebClient() {
         this.webClient = WebClient.builder()
-                .baseUrl(RPLApiEndpointUtil.MEDICINAL_PRODUCTS_SEARCH_ENDPOINT)
+                .baseUrl(RPLApiEndpointUtil.MEDICINAL_PRODUCTS_SEARCH_ENDPOINT + "?specimenTypeEnum={specimenType}")
+                .defaultUriVariables(Map.of(
+                        "specimenType", SpecimenType.HUMAN.getName()
+                ))
                 .build();
     }
 
@@ -38,5 +42,33 @@ public class MedicineWebClient {
                 .block();
 
 
+    }
+
+    public MedicineListDto findByAtcCode(String atcCode) {
+        return this.webClient.get()
+                .uri(uriBuilder -> uriBuilder.path("/public")
+                        .queryParam("atcCode",atcCode)
+                        .queryParam("specimenTypeEnum", SpecimenType.HUMAN.getName())
+                        .build()
+                )
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(MedicineListDto.class)
+                .block();
+    }
+
+    public MedicineListDto findByCommonName(String commonName) {
+        return null;
+    }
+
+    public MedicineListDto findByRegistryNumber(String registryNumber) {
+        return this.webClient.get()
+                .uri(uriBuilder -> uriBuilder.path("/public")
+                        .queryParam("registryNumber",registryNumber)
+                        .build())
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(MedicineListDto.class)
+                .block();
     }
 }

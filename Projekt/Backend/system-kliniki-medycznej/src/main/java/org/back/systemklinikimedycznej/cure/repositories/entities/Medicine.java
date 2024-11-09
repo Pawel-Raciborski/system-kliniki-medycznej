@@ -6,11 +6,12 @@ import org.back.systemklinikimedycznej.patient.repositories.entities.patient_dis
 
 import java.util.Set;
 
+@With
 @Getter
 @Setter
 @Builder
 @Entity
-@Table(name = "cure")
+@Table(name = "medicine")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Medicine {
