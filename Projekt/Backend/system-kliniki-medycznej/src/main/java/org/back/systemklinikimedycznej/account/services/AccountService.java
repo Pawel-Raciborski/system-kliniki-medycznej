@@ -59,4 +59,9 @@ public class AccountService {
 
         return accountRepository.save(accountToUpdate);
     }
+
+    public Account findById(Long userId) {
+        return accountRepository.findById(userId)
+                .orElseThrow(() -> new AccountException("Nie znaleziono konta o podanym identyfikatorze!",HttpStatus.NOT_FOUND));
+    }
 }

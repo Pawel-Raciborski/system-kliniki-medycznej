@@ -1,5 +1,6 @@
 package org.back.systemklinikimedycznej.account.mapper;
 
+import org.back.systemklinikimedycznej.account.dto.AccountData;
 import org.back.systemklinikimedycznej.account.dto.AccountDto;
 import org.back.systemklinikimedycznej.account.dto.AccountInfo;
 import org.back.systemklinikimedycznej.account.repositories.entities.Account;
@@ -20,4 +21,6 @@ public interface AccountMapper {
             @Mapping(target = "newEmail", source = "email")
     })
     AccountInfo mapFromAccountToAccountInfo(Account account);
+
+    AccountData mapFromAccountToAccountData(Account account);
 }
