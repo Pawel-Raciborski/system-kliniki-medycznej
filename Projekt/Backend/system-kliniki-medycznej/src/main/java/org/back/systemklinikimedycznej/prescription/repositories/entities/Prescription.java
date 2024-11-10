@@ -3,6 +3,7 @@ package org.back.systemklinikimedycznej.prescription.repositories.entities;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.back.systemklinikimedycznej.appointment.repositories.entities.AppointmentPrescription;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
@@ -10,7 +11,9 @@ import org.back.systemklinikimedycznej.patient.repositories.entities.Patient;
 
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.UUID;
 
+@Getter
 @Builder
 @Entity
 @Table(name = "prescription")
@@ -18,8 +21,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class Prescription {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
     @ManyToOne
     @JoinColumn(name="doctor_id")
     private Doctor doctor;

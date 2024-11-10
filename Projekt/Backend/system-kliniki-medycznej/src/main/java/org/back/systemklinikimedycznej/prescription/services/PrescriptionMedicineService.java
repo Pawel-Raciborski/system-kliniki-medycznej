@@ -36,4 +36,8 @@ public class PrescriptionMedicineService {
                 .prescription(prescription)
                 .build();
     }
+
+    public List<PrescriptionMedicine> findAllWithPrescription(Prescription prescription) {
+        return prescriptionMedicineRepository.findAllByPrescription(prescription);
+    }
 }

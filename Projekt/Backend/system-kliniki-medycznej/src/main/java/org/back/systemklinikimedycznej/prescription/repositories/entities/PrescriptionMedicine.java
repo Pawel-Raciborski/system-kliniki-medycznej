@@ -3,9 +3,11 @@ package org.back.systemklinikimedycznej.prescription.repositories.entities;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.back.systemklinikimedycznej.cure.repositories.entities.Medicine;
 
+@Getter
 @Builder
 @Entity
 @Table(name = "prescription_medicine_entry")
