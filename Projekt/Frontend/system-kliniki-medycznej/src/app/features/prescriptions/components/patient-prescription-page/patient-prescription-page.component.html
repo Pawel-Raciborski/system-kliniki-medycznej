@@ -1,0 +1,13 @@
+<div class="row mt-5">
+  <div class="col-md-12 mt-5">
+    <div class="row justify-content-center mb-4">
+      <div class="col-md-10">
+        <div class="row mb-5">
+          <h2 class="fw-light">Recepty <i class="bi bi-file-earmark-text"></i></h2>
+        </div>
+        <app-table-options [paginationOptions]="paginationOptions" (pageSizeEmitter)="onPageSizeChange($event)"></app-table-options>
+        <app-prescriptions-table [prescriptions]="prescriptions"></app-prescriptions-table>
+      </div>
+    </div>
+  </div>
+</div>
