@@ -4,12 +4,11 @@ import lombok.Builder;
 import org.back.systemklinikimedycznej.role.repository.entities.Role;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Builder
 public record LoginData(
-        UUID sessionId,
-        String username,
-        String email,
-        List<Role> roles) {
+        Map<String,Object> data
+) {
 }

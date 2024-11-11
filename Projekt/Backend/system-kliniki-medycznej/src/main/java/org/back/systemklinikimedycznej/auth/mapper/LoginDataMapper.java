@@ -10,5 +10,5 @@ public interface LoginDataMapper {
 
     LoginDataMapper INSTANCE = Mappers.getMapper(LoginDataMapper.class);
 
-    LoginDataDto mapFromDomain(LoginData loginData);
+//    LoginDataDto mapFromDomain(LoginData loginData);
 }
