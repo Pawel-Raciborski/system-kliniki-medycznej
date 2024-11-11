@@ -7,37 +7,39 @@
   <div class="row justify-content-center mt-3">
     <div class="col-md-10">
       <div class="text-center">
-        <img src="assets/images/doctor_profile_image.webp" width="150px" class="rounded-circle">
+        <img [src]="doctorInfo.profileImagePath" width="150px" class="rounded-circle">
       </div>
       <div class="row justify-content-center mt-2 border-bottom">
         <div class="col-md-6 text-center">
           <h3 class="text-dark">{{ doctorInfo.name }} {{ doctorInfo.surname }}</h3>
-          <p class="text-muted mb-0">{{doctorInfo.email}}</p>
-          <p class="text-muted mt-0">{{doctorInfo.phoneNumber}}</p>
+          <p class="text-muted mb-0">{{ doctorInfo.email }}</p>
+          <p class="text-muted mt-0">{{ doctorInfo.phoneNumber }}</p>
         </div>
       </div>
       <div class="row mt-3">
         <h6 class="text-dark">Opis</h6>
         <div class="col-md-10">
-          <p>{{doctorInfo.description}}</p>
+          <p>{{ doctorInfo.description }}</p>
         </div>
       </div>
       <div class="row mt-3">
         <h6 class="text-dark">Specjalizacje</h6>
         <div class="col-md-12">
           <div class="row">
-            @for (specialization of doctorSpecializations;track specialization){
+            @for (specialization of doctorSpecializations; track specialization) {
               <div class="col rounded mx-1 p-2 my-1 text-center break-word align-content-center bg-green">
-                <p class="m-0">{{specialization}}</p>
+                <p class="m-0">{{ specialization }}</p>
               </div>
             }
           </div>
         </div>
       </div>
       <div class="row justify-content-end mb-3 mt-3">
-        <div class="col-md-6 text-end p-1">
-          <button class="btn btn-outline-primary" (click)="openAppointmentDialog()">Umów na wizytę</button>
-        </div>
+        @if (showButton) {
+          <div class="col-md-6 text-end p-1">
+            <button class="btn btn-outline-primary" (click)="openAppointmentDialog()">Umów na wizytę</button>
+          </div>
+        }
       </div>
     </div>
   </div>

@@ -6,6 +6,8 @@ import {DoctorSpecializationService} from '../../../doctor-specialization/servic
 import {
   MakeAppointmentDialogComponent
 } from '../../../appointment/dialogs/make-appointment-dialog/make-appointment-dialog.component';
+import {UserService} from '../../../auth/services/user.service';
+import {DoctorInfoDialogDataWithConfig} from '../models/doctor-info-dialog-data-with-config';
 
 @Component({
   selector: 'app-doctor-info-dialog',
@@ -18,11 +20,15 @@ import {
 })
 export class DoctorInfoDialogComponent implements OnInit {
   doctorSpecializations: string[] = [];
+  doctorInfo!: DoctorInfo;
+  showButton: boolean = true;
+
   constructor(
-    @Inject(MAT_DIALOG_DATA) public doctorInfo: DoctorInfo,
+    @Inject(MAT_DIALOG_DATA) private doctorInfoDialogDataWithConfig: DoctorInfoDialogDataWithConfig,
     private doctorSpecializationService: DoctorSpecializationService,
     private dialogRef: MatDialogRef<DoctorInfoDialogComponent>,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    public userService: UserService
   ) {
   }
 
@@ -31,8 +37,12 @@ export class DoctorInfoDialogComponent implements OnInit {
       specializationNames => {
         this.doctorSpecializations = specializationNames;
       }
-    )
+    );
+
+    this.initDoctorInfoConfig();
+    this.initShowButton();
   }
+
   close() {
     this.dialogRef.close();
   }
@@ -44,5 +54,13 @@ export class DoctorInfoDialogComponent implements OnInit {
     }).afterClosed().subscribe(notification => {
       this.dialogRef.close(notification);
     });
+  }
+
+  private initDoctorInfoConfig() {
+    this.doctorInfo = this.doctorInfoDialogDataWithConfig.doctorInfo;
+  }
+
+  private initShowButton() {
+    this.showButton = this.doctorInfoDialogDataWithConfig.showCreateAppointmentButton;
   }
 }
