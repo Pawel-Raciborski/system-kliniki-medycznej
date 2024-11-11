@@ -1,0 +1,11 @@
+
+.click:hover{
+  cursor: pointer;
+  text-decoration: underline;
+
+}
+
+.max-parent-height{
+  max-height: 200px;
+  overflow: auto;
+}

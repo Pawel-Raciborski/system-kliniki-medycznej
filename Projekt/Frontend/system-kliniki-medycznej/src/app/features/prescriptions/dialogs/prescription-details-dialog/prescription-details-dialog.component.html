@@ -1,1 +1,44 @@
-<p>prescription-details-dialog works!</p>
+<div class="container-fluid">
+  <div class="row mt-3">
+    <div class="col-md-8">
+      <h4 class="modal-title">Informacje o recepcie</h4>
+    </div>
+    <div class="col-md-4 text-end">
+      <button (click)="closeModal()" class="btn btn-close"></button>
+    </div>
+  </div>
+  <hr/>
+  <div class="row mb-3">
+    <div class="col-md-12 mt-3">
+      <p>Identyfikator: <b class="text-muted">{{prescriptionDetails.id}}</b></p>
+      <p class="mb-1">Opis:</p>
+      <p class="text-muted">{{prescriptionDetails.description}}</p>
+    </div>
+    <div class="col-md-12">
+      <p class="text-muted mb-0">Wystawiono przez: <span (click)="showDoctorDetails()" class="text-primary click">{{getDoctorFullName}}</span></p>
+    </div>
+    <div class="col-md-6">
+      <p class="mb-0">Data wystawienia: <b>{{prescriptionDetails.createdAt | date:"d MMM yyyy"}}</b></p>
+    </div>
+    <div class="col-md-6">
+      <p class="mb-0">Data ważności: <b>{{prescriptionDetails.expirationDate | date:"d MMM yyyy"}}</b></p>
+    </div>
+    <div class="col-md-12 mt-3">
+      <h4 class="card-title">Lista leków</h4>
+      <div class="row">
+        <div class="col-md-12 max-parent-height">
+          @for (prescription of prescriptionDetails.prescriptionMedicineInfoList; let id=$index; track id){
+            <div class="row m-1">
+              <div class="col-md-6 border align-content-center p-1">
+                <p class="m-0">{{prescription.medicineName}}</p>
+              </div>
+              <div class="col-md-6 text-end bg-dark-subtle p-1">
+                <p class="m-0">{{prescription.dosage}}</p>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
