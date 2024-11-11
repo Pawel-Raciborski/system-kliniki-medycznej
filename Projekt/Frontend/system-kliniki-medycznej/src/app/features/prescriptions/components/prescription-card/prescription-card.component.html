@@ -1,0 +1,20 @@
+<div class="card">
+  <img class="card-img-top" src="assets/images/file_image.webp" alt="file image"/>
+  <div class="card-body">
+    <h5 class="card-title text-dark">Recepta</h5>
+    <h6 class="card-subtitle mb-2 text-muted">{{ prescription.uuid }}</h6>
+    <hr/>
+    <p class="text-muted fs-6 mt-4">{{prescription.description}}</p>
+    <p class="card-text mt-3 mb-0">Wystawiono przez: <span
+      class="text-primary fw-light hover-underline">{{ getDoctorFullName }}</span></p>
+    <p class="m-0 mb-3">Data ważności: {{prescription.expiration_date | date: 'd MMM yyyy'}}</p>
+    <div class="row">
+      <div class="col-md-6">
+        <button class="btn btn-primary" (click)="showPrescriptionDetails()">Szczegóły</button>
+      </div>
+      <div class="col-md-6 text-end">
+        <button class="btn btn-outline-success mx-2"><i class="bi bi-download"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
