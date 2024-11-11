@@ -1,0 +1,9 @@
+<div class="row">
+  @for (prescription of prescriptions; track prescription.uuid) {
+    <div class="col-md-4 mt-5">
+      <div class="col-md-12 card-hover">
+        <app-prescription-card [prescription]="prescription"></app-prescription-card>
+      </div>
+    </div>
+  }
+</div>
