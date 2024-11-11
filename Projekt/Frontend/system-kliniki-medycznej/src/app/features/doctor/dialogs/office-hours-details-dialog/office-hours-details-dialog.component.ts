@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {DoctorOfficeHoursDialogData} from '../models/doctor-office-hours-dialog-data';
 
 @Component({
@@ -12,24 +12,27 @@ import {DoctorOfficeHoursDialogData} from '../models/doctor-office-hours-dialog-
   templateUrl: './office-hours-details-dialog.component.html',
   styleUrl: './office-hours-details-dialog.component.css'
 })
-export class OfficeHoursDetailsDialogComponent implements OnInit{
+export class OfficeHoursDetailsDialogComponent {
+  form: FormGroup = new FormGroup({
+    day: new FormControl(''),
+    startHour: new FormControl(''),
+    endHour: new FormControl(''),
+    durationInMinutes: new FormControl('')
+  });
+
   constructor(
-    @Inject(MAT_DIALOG_DATA) private doctorOfficeHoursDialogData: DoctorOfficeHoursDialogData,
+    @Inject(MAT_DIALOG_DATA) public doctorOfficeHoursDialogData: DoctorOfficeHoursDialogData,
               private dialogRef: MatDialogRef<OfficeHoursDetailsDialogComponent>) {
-  }
 
-  ngOnInit(): void {
-
+    if(doctorOfficeHoursDialogData.officeHours){
+      this.form.patchValue(doctorOfficeHoursDialogData.officeHours);
+    }
   }
 
   onOfficeHoursSubmit() {
     this.dialogRef.close(
-    {...this.doctorOfficeHoursDialogData.doctorOfficeHoursForm.value}
+    {...this.form.value}
     );
-  }
-
-  get doctorOfficeHoursForm(){
-    return this.doctorOfficeHoursDialogData.doctorOfficeHoursForm;
   }
 
   get isNewData(){
