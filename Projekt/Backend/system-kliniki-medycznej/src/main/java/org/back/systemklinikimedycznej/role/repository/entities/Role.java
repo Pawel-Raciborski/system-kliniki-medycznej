@@ -19,9 +19,9 @@ public class Role {
     private String name;
     private String description;
 
-    @OneToMany(mappedBy = "role", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<RolePermission> rolePermissions;
 
-    @OneToMany(mappedBy = "role", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "role",fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<AccountRole> accountRoles;
 }

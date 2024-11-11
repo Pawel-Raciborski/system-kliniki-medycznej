@@ -2,6 +2,9 @@ package org.back.systemklinikimedycznej.account.repositories.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
+import org.back.systemklinikimedycznej.patient.repositories.entities.Patient;
+import org.back.systemklinikimedycznej.receptionist.repositories.entities.Receptionist;
 import org.back.systemklinikimedycznej.role.repository.entities.AccountRole;
 
 import java.time.LocalDateTime;
@@ -29,4 +32,13 @@ public class Account {
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
     private Set<AccountRole> accountRoles;
+
+    @OneToOne(mappedBy = "account")
+    private Doctor doctor;
+
+    @OneToOne(mappedBy = "account")
+    private Patient patient;
+
+    @OneToOne(mappedBy = "account")
+    private Receptionist receptionist;
 }
