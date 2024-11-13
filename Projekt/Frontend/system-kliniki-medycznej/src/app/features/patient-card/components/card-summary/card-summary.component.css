@@ -1,0 +1,38 @@
+* {
+  font-family: Roboto, Arial, sans-serif;
+}
+
+.bg-blue {
+  background-color: rgb(4, 68, 124);
+  color: whitesmoke;
+}
+
+.personal-details > div {
+  transition: 0.2s ease-in-out;
+}
+
+.personal-details > div:hover {
+  background-color: #15558DFF;
+  cursor: pointer;
+}
+
+.border-right{
+  border:0;
+  border-right: 1px solid #dee2e6;
+}
+.hover-div > div{
+  transition: 0.2s ease-in-out;
+}
+.hover-div > div:hover{
+  background-color: #ececec;
+  cursor: pointer;
+}
+
+.bg-dark-hover > div{
+  transition: 0.2s ease-in-out;
+}
+
+.bg-dark-hover > div:hover{
+  background-color: #32363AFF;
+  cursor: pointer;
+}
