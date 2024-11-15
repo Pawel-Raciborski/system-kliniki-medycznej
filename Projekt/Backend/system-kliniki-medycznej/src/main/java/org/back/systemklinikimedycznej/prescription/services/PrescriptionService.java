@@ -50,4 +50,8 @@ public class PrescriptionService {
         return prescriptionRepository.findById(id)
                 .orElseThrow(() -> new PrescriptionException("Nie znaleziono recepty z identyfikatorem [%s]".formatted(id), HttpStatus.NOT_FOUND));
     }
+
+    public Long countPatientPrescriptions(Patient patient) {
+        return prescriptionRepository.countPatientPrescriptions(patient);
+    }
 }

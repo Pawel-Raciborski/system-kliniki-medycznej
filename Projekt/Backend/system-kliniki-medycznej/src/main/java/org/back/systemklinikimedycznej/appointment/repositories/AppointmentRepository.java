@@ -1,6 +1,7 @@
 package org.back.systemklinikimedycznej.appointment.repositories;
 
 import org.back.systemklinikimedycznej.appointment.repositories.entities.Appointment;
+import org.back.systemklinikimedycznej.patient.repositories.entities.patient_card.PatientCard;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -57,4 +58,20 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
     )
     """)
     List<Appointment> findUpcomingAppointments(Pageable pageable, @Param("pesel") String pesel);
+
+    @Query("""
+    SELECT COUNT(app) FROM Appointment app
+    WHERE app.patientCard = :patientCard
+    AND app.status = org.back.systemklinikimedycznej.appointment.domain.AppointmentStatus.SCHEDULED
+    """)
+    Long countPatientUpcomingAppointments(@Param("patientCard") PatientCard patientCard);
+
+    @Query("""
+    SELECT app FROM Appointment app
+    WHERE app.patientCard = :patientCard
+    AND app.status = org.back.systemklinikimedycznej.appointment.domain.AppointmentStatus.SCHEDULED
+    ORDER BY app.appointmentDateTime DESC
+    LIMIT 1
+    """)
+    Optional<Appointment> findNextPatientAppointment(@Param("patientCard") PatientCard patientCard);
 }

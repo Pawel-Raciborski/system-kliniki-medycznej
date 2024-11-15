@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -57,5 +58,13 @@ public class AppointmentService {
     public List<LocalTime> findBookedAppointmentHoursForADoctorInGivenDay(Doctor doctor, LocalDate date) {
         return appointmentRepository.findBookedAppointmentHoursForADoctorInGivenDay(doctor.getPwzNumber(),date).stream()
                 .map(LocalDateTime::toLocalTime).toList();
+    }
+
+    public Long countUpcomingAppointmentsForPatient(PatientCard patientCard) {
+        return appointmentRepository.countPatientUpcomingAppointments(patientCard);
+    }
+
+    public Optional<Appointment> findNextPatientAppointment(PatientCard patientCard) {
+        return appointmentRepository.findNextPatientAppointment(patientCard);
     }
 }

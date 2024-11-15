@@ -1,2 +1,4 @@
-package org.back.systemklinikimedycznej.patient.controllers.dto;public class HospitalizationInfo {
+package org.back.systemklinikimedycznej.patient.controllers.dto;
+
+public record HospitalizationInfo () {
 }

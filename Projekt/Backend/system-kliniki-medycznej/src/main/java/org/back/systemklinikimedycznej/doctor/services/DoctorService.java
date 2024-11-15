@@ -99,4 +99,8 @@ public class DoctorService {
                 () -> new DoctorNotFoundException("Nie znaleziono lekarza",HttpStatus.NOT_FOUND)
         );
     }
+
+    public Long countAvailableDoctors() {
+        return doctorRepository.count();
+    }
 }

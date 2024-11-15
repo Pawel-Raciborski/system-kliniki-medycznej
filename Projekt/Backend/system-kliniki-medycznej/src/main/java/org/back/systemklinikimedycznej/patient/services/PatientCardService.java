@@ -2,6 +2,7 @@ package org.back.systemklinikimedycznej.patient.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.back.systemklinikimedycznej.patient.controllers.dto.SummaryResponse;
 import org.back.systemklinikimedycznej.patient.exceptions.PatientCardException;
 import org.back.systemklinikimedycznej.patient.repositories.PatientCardRepository;
 import org.back.systemklinikimedycznej.patient.repositories.entities.Patient;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -52,5 +54,11 @@ public class PatientCardService {
     public PatientCard findPatientCardWithPesel(String pesel) {
         return patientCardRepository.findCardForPatientWithPesel(pesel)
                 .orElseThrow(() -> new PatientCardException("Nie znaleziono karty dla pacjena o peselu %s".formatted(pesel),HttpStatus.NOT_FOUND));
+    }
+
+    public PatientCard findById(UUID uuid){
+        return patientCardRepository.findById(uuid).orElseThrow(
+                () -> new PatientCardException("Nie znaleziono karty z identyfikatorem [%s]".formatted(uuid),HttpStatus.NOT_FOUND)
+        );
     }
 }
