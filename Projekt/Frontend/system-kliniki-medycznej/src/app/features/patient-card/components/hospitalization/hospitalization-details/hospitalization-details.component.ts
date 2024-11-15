@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {PatientDiseaseHospitalizationInfo} from '../../../model/patient-disease-hospitalization-info';
 
 @Component({
   selector: 'app-hospitalization-details',
@@ -8,5 +9,13 @@ import { Component } from '@angular/core';
   styleUrl: './hospitalization-details.component.css'
 })
 export class HospitalizationDetailsComponent {
+  @Input({required: true}) patientDiseaseHospitalizationInfo!: PatientDiseaseHospitalizationInfo;
 
+  get getMedicine(){
+    return this.patientDiseaseHospitalizationInfo.currentHospitalization.medicine;
+  }
+
+  get getHospitalization(){
+    return this.patientDiseaseHospitalizationInfo.currentHospitalization;
+  }
 }

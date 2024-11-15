@@ -1,3 +1,5 @@
+import {HospitalizationInfo} from './hospitalization-info';
+
 export interface PatientDiseaseHospitalizationInfo {
   id: number;
   description: string;
@@ -5,5 +7,5 @@ export interface PatientDiseaseHospitalizationInfo {
   detectionDate: string;
   cureStatus: string;
   finishCureDate: string;
-  currentHospitalization: string
+  currentHospitalization: HospitalizationInfo;
 }

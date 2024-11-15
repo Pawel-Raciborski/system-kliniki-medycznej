@@ -2,11 +2,14 @@ import {Component, Input, OnInit} from '@angular/core';
 import {PatientCardService} from '../../../services/patient-card.service';
 import {Pagination} from '../../../../pagination/model/pagination';
 import {PatientDiseaseHospitalizationInfo} from '../../../model/patient-disease-hospitalization-info';
+import {HospitalizationDetailsComponent} from '../hospitalization-details/hospitalization-details.component';
 
 @Component({
   selector: 'app-patient-hospitalization',
   standalone: true,
-  imports: [],
+  imports: [
+    HospitalizationDetailsComponent
+  ],
   templateUrl: './patient-hospitalization.component.html',
   styleUrl: './patient-hospitalization.component.css'
 })

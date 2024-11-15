@@ -1,5 +1,8 @@
 <div class="row mt-5">
   <h3 class="fw-light">Hospitalizacja</h3>
+  @for (patientDiseaseHospitalizationInfo of patientDiseaseHospitalizationInfoList; track patientDiseaseHospitalizationInfo.id) {
+    <app-hospitalization-details [patientDiseaseHospitalizationInfo]="patientDiseaseHospitalizationInfo"></app-hospitalization-details>
+  }
   <div class="row mt-3">
 
   </div>
