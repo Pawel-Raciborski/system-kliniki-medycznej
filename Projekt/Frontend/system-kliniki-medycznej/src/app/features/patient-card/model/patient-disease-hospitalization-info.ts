@@ -1,4 +1,5 @@
 import {HospitalizationInfo} from './hospitalization-info';
+import {BasicDiseaseInfo} from '../../disease/model/basic-disease-info';
 
 export interface PatientDiseaseHospitalizationInfo {
   id: number;
@@ -8,4 +9,5 @@ export interface PatientDiseaseHospitalizationInfo {
   cureStatus: string;
   finishCureDate: string;
   currentHospitalization: HospitalizationInfo;
+  diseaseInfo: BasicDiseaseInfo;
 }
