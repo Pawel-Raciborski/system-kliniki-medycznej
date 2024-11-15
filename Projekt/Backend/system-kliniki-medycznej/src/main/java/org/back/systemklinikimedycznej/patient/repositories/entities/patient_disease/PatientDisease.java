@@ -1,6 +1,8 @@
 package org.back.systemklinikimedycznej.patient.repositories.entities.patient_disease;
 
 import jakarta.persistence.*;
+import org.back.systemklinikimedycznej.disease.repository.entities.Disease;
+import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.patient.domain.CureStatus;
 import org.back.systemklinikimedycznej.patient.repositories.entities.patient_card.PatientCard;
 
@@ -16,8 +18,12 @@ public class PatientDisease {
     @ManyToOne
     @JoinColumn(name = "patient_card_id")
     private PatientCard patientCard;
-    @Column(name = "disease_name")
-    private String diseaseName;
+    @ManyToOne
+    @JoinColumn(name="disease_id")
+    private Disease disease;
+    @ManyToOne
+    @JoinColumn(name="doctor_id")
+    private Doctor detectedDoctor;
     @Column(name = "description")
     private String description;
     @Column(name = "detection_date")
