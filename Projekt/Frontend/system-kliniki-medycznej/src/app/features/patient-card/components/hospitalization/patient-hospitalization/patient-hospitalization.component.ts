@@ -13,6 +13,7 @@ import {PatientDiseaseHospitalizationInfo} from '../../../model/patient-disease-
 export class PatientHospitalizationComponent implements OnInit{
   @Input({required:true}) patientCardId!: string;
   patientDiseaseHospitalizationInfoList: PatientDiseaseHospitalizationInfo[] = [];
+
   pagination: Pagination = {
     page: 0,
     pageSize: 10
@@ -26,7 +27,7 @@ export class PatientHospitalizationComponent implements OnInit{
   ngOnInit(): void {
         this.patientCardService.getHospitalizationHistory(this.patientCardId,this.pagination)
           .subscribe(data => {
-            console.log(data);
+            this.patientDiseaseHospitalizationInfoList = data;
           });
     }
 }

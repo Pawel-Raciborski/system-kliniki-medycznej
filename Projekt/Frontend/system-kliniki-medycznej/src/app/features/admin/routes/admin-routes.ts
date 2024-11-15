@@ -25,7 +25,8 @@ export const adminRoutes: Routes = [
   },
   {
     path:'doctors/:pwzNumber',
-    component: DoctorDetailsComponent
+    component: DoctorDetailsComponent,
+
   },
   {
     path:'receptionists',

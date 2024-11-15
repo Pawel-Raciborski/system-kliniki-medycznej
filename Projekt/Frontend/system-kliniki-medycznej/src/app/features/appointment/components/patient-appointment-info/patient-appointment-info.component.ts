@@ -34,7 +34,10 @@ export class PatientAppointmentInfoComponent {
 
   private openDoctorInfoDialog(doctorInfo: DoctorInfo) {
     this.dialog.open(DoctorInfoDialogComponent,{
-      data: doctorInfo,
+      data: {
+        doctorInfo: doctorInfo,
+        showCreateAppointmentButton: true
+      },
       width: '800px'
     });
   }

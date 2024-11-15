@@ -10,6 +10,7 @@ export class OfficeHoursService {
 
   constructor(private httpClient: HttpClient) { }
 
+  // Tutaj będzie przekazywane ID
   update(data: OfficeHours): Observable<OfficeHours> {
     let randomNumber = Math.floor(Math.random() * 11);
     console.log(randomNumber);
@@ -21,11 +22,12 @@ export class OfficeHoursService {
     return of(data);
   }
 
-  delete(dayToRemove: string) {
-    console.log(`Removing : [${dayToRemove}]`);
+  delete(officeHoursToRemove: OfficeHours): Observable<OfficeHours> {
+    console.log(`Removing :`,officeHoursToRemove);
+    return of(officeHoursToRemove);
   }
 
-  create(officeHoursToCreate: OfficeHours) : Observable<OfficeHours> {
+  create(officeHoursToCreate: OfficeHours, pwzNumber: string) : Observable<OfficeHours> {
     return of(officeHoursToCreate);
   }
 

@@ -5,3 +5,7 @@ ul > li > a {
 ul > li > a:hover {
   color: #c1c1c1;
 }
+
+.bg-blue{
+  background-color: rgb(2, 59, 109);
+}

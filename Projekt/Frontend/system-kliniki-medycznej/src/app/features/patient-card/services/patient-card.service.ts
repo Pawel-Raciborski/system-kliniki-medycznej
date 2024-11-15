@@ -4,6 +4,7 @@ import {LocalStorageService} from '../../auth/services/local-storage.service';
 import {HttpClient} from '@angular/common/http';
 import {Pagination} from '../../pagination/model/pagination';
 import {CardSummary} from '../model/card-summary';
+import {PatientDiseaseHospitalizationInfo} from '../model/patient-disease-hospitalization-info';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class PatientCardService {
     return of();
   }
 
-  getHospitalizationHistory(patientCardId: string, pagination: Pagination) :Observable<any>{
+  getHospitalizationHistory(patientCardId: string, pagination: Pagination) :Observable<PatientDiseaseHospitalizationInfo[]>{
     return of()
   }
 }

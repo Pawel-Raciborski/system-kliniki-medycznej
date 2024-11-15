@@ -25,7 +25,10 @@ export class DoctorsTableComponent {
 
   showDoctorDetails(doctor: DoctorInfo) {
     this.dialog.open(DoctorInfoDialogComponent,{
-      data: doctor,
+      data: {
+        doctorInfo: doctor,
+        showCreateAppointmentButton: true
+      },
       width: '800px'
     }).afterClosed().subscribe(notification => {
       this.notificationMessageEmitter.emit({

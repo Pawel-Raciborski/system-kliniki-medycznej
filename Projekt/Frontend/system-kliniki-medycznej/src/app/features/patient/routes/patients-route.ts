@@ -5,6 +5,9 @@ import {
 import {PatientProfileComponent} from '../components/patient-profile/patient-profile.component';
 import {PatientCardComponent} from '../../patient-card/components/patient-card/patient-card.component';
 import {AvailableDoctorsComponent} from '../../doctor/components/available-doctors/available-doctors.component';
+import {
+  PatientPrescriptionPageComponent
+} from '../../prescriptions/components/patient-prescription-page/patient-prescription-page.component';
 
 export const patientRoutes: Routes = [
   {
@@ -27,5 +30,9 @@ export const patientRoutes: Routes = [
   {
     path: 'doctors',
     component: AvailableDoctorsComponent
+  },
+  {
+    path: 'prescriptions',
+    component: PatientPrescriptionPageComponent
   }
 ];

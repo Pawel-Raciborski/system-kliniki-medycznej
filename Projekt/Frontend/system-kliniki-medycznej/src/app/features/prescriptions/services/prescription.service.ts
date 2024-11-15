@@ -167,7 +167,7 @@ export class PrescriptionService {
 
   public getPrescriptions(paginationOptions: {page:number,pageSize:number}): Observable<PrescriptionInfo[]> {
     console.log(paginationOptions);
-    let patientId = this.localStorage.getId("patientId");
+    let patientId = this.localStorage.getKeyValue("patientId");
     console.log(patientId);
 
     const slicedPrescriptions = this.prescriptions.slice(paginationOptions.page * paginationOptions.pageSize, (paginationOptions.page + 1) * paginationOptions.pageSize)

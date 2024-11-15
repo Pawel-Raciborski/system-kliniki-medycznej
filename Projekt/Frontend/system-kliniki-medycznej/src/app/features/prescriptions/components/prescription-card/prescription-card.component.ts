@@ -31,7 +31,7 @@ export class PrescriptionCardComponent {
     console.log(this.prescription.uuid);
     this.dialog.open(PrescriptionDetailsDialogComponent,{
       data: this.prescription.uuid,
-      minWidth: '700px',
+      minWidth: '600px',
     });
   }
 }

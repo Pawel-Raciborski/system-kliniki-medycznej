@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import {LocalStorageService} from './features/auth/services/local-storage.service';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,13 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'system-kliniki-medycznej';
+
+  constructor(private localStorageService: LocalStorageService) {
+  }
+
+  ngOnInit(): void {
+        this.localStorageService.saveMockedData();
+    }
 }

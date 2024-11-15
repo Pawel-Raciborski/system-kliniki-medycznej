@@ -1,16 +1,19 @@
 <div class="row justify-content-center mb-3">
   <div class="col-md-8 align-content-center">
-    <p class="text-black-50 m-0"><b>Znaleziono</b> ({{ foundElements }} elementy)</p>
+    @if(foundElements !== 0){
+      <p class="text-black-50 m-0"><b>Znaleziono</b> ({{ foundElements }} elementy)</p>
+    }
   </div>
   <div class="col-md-4">
     <div class="row">
       <div class="col-md-5 align-content-center">
-        <p class="form-text text-black-50 m-0">Strona: {{paginationOptions.page+1}}</p>
+        <p class="form-text text-black-50 m-0">Strona: {{ paginationOptions.page + 1 }}</p>
       </div>
       <div class="col-md-4">
-        <select (change)="updateValue()" class="form-select form-select-sm" id="page" [formControl]="pageSizeControl" aria-label="Rozmiar">
-          @for (pS of availablePageSizes; track pS){
-            <option [value]="pS">{{pS}}</option>
+        <select (change)="updateValue()" class="form-select form-select-sm" id="page" [formControl]="pageSizeControl"
+                aria-label="Rozmiar">
+          @for (pS of availablePageSizes; track pS) {
+            <option [value]="pS">{{ pS }}</option>
           }
         </select>
       </div>

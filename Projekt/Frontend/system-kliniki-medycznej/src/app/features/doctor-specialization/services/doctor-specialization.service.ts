@@ -28,8 +28,8 @@ export class DoctorSpecializationService {
     return of(doctorSpecialization);
   }
 
-  delete(specializationName: string) {
-
+  delete(doctorSpecialization: DoctorSpecialization): Observable<DoctorSpecialization> {
+    return of(doctorSpecialization);
   }
 
   getAllAvailableSpecializationNames() : Observable<string[]>{
