@@ -1,6 +1,8 @@
 package org.back.systemklinikimedycznej.prescription.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.back.systemklinikimedycznej.model.Pagination;
+import org.back.systemklinikimedycznej.prescription.controller.dto.PrescriptionInfo;
 import org.back.systemklinikimedycznej.prescription.dto.CreatePrescriptionForm;
 import org.back.systemklinikimedycznej.prescription.dto.PrescriptionDetails;
 import org.back.systemklinikimedycznej.prescription.repositories.entities.Prescription;
@@ -9,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -18,10 +21,10 @@ public class PrescriptionController {
     private final PrescriptionService prescriptionService;
 
     @PostMapping("/create")
-    public ResponseEntity<Prescription> create(
+    public ResponseEntity<PrescriptionInfo> create(
             @RequestBody CreatePrescriptionForm createPrescriptionForm
     ) {
-        Prescription createdPrescription = prescriptionService.create(createPrescriptionForm);
+        PrescriptionInfo createdPrescription = prescriptionService.create(createPrescriptionForm);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPrescription);
     }
@@ -31,5 +34,14 @@ public class PrescriptionController {
         PrescriptionDetails prescriptionDetails = prescriptionService.getPrescriptionDetails(id);
 
         return ResponseEntity.ok(prescriptionDetails);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PrescriptionInfo>> getPatientPrescriptions(
+            @RequestParam("patientId") Long patientId,
+            @RequestBody Pagination pagination
+            ){
+        List<PrescriptionInfo> patientPrescriptions = prescriptionService.findPatientPrescriptions(patientId, pagination);
+        return ResponseEntity.ok(patientPrescriptions);
     }
 }

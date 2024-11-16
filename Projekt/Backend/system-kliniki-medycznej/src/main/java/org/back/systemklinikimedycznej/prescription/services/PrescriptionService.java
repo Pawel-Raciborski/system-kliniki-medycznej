@@ -3,8 +3,10 @@ package org.back.systemklinikimedycznej.prescription.services;
 import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.doctor.services.DoctorService;
+import org.back.systemklinikimedycznej.model.Pagination;
 import org.back.systemklinikimedycznej.patient.repositories.entities.Patient;
 import org.back.systemklinikimedycznej.patient.services.PatientService;
+import org.back.systemklinikimedycznej.prescription.controller.dto.PrescriptionInfo;
 import org.back.systemklinikimedycznej.prescription.dto.CreatePrescriptionForm;
 import org.back.systemklinikimedycznej.prescription.dto.PrescriptionDetails;
 import org.back.systemklinikimedycznej.prescription.exceptions.PrescriptionException;
@@ -12,6 +14,8 @@ import org.back.systemklinikimedycznej.prescription.repositories.PrescriptionRep
 import org.back.systemklinikimedycznej.prescription.repositories.entities.Prescription;
 import org.back.systemklinikimedycznej.prescription.repositories.entities.PrescriptionMedicine;
 import org.back.systemklinikimedycznej.prescription.util.PrescriptionManagerUtil;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +32,7 @@ public class PrescriptionService {
     private final PrescriptionRepository prescriptionRepository;
 
     @Transactional
-    public Prescription create(CreatePrescriptionForm createPrescriptionForm) {
+    public PrescriptionInfo create(CreatePrescriptionForm createPrescriptionForm) {
         Doctor doctor = doctorService.findById(createPrescriptionForm.doctorId());
         Patient patient = patientService.findById(createPrescriptionForm.patientId());
 
@@ -37,7 +41,7 @@ public class PrescriptionService {
         Prescription savedPrescription = prescriptionRepository.save(prescriptionToCreate);
         prescriptionMedicineService.savePrescriptionMedicines(savedPrescription,createPrescriptionForm.prescriptionMedicineList());
 
-        return savedPrescription;
+        return PrescriptionManagerUtil.buildPrescriptionInfo(savedPrescription);
     }
 
     @Transactional
@@ -53,5 +57,15 @@ public class PrescriptionService {
 
     public Long countPatientPrescriptions(Patient patient) {
         return prescriptionRepository.countPatientPrescriptions(patient);
+    }
+
+    public List<PrescriptionInfo> findPatientPrescriptions(Long patientId, Pagination pagination) {
+        Patient patient = patientService.findById(patientId);
+        Pageable pageRequest = PageRequest.of(pagination.page(),pagination.pageSize());
+
+        return prescriptionRepository.findPatientPrescriptions(patient,pageRequest).getContent()
+                .stream()
+                .map(PrescriptionManagerUtil::buildPrescriptionInfo)
+                .toList();
     }
 }
