@@ -31,4 +31,10 @@ public class DoctorManagerUtil {
                 .doctors(doctorInfos)
                 .build();
     }
+
+    public static String createDoctorFullName(Doctor doctor) {
+        PersonalDetails doctorPersonalDetails = doctor.getPersonalDetails();
+
+        return "%s %s".formatted(doctorPersonalDetails.getName(),doctorPersonalDetails.getSurname());
+    }
 }

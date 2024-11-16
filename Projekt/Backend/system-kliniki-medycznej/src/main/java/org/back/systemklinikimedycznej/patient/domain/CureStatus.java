@@ -1,11 +1,13 @@
 package org.back.systemklinikimedycznej.patient.domain;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Getter
 public enum CureStatus {
     CURING("W trakcie");
 

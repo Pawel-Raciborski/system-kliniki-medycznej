@@ -1,6 +1,7 @@
 package org.back.systemklinikimedycznej.patient.repositories.entities.patient_disease;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.back.systemklinikimedycznej.disease.repository.entities.Disease;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.patient.domain.CureStatus;
@@ -9,6 +10,7 @@ import org.back.systemklinikimedycznej.patient.repositories.entities.patient_car
 import java.time.LocalDate;
 import java.util.Set;
 
+@Getter
 @Entity
 @Table(name = "patient_disease")
 public class PatientDisease {

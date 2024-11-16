@@ -1,9 +1,15 @@
 package org.back.systemklinikimedycznej.disease.repository.entities;
 
 import jakarta.persistence.*;
+import lombok.*;
 
+@Builder
+@Getter
+@Setter
 @Entity
 @Table(name = "disease")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Disease {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
