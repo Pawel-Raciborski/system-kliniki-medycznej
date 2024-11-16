@@ -1,3 +1,41 @@
-<div class="row mt-4 p-3 border rounded-2">
-  dawdwa
+<div class="row mt-4 p-3 border rounded-0 shadow">
+  <h5 class="card-title mb-3 fw-light">Informacje o chorobie</h5>
+  <hr/>
+  <div class="col-md-8">
+    <p class="mb-0">Nazwa choroby: <span class="fw-light">{{getDiseaseInfo.title}}</span></p>
+    <p>Kod choroby: <span class="fw-light link-primary cursor-pointer">{{getDiseaseInfo.code}} <i class="bi bi-copy"></i></span></p>
+    <p>Data wykrycia: <span class="fw-light"><b>{{patientDiseaseHospitalizationInfo.detectionDate}}</b></span></p>
+    <p class="mb-0">Opis schorzenia:</p>
+    <p class="text-muted fw-light">{{patientDiseaseHospitalizationInfo.description}}</p>
+    <p class="card-text align-text-bottom">Lekarz prowadzący: <span class="fw-light text-primary">{{patientDiseaseHospitalizationInfo.doctorFullName}}</span></p>
+  </div>
+  <div class="col-md-4 border p-3">
+    <div class="row mb-2">
+      <div class="col-md-8">
+        <h5 class="card-title fw-light">Aktualne leczenie</h5>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-outline-primary">Szczegóły</button>
+      </div>
+    </div>
+    <div class="row pb-3 border-bottom">
+      <div class="col-md-6">
+        <p class="mb-0">Nazwa lekarstwa:</p>
+        <p class="mb-0 fw-light"><span class="text-primary">{{getMedicine.commonName}}</span></p>
+        <p class="mb-0">Kod lekarstwa:</p>
+        <p class="mb-0 fw-light"><span class="text-primary">{{getMedicine.atcCode || "brak"}}</span></p>
+      </div>
+      <div class="col-md-6">
+        <p class="mb-0">Dawkowanie:</p>
+        <p class="mb-0 fw-light">{{patientDiseaseHospitalizationInfo.currentHospitalization.cureDosage}}</p>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-md-12">
+        <p class="mb-0">Notatka lekarza</p>
+        <p class="fw-light">{{patientDiseaseHospitalizationInfo.currentHospitalization.notes}}</p>
+        <p>Data aktualizacji: <span class="fw-light">{{getHospitalization.medicineUpdateDate | date:"d MMM yyyy"}}</span></p>
+      </div>
+    </div>
+  </div>
 </div>

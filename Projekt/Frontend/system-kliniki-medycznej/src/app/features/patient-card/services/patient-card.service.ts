@@ -57,6 +57,11 @@ export class PatientCardService {
           notes: "Patient is responding well to treatment.",
           medicineUpdateDate: "2023-10-10",
         },
+        diseaseInfo: {
+          id: 1,
+          code: '1B70.Y',
+          title: 'Bakteryjne zapalenie tkanki łącznej lub naczyń chłonnych wywołane przez inną określoną bakterię'
+        }
       },
       {
         id: 2,
@@ -86,6 +91,11 @@ export class PatientCardService {
           notes: "Maintain blood glucose monitoring.",
           medicineUpdateDate: "2023-11-01",
         },
+        diseaseInfo: {
+          id: 2,
+          code: '1B74',
+          title: 'Powierzchowne bakteryjne zapalenie mieszków włosowych'
+        }
       },
       {
         id: 3,
@@ -115,6 +125,11 @@ export class PatientCardService {
           notes: "Patient achieved target blood pressure.",
           medicineUpdateDate: "2023-07-01",
         },
+        diseaseInfo: {
+          id: 3,
+          code: '1B74.0',
+          title: 'Powierzchowne zapalenie mieszków włosowych wywołane przez Staphylococcus aureus',
+        }
       },
     ];
 

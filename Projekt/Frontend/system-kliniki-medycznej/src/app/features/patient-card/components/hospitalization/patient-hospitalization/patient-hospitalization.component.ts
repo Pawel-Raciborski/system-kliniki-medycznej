@@ -33,4 +33,8 @@ export class PatientHospitalizationComponent implements OnInit{
             this.patientDiseaseHospitalizationInfoList = data;
           });
     }
+
+  loadMoreData() {
+
+  }
 }

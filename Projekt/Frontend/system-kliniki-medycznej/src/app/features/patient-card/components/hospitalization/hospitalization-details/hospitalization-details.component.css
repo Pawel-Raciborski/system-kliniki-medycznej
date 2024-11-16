@@ -1,0 +1,11 @@
+*{
+  font-family: Roboto, sans-serif;
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}
+
+.bg-blue{
+  background-color: rgb(2, 59, 109);
+}
