@@ -1,13 +1,36 @@
 <div class="row mt-4 p-3 border rounded-0 shadow">
-  <h5 class="card-title mb-3 fw-light">Informacje o chorobie</h5>
+  <h5 class="card-title mb-3 fw-light">Informacje o schorzeniu</h5>
   <hr/>
   <div class="col-md-8">
-    <p class="mb-0">Nazwa choroby: <span class="fw-light">{{getDiseaseInfo.title}}</span></p>
-    <p>Kod choroby: <span class="fw-light link-primary cursor-pointer">{{getDiseaseInfo.code}} <i class="bi bi-copy"></i></span></p>
-    <p>Data wykrycia: <span class="fw-light"><b>{{patientDiseaseHospitalizationInfo.detectionDate}}</b></span></p>
-    <p class="mb-0">Opis schorzenia:</p>
-    <p class="text-muted fw-light">{{patientDiseaseHospitalizationInfo.description}}</p>
-    <p class="card-text align-text-bottom">Lekarz prowadzący: <span class="fw-light text-primary">{{patientDiseaseHospitalizationInfo.doctorFullName}}</span></p>
+    <div class="row">
+      <div class="col-md-12">
+        <p class="mb-0">Nazwa choroby: <span class="fw-light">{{ getDiseaseInfo.title }}</span></p>
+        <p>Kod choroby: <span class="fw-light link-primary cursor-pointer">{{ getDiseaseInfo.code }} <i
+          class="bi bi-copy"></i></span></p>
+      </div>
+      <div class="row border-bottom pb-3">
+        <div class="col-md-6">
+          <p>Data wykrycia: <span class="fw-light"><b>{{ patientDiseaseHospitalizationInfo.detectionDate }}</b></span>
+          </p>
+        </div>
+        <div class="col-md-6">
+          <p class="mb-0"><span class="hover-underline">Przepisane recepty: <span
+            class="fw-light">12</span></span>
+          </p>
+          <p class="card-text align-text-bottom">Lekarz prowadzący: <span
+            class="fw-light text-primary">{{ patientDiseaseHospitalizationInfo.doctorFullName }}</span></p>
+        </div>
+      </div>
+      <div class="col-md-12 mt-3">
+        <p class="mb-0">Opis schorzenia:</p>
+        <p class="text-muted fw-light">{{ patientDiseaseHospitalizationInfo.description }}</p>
+      </div>
+    </div>
+    <div class="row mt-5 justify-content-center">
+      <div class="col-md-6 text-center">
+        <button (click)="displayPrescriptions()" class="btn btn-outline-dark">Wyświetl recepty</button>
+      </div>
+    </div>
   </div>
   <div class="col-md-4 border p-3">
     <div class="row mb-2">
@@ -21,21 +44,27 @@
     <div class="row pb-3 border-bottom">
       <div class="col-md-6">
         <p class="mb-0">Nazwa lekarstwa:</p>
-        <p class="mb-0 fw-light"><span class="text-primary">{{getMedicine.commonName}}</span></p>
+        <p class="mb-0 fw-light"><span class="text-primary">{{ getMedicine.commonName }}</span></p>
         <p class="mb-0">Kod lekarstwa:</p>
-        <p class="mb-0 fw-light"><span class="text-primary">{{getMedicine.atcCode || "brak"}}</span></p>
+        <p class="mb-0 fw-light"><span class="text-primary">{{ getMedicine.atcCode || "brak" }}</span></p>
       </div>
       <div class="col-md-6">
         <p class="mb-0">Dawkowanie:</p>
-        <p class="mb-0 fw-light">{{patientDiseaseHospitalizationInfo.currentHospitalization.cureDosage}}</p>
+        <p class="mb-0 fw-light">{{ patientDiseaseHospitalizationInfo.currentHospitalization.cureDosage }}</p>
       </div>
     </div>
     <div class="row mt-2">
       <div class="col-md-12">
         <p class="mb-0">Notatka lekarza</p>
-        <p class="fw-light">{{patientDiseaseHospitalizationInfo.currentHospitalization.notes}}</p>
-        <p>Data aktualizacji: <span class="fw-light">{{getHospitalization.medicineUpdateDate | date:"d MMM yyyy"}}</span></p>
+        <p class="fw-light">{{ patientDiseaseHospitalizationInfo.currentHospitalization.notes }}</p>
+        <p>Data aktualizacji: <span
+          class="fw-light">{{ getHospitalization.medicineUpdateDate | date:"d MMM yyyy" }}</span></p>
       </div>
     </div>
   </div>
+  @if (showPrescriptions) {
+    <div class="col-md-12">
+      Wyświetlanie
+    </div>
+  }
 </div>

@@ -9,3 +9,8 @@
 .bg-blue{
   background-color: rgb(2, 59, 109);
 }
+
+.hover-underline:hover{
+  cursor: pointer;
+  text-decoration: underline;
+}

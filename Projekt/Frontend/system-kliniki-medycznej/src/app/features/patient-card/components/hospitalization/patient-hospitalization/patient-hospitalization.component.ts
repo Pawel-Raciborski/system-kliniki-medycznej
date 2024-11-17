@@ -13,14 +13,15 @@ import {HospitalizationDetailsComponent} from '../hospitalization-details/hospit
   templateUrl: './patient-hospitalization.component.html',
   styleUrl: './patient-hospitalization.component.css'
 })
-export class PatientHospitalizationComponent implements OnInit{
-  @Input({required:true}) patientCardId!: string;
+export class PatientHospitalizationComponent implements OnInit {
+  @Input({required: true}) patientCardId!: string;
   patientDiseaseHospitalizationInfoList: PatientDiseaseHospitalizationInfo[] = [];
 
   pagination: Pagination = {
     page: 0,
     pageSize: 10
   };
+  lastLoadedPageSize: number = 10;
 
   constructor(
     private patientCardService: PatientCardService
@@ -28,11 +29,12 @@ export class PatientHospitalizationComponent implements OnInit{
   }
 
   ngOnInit(): void {
-        this.patientCardService.getHospitalizationHistory(this.patientCardId,this.pagination)
-          .subscribe(data => {
-            this.patientDiseaseHospitalizationInfoList = data;
-          });
-    }
+    this.patientCardService.getHospitalizationHistory(this.patientCardId, this.pagination)
+      .subscribe(data => {
+        this.patientDiseaseHospitalizationInfoList = data;
+        this.lastLoadedPageSize = data.length;
+      });
+  }
 
   loadMoreData() {
 

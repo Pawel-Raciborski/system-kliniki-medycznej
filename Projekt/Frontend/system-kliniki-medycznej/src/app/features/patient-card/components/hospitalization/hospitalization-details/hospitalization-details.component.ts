@@ -13,6 +13,7 @@ import {DatePipe} from '@angular/common';
 })
 export class HospitalizationDetailsComponent {
   @Input({required: true}) patientDiseaseHospitalizationInfo!: PatientDiseaseHospitalizationInfo;
+  showPrescriptions=false;
 
   get getMedicine(){
     return this.patientDiseaseHospitalizationInfo.currentHospitalization.medicine;
@@ -24,5 +25,9 @@ export class HospitalizationDetailsComponent {
 
   get getDiseaseInfo(){
     return this.patientDiseaseHospitalizationInfo.diseaseInfo;
+  }
+
+  displayPrescriptions() {
+    this.showPrescriptions=!this.showPrescriptions;
   }
 }
