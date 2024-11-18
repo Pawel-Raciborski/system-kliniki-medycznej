@@ -1,11 +1,11 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 import {HospitalizationInfo} from '../../../model/hospitalization-info';
-import {PatientCardService} from '../../../services/patient-card.service';
 import {Pagination} from '../../../../pagination/model/pagination';
 import {DatePipe} from '@angular/common';
 import {HospitalizationHistoryComponent} from '../hospitalization-history/hospitalization-history.component';
 import {TableOptionsComponent} from '../../../../doctor/components/doctor-table/table-options/table-options.component';
+import {PatientDiseaseService} from '../../../../patient-disease/services/patient-disease.service';
 
 @Component({
   selector: 'app-hospitalization-table-history',
@@ -30,7 +30,7 @@ export class HospitalizationTableHistoryComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private patientDiseaseId: number,
-    private patientCardService: PatientCardService,
+    private patientDiseaseService: PatientDiseaseService,
     private currentDialog: MatDialogRef<HospitalizationTableHistoryComponent>
   ) {
 
@@ -41,7 +41,7 @@ export class HospitalizationTableHistoryComponent implements OnInit {
   }
 
   private loadFirstPageHospitalizationHistory() {
-    this.patientCardService.getHospitalizationHistory(this.patientDiseaseId, this.pagination).subscribe(
+    this.patientDiseaseService.getHospitalizationHistory(this.patientDiseaseId, this.pagination).subscribe(
       hospitalizations => {
         this.hospitalizationHistoryList = hospitalizations;
         this.lastLoadedPageSize = hospitalizations.length;
@@ -64,7 +64,7 @@ export class HospitalizationTableHistoryComponent implements OnInit {
   }
 
   private loadMoreHospitalizationHistory() {
-    this.patientCardService.getHospitalizationHistory(this.patientDiseaseId, this.pagination).subscribe(
+    this.patientDiseaseService.getHospitalizationHistory(this.patientDiseaseId, this.pagination).subscribe(
       hospitalizations => {
         this.hospitalizationHistoryList.push(...hospitalizations);
         this.lastLoadedPageSize = hospitalizations.length;

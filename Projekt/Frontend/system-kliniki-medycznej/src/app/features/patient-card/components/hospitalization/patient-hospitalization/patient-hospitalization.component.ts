@@ -4,6 +4,7 @@ import {Pagination} from '../../../../pagination/model/pagination';
 import {PatientDiseaseHospitalizationInfo} from '../../../model/patient-disease-hospitalization-info';
 import {HospitalizationDetailsComponent} from '../hospitalization-details/hospitalization-details.component';
 import {TableOptionsComponent} from '../../../../doctor/components/doctor-table/table-options/table-options.component';
+import {PatientDiseaseService} from '../../../../patient-disease/services/patient-disease.service';
 
 @Component({
   selector: 'app-patient-hospitalization',
@@ -26,12 +27,12 @@ export class PatientHospitalizationComponent implements OnInit {
   lastLoadedPageSize: number = 10;
 
   constructor(
-    private patientCardService: PatientCardService
+    private patientDiseaseService: PatientDiseaseService
   ) {
   }
 
   ngOnInit(): void {
-    this.patientCardService.getHospitalizations(this.patientCardId, this.pagination)
+    this.patientDiseaseService.getHospitalizations(this.patientCardId, this.pagination)
       .subscribe(data => {
         this.patientDiseaseHospitalizationInfoList = data;
         this.lastLoadedPageSize = data.length;
