@@ -1,19 +1,18 @@
 package org.back.systemklinikimedycznej.patient.services;
 
 import lombok.RequiredArgsConstructor;
-import org.back.systemklinikimedycznej.cure.repositories.entities.Medicine;
-import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.doctor.util.DoctorManagerUtil;
 import org.back.systemklinikimedycznej.model.Pagination;
 import org.back.systemklinikimedycznej.patient.controllers.dto.PatientDiseaseHospitalizationInfo;
 import org.back.systemklinikimedycznej.patient.domain.CureStatus;
-import org.back.systemklinikimedycznej.patient.mapper.HospitalizationMapper;
+import org.back.systemklinikimedycznej.patient.exceptions.PatientDiseaseException;
 import org.back.systemklinikimedycznej.patient.repositories.PatientDiseaseRepository;
 import org.back.systemklinikimedycznej.patient.repositories.entities.Patient;
 import org.back.systemklinikimedycznej.patient.repositories.entities.patient_card.PatientCard;
 import org.back.systemklinikimedycznej.patient.repositories.entities.patient_disease.Hospitalization;
 import org.back.systemklinikimedycznej.patient.repositories.entities.patient_disease.PatientDisease;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,5 +41,12 @@ public class PatientDiseaseService {
         String fullName = DoctorManagerUtil.createDoctorFullName(patientDisease.getDetectedDoctor());
 
         return PatientDiseaseHospitalizationInfo.buildPatientDiseaseHospitalization(patientDisease,currentHospitalization,fullName,patientDisease.getDisease());
+    }
+
+    public PatientDisease findById(Long id) {
+        return patientDiseaseRepository.findById(id).orElseThrow(() -> new PatientDiseaseException(
+                "Nie znaleziono choroby pacjenta o podanym identyfikatorze",
+                HttpStatus.NOT_FOUND
+        ));
     }
 }
