@@ -13,22 +13,12 @@
           <p>Data wykrycia: <span class="fw-light"><b>{{ patientDiseaseHospitalizationInfo.detectionDate }}</b></span>
           </p>
         </div>
-        <div class="col-md-6">
-          <p class="mb-0"><span class="hover-underline">Przepisane recepty: <span
-            class="fw-light">12</span></span>
-          </p>
-          <p class="card-text align-text-bottom">Lekarz prowadzący: <span
-            class="fw-light text-primary">{{ patientDiseaseHospitalizationInfo.doctorFullName }}</span></p>
-        </div>
       </div>
       <div class="col-md-12 mt-3">
         <p class="mb-0">Opis schorzenia:</p>
         <p class="text-muted fw-light">{{ patientDiseaseHospitalizationInfo.description }}</p>
-      </div>
-    </div>
-    <div class="row mt-5 justify-content-center">
-      <div class="col-md-6 text-center">
-        <button (click)="displayPrescriptions()" class="btn btn-outline-dark">Wyświetl recepty</button>
+        <p class="card-text align-text-bottom">Lekarz prowadzący: <span
+          class="fw-light text-primary">{{ patientDiseaseHospitalizationInfo.doctorFullName }}</span></p>
       </div>
     </div>
   </div>
@@ -38,7 +28,7 @@
         <h5 class="card-title fw-light">Aktualne leczenie</h5>
       </div>
       <div class="col-md-4">
-        <button class="btn btn-outline-primary">Szczegóły</button>
+        <button (click)="showHospitalizationHistory()" class="btn btn-outline-primary">Szczegóły</button>
       </div>
     </div>
     <div class="row pb-3 border-bottom">
@@ -62,9 +52,4 @@
       </div>
     </div>
   </div>
-  @if (showPrescriptions) {
-    <div class="col-md-12">
-      Wyświetlanie
-    </div>
-  }
 </div>

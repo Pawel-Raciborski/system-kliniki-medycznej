@@ -1,6 +1,10 @@
 import {Component, Input} from '@angular/core';
 import {PatientDiseaseHospitalizationInfo} from '../../../model/patient-disease-hospitalization-info';
 import {DatePipe} from '@angular/common';
+import {MatDialog} from '@angular/material/dialog';
+import {
+  HospitalizationTableHistoryComponent
+} from '../hospitalization-table-history/hospitalization-table-history.component';
 
 @Component({
   selector: 'app-hospitalization-details',
@@ -14,6 +18,11 @@ import {DatePipe} from '@angular/common';
 export class HospitalizationDetailsComponent {
   @Input({required: true}) patientDiseaseHospitalizationInfo!: PatientDiseaseHospitalizationInfo;
   showPrescriptions=false;
+
+  constructor(
+    private dialog: MatDialog
+  ) {
+  }
 
   get getMedicine(){
     return this.patientDiseaseHospitalizationInfo.currentHospitalization.medicine;
@@ -29,5 +38,12 @@ export class HospitalizationDetailsComponent {
 
   displayPrescriptions() {
     this.showPrescriptions=!this.showPrescriptions;
+  }
+
+  showHospitalizationHistory() {
+    this.dialog.open(HospitalizationTableHistoryComponent, {
+      data: this.patientDiseaseHospitalizationInfo.id,
+      minWidth: '800px'
+    });
   }
 }

@@ -1,5 +1,11 @@
 <div class="row mt-5 mb-3">
   <h3 class="fw-light">Hospitalizacja</h3>
+  <app-table-options
+  [foundElements]="patientDiseaseHospitalizationInfoList.length"
+  [paginationOptions]="pagination"
+  >
+
+  </app-table-options>
   @for (patientDiseaseHospitalizationInfo of patientDiseaseHospitalizationInfoList; track patientDiseaseHospitalizationInfo.id) {
     <app-hospitalization-details
       [patientDiseaseHospitalizationInfo]="patientDiseaseHospitalizationInfo"></app-hospitalization-details>
