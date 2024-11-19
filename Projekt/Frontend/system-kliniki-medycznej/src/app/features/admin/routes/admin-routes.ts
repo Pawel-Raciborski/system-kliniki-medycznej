@@ -24,7 +24,7 @@ export const adminRoutes: Routes = [
     component: DoctorManagementPageComponent,
   },
   {
-    path:'doctors/:pwzNumber',
+    path:'doctors/:id',
     component: DoctorDetailsComponent,
 
   },

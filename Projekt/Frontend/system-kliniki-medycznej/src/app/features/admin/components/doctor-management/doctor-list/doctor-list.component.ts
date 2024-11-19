@@ -49,7 +49,7 @@ export class DoctorListComponent implements OnInit{
   }
 
   showDoctorDetails(doctor: DoctorInfo) {
-    this.router.navigate(['/admin/doctors',doctor.pwzNumber]);
+    this.router.navigate(['/admin/doctors',doctor.id]);
   }
 
   private addToArray(registeredDoctor: DoctorInfo) {

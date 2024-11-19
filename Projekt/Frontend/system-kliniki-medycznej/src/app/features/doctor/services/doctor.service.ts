@@ -183,7 +183,7 @@ export class DoctorService {
     // return of(doctorInfo)
   }
 
-  delete(pwzNumber: number)  {
+  delete(pwzNumber: string)  {
     return this.httpClient.delete(
       `${this.apiUrl}/delete`,
       {
@@ -193,5 +193,55 @@ export class DoctorService {
         observe: 'response'
       }
     );
+  }
+
+  findById(id: number):Observable<DoctorDetails> {
+    const doctorDetails: DoctorDetails = {
+      username: "jan_kowalski",
+      email: "jan.kowalski@mail.com",
+      profileImagePath: "assets/images/doctor_profile_image.webp",
+      personalDetails: {
+        pesel: "93817263611",
+        name: "Jan",
+        surname: "Kowalski",
+        birthDate: "10-05-1993",
+        gender: null,
+        phoneNumber: "+48 726 361 631",
+        address: {
+          street: "Mickiewicza 6",
+          apartmentNumber: "6/12",
+          postalCode: "10-100",
+          city: "Warszawa"
+        }
+      },
+      description: "Lekarz z 5cio letnim doświadczeniem w Kardiologii. Do każdego pacjenta podchodzą z wyrozumiałością",
+      doctorSpecializations: [
+        {
+          id: 1,
+          name: "Sercowe coś",
+          description: "Specjalizacja w tym czyms",
+          realizedDate: "01-01-2018"
+        },
+        {
+          id: 2,
+          name: "Kardiologia",
+          description: "5 letnie doświadczenie",
+          realizedDate: "01-01-2018"
+        }
+      ],
+      doctorOfficeHours: [
+        {
+          id: 1,
+          day: "PONIEDZIAŁEK",
+          startHour: "09:00",
+          endHour: "16:00",
+          durationInMinutes: 30
+        }
+      ],
+      pwzNumber: "245183",
+      dateOfEmployment: "02-10-2024"
+    };
+
+    return of(doctorDetails);
   }
 }

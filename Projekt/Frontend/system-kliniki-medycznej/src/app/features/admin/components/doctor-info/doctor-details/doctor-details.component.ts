@@ -57,7 +57,7 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrl: './doctor-details.component.css'
 })
 export class DoctorDetailsComponent implements OnInit {
-  @Input() pwzNumber !: number;
+  @Input() id !: number;
   doctorDetails!: DoctorDetails;
 
   constructor(
@@ -72,7 +72,7 @@ export class DoctorDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.doctorService.findByPwzNumber(this.pwzNumber).subscribe(doctorDetails => {
+    this.doctorService.findById(this.id).subscribe(doctorDetails => {
       this.doctorDetails = doctorDetails;
     });
   }
@@ -82,7 +82,6 @@ export class DoctorDetailsComponent implements OnInit {
   }
 
   public getAccountInfo(): AccountInfo {
-    console.log('getting account info', this.doctorDetails);
     return {
       username: this.doctorDetails.username,
       email: this.doctorDetails.email,
@@ -90,11 +89,10 @@ export class DoctorDetailsComponent implements OnInit {
   }
 
   deleteDoctor() {
-    this.doctorService.delete(this.pwzNumber).subscribe(response => {
-      console.log(response);
+    this.doctorService.delete(this.doctorDetails.pwzNumber).subscribe(response => {
       if(response.status === HttpStatusCode.Ok){
         this.router.navigate(['../'],{relativeTo: this.activatedRoute});
       }
-    })
+    });
   }
 }
