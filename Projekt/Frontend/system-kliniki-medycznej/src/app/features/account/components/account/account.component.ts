@@ -59,14 +59,23 @@ export class AccountComponent implements OnInit {
         this.patchAccountValues();
       }
     });
-
   }
 
   private patchAccountValues() {
-    console.log(this.accountSignal())
+    console.log(this.accountSignal());
     this.accountForm.patchValue({
       accountForm: this.accountSignal()
     });
     console.log(this.accountForm);
+  }
+
+  cancel() {
+    this.accountForm.patchValue({
+      accountForm: this.accountSignal()
+    });
+  }
+
+  cancelPasswordChange() {
+    this.accountForm.get('changePasswordForm')?.reset();
   }
 }

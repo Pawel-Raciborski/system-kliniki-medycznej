@@ -10,15 +10,15 @@
   <hr/>
   <div class="row mb-3">
     <div class="col-md-12 mt-3">
-      <p>Identyfikator: <b class="text-muted">{{prescriptionDetails.id}}</b></p>
+      <p>Identyfikator: <span class="text-muted">{{prescriptionDetails.id}}</span></p>
       <p class="mb-1">Opis:</p>
       <p class="text-muted">{{prescriptionDetails.description}}</p>
     </div>
     <div class="col-md-12">
-      <p class="text-muted mb-0">Wystawiono przez: <span (click)="showDoctorDetails()" class="text-primary click">{{getDoctorFullName}}</span></p>
+      <p class="mb-0">Wystawiono przez: <span (click)="showDoctorDetails()" class="text-primary click">{{getDoctorFullName}}</span></p>
     </div>
     <div class="col-md-6">
-      <p class="mb-0">Data wystawienia: <b>{{prescriptionDetails.createdAt | date:"d MMM yyyy"}}</b></p>
+      <p class="mb-0">Data wystawienia: <span class="fw-light"><b>{{prescriptionDetails.createdAt | date:"d MMM yyyy"}}</b></span></p>
     </div>
     <div class="col-md-6">
       <p class="mb-0">Data ważności: <b>{{prescriptionDetails.expirationDate | date:"d MMM yyyy"}}</b></p>

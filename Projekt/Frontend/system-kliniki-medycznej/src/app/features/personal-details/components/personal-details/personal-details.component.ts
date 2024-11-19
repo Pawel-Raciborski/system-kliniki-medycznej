@@ -49,4 +49,8 @@ export class PersonalDetailsComponent implements OnInit {
       }
     });
   }
+
+  cancel() {
+    this.formGeneratorService.patchPersonalDetails(this.personalDetailsForm,this.personalDetailsSignal());
+  }
 }
