@@ -74,4 +74,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
     LIMIT 1
     """)
     Optional<Appointment> findNextPatientAppointment(@Param("patientCard") PatientCard patientCard);
+
+    Optional<Appointment> findByAppointmentDateTime(LocalDateTime dateTime);
 }

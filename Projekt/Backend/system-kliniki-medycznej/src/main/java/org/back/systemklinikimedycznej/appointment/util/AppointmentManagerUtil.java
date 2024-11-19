@@ -1,5 +1,6 @@
 package org.back.systemklinikimedycznej.appointment.util;
 
+import org.back.systemklinikimedycznej.appointment.controllers.dto.AppointmentInfo;
 import org.back.systemklinikimedycznej.appointment.controllers.dto.PatientAppointmentInfo;
 import org.back.systemklinikimedycznej.appointment.domain.AppointmentStatus;
 import org.back.systemklinikimedycznej.appointment.repositories.entities.Appointment;
@@ -30,5 +31,15 @@ public class AppointmentManagerUtil {
 
     public static void updateStatus(Appointment appointmentToUpdate, AppointmentStatus newStatus) {
         appointmentToUpdate.setStatus(newStatus);
+    }
+
+    public static AppointmentInfo buildAppointmentInfo(Appointment appointment) {
+        LocalDateTime date = appointment.getAppointmentDateTime();
+        return AppointmentInfo.builder()
+                .id(appointment.getId())
+                .status(appointment.getStatus().getAppointmentStatusName())
+                .date(date.toLocalDate())
+                .hour(date.toLocalTime())
+                .build();
     }
 }

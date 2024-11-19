@@ -7,6 +7,7 @@ import org.back.systemklinikimedycznej.appointment.exceptions.AppointmentExcepti
 import org.back.systemklinikimedycznej.appointment.repositories.AppointmentRepository;
 import org.back.systemklinikimedycznej.appointment.repositories.entities.Appointment;
 import org.back.systemklinikimedycznej.appointment.util.AppointmentManagerUtil;
+import org.back.systemklinikimedycznej.appointment.validators.AppointmentValidator;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.doctor.services.DoctorService;
 import org.back.systemklinikimedycznej.patient.repositories.entities.patient_card.PatientCard;
@@ -26,11 +27,14 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
+    private final AppointmentValidator appointmentValidator;
     private final PatientCardService patientCardService;
     private final DoctorService doctorService;
 
     @Transactional
     public Appointment createScheduledAppointment(AppointmentDto appointmentDto) {
+        appointmentValidator.validateDateTimeExist(appointmentDto.date(),appointmentDto.hour());
+
         PatientCard patientCard = patientCardService.findPatientCardWithPesel(appointmentDto.patientPesel());
         Doctor doctor= doctorService.findByPwzNumber(appointmentDto.doctorPwzNumber());
 

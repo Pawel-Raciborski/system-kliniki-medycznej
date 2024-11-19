@@ -7,6 +7,7 @@ import org.back.systemklinikimedycznej.appointment.domain.AppointmentStatus;
 import org.back.systemklinikimedycznej.appointment.mappers.AppointmentMapper;
 import org.back.systemklinikimedycznej.appointment.repositories.entities.Appointment;
 import org.back.systemklinikimedycznej.appointment.services.AppointmentService;
+import org.back.systemklinikimedycznej.appointment.util.AppointmentManagerUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,8 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
     @PostMapping("/schedule-appointment")
     public ResponseEntity<AppointmentInfo> create(@RequestBody AppointmentDto appointmentDto){
-        AppointmentInfo scheduledAppointment = AppointmentMapper.APPOINTMENT_MAPPER.mapToAppointmentInfo(appointmentService.createScheduledAppointment(appointmentDto));
+        Appointment createdAppointment = appointmentService.createScheduledAppointment(appointmentDto);
+        AppointmentInfo scheduledAppointment = AppointmentManagerUtil.buildAppointmentInfo(createdAppointment);
         return ResponseEntity.status(HttpStatus.CREATED).body(scheduledAppointment);
     }
 
@@ -30,7 +32,7 @@ public class AppointmentController {
             @RequestParam(name = "newStatus") String newStatus
             ){
         Appointment appointmentToUpdate = appointmentService.findById(appointmentId);
-        AppointmentInfo updatedAppointment = AppointmentMapper.APPOINTMENT_MAPPER.mapToAppointmentInfo(
+        AppointmentInfo updatedAppointment = AppointmentManagerUtil.buildAppointmentInfo(
                 appointmentService.updateStatus(appointmentToUpdate, AppointmentStatus.valueOf(newStatus))
         );
 

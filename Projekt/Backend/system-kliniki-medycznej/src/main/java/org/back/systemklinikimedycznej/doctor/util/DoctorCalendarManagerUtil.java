@@ -1,7 +1,9 @@
 package org.back.systemklinikimedycznej.doctor.util;
 
+import org.back.systemklinikimedycznej.appointment.controllers.dto.AppointmentInfo;
 import org.back.systemklinikimedycznej.appointment.mappers.AppointmentMapper;
 import org.back.systemklinikimedycznej.appointment.repositories.entities.Appointment;
+import org.back.systemklinikimedycznej.appointment.util.AppointmentManagerUtil;
 import org.back.systemklinikimedycznej.doctor.controller.dto.CalendarAppointments;
 import org.back.systemklinikimedycznej.doctor.controller.dto.TodayCalendarAppointments;
 
@@ -28,7 +30,7 @@ public class DoctorCalendarManagerUtil {
     private static TodayCalendarAppointments mapToTodayCalendarAppointments(DayOfWeek day, List<Appointment> appointments) {
         return TodayCalendarAppointments.builder()
                 .day(day.name())
-                .appointments(appointments.stream().map(AppointmentMapper.APPOINTMENT_MAPPER::mapToAppointmentInfo).toList())
+                .appointments(appointments.stream().map(AppointmentManagerUtil::buildAppointmentInfo).toList())
                 .build();
     }
 }
