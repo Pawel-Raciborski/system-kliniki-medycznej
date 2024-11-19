@@ -22,6 +22,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
     WHERE d.pwzNumber = :pwzNumber
     AND ap.status IN (org.back.systemklinikimedycznej.appointment.domain.AppointmentStatus.SCHEDULED,org.back.systemklinikimedycznej.appointment.domain.AppointmentStatus.CONFIRMED)
     AND DATE(ap.appointmentDateTime) BETWEEN :startDate AND :endDate
+    ORDER BY DATE(ap.appointmentDateTime) DESC, ap.appointmentDateTime ASC
     """)
     List<Appointment> findAllBetweenDatesForADoctor(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, @Param("pwzNumber") String pwzNumber);
 
