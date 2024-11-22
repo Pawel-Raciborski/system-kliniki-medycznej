@@ -1,10 +1,14 @@
 package org.back.systemklinikimedycznej.appointment.util;
 
+import org.back.systemklinikimedycznej.appointment.controllers.dto.AppointmentDetails;
 import org.back.systemklinikimedycznej.appointment.controllers.dto.AppointmentInfo;
 import org.back.systemklinikimedycznej.appointment.controllers.dto.PatientAppointmentInfo;
 import org.back.systemklinikimedycznej.appointment.domain.AppointmentStatus;
+import org.back.systemklinikimedycznej.appointment.mappers.AppointmentMapper;
 import org.back.systemklinikimedycznej.appointment.repositories.entities.Appointment;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
+import org.back.systemklinikimedycznej.patient.mapper.PatientMapper;
+import org.back.systemklinikimedycznej.patient.repositories.entities.Patient;
 import org.back.systemklinikimedycznej.patient.repositories.entities.patient_card.PatientCard;
 
 import java.time.LocalDateTime;
@@ -40,6 +44,14 @@ public class AppointmentManagerUtil {
                 .status(appointment.getStatus().getAppointmentStatusName())
                 .date(date.toLocalDate())
                 .hour(date.toLocalTime())
+                .build();
+    }
+
+    public static AppointmentDetails buildAppointmentDetails(Appointment appointment, PatientCard patientCard, Patient patient) {
+        return AppointmentDetails.builder()
+                .patientCardId(patientCard.getId())
+                .appointment(buildAppointmentInfo(appointment))
+                .patientData(PatientMapper.INSTANCE.mapFromEntity(patient))
                 .build();
     }
 }

@@ -1,6 +1,7 @@
 package org.back.systemklinikimedycznej.appointment.services;
 
 import lombok.RequiredArgsConstructor;
+import org.back.systemklinikimedycznej.appointment.controllers.dto.AppointmentDetails;
 import org.back.systemklinikimedycznej.appointment.controllers.dto.AppointmentDto;
 import org.back.systemklinikimedycznej.appointment.domain.AppointmentStatus;
 import org.back.systemklinikimedycznej.appointment.exceptions.AppointmentException;
@@ -10,6 +11,7 @@ import org.back.systemklinikimedycznej.appointment.util.AppointmentManagerUtil;
 import org.back.systemklinikimedycznej.appointment.validators.AppointmentValidator;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.doctor.services.DoctorService;
+import org.back.systemklinikimedycznej.patient.repositories.entities.Patient;
 import org.back.systemklinikimedycznej.patient.repositories.entities.patient_card.PatientCard;
 import org.back.systemklinikimedycznej.patient.services.PatientCardService;
 import org.springframework.http.HttpStatus;
@@ -79,5 +81,13 @@ public class AppointmentService {
         }
 
         return appointmentsGroupedByDate;
+    }
+
+    @Transactional
+    public AppointmentDetails getAppointmentDetails(Appointment appointment) {
+        PatientCard patientCard = appointment.getPatientCard();
+        Patient patient = patientCard.getPatient();
+
+        return AppointmentManagerUtil.buildAppointmentDetails(appointment,patientCard,patient);
     }
 }

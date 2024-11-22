@@ -1,10 +1,10 @@
 package org.back.systemklinikimedycznej.appointment.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.back.systemklinikimedycznej.appointment.controllers.dto.AppointmentDetails;
 import org.back.systemklinikimedycznej.appointment.controllers.dto.AppointmentDto;
 import org.back.systemklinikimedycznej.appointment.controllers.dto.AppointmentInfo;
 import org.back.systemklinikimedycznej.appointment.domain.AppointmentStatus;
-import org.back.systemklinikimedycznej.appointment.mappers.AppointmentMapper;
 import org.back.systemklinikimedycznej.appointment.repositories.entities.Appointment;
 import org.back.systemklinikimedycznej.appointment.services.AppointmentService;
 import org.back.systemklinikimedycznej.appointment.util.AppointmentManagerUtil;
@@ -37,5 +37,15 @@ public class AppointmentController {
         );
 
         return ResponseEntity.ok(updatedAppointment);
+    }
+
+    @GetMapping("/{id}/details")
+    public ResponseEntity<AppointmentDetails> getAppointmentDetails(
+            @PathVariable("id") UUID appointmentId
+    ){
+        Appointment appointment = appointmentService.findById(appointmentId);
+        AppointmentDetails appointmentDetails = appointmentService.getAppointmentDetails(appointment);
+
+        return ResponseEntity.ok(appointmentDetails);
     }
 }
