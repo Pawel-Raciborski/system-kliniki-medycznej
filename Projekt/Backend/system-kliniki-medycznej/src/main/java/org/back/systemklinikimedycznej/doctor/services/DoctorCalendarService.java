@@ -3,6 +3,7 @@ package org.back.systemklinikimedycznej.doctor.services;
 import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.appointment.repositories.entities.Appointment;
 import org.back.systemklinikimedycznej.appointment.services.AppointmentService;
+import org.back.systemklinikimedycznej.doctor.controller.dto.CalendarAppointment;
 import org.back.systemklinikimedycznej.doctor.controller.dto.CalendarAppointments;
 import org.back.systemklinikimedycznej.doctor.controller.dto.CalendarAppointmentsResponse;
 import org.back.systemklinikimedycznej.doctor.enums.CalendarFormatType;
@@ -42,24 +43,25 @@ public class DoctorCalendarService {
         }
 
         LocalDate start = now.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        LocalDate end = now.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
+        LocalDate end = now.with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
 
         if (CalendarFormatType.MONTH == formatType) {
             start = now.with(TemporalAdjusters.firstDayOfMonth());
             end = now.with(TemporalAdjusters.lastDayOfMonth());
         }
 
-        List<Appointment> appointments = appointmentService.findAllAppointmentsBetweenDatesForADoctor(start, end, doctor);
-        Map<LocalDate, List<Appointment>> preparedData = DoctorCalendarManagerUtil.createMap(appointments);
+        Map<LocalDate, List<Appointment>> appointmentsGroupedByDate = appointmentService.getAppointmentsGroupedByDate(start, end, doctor);
+        List<CalendarAppointment> calendarAppointments = createCalendarAppointments(doctor, appointmentsGroupedByDate);
 
+        return new CalendarAppointmentsResponse(calendarAppointments, start, end);
+    }
 
-        var calendarAppointment = preparedData.entrySet().stream()
-                .map(e -> DoctorCalendarManagerUtil.createCalendarAppointment(
+    private List<CalendarAppointment> createCalendarAppointments(Doctor doctor, Map<LocalDate, List<Appointment>> preparedData) {
+        return preparedData.entrySet().stream()
+                .map(e -> DoctorCalendarManagerUtil.buildCalendarAppointment(
                         e.getKey(),
-                        e.getValue(),
-                        doctorOfficeHoursService.findOfficeHoursForDoctorForDay(doctor, e.getKey().getDayOfWeek())))
+                        e.getValue()
+                ))
                 .toList();
-
-        return new CalendarAppointmentsResponse(calendarAppointment);
     }
 }

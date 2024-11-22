@@ -43,13 +43,13 @@ public class DoctorCalendarManagerUtil {
         );
     }
 
-    public static CalendarAppointment createCalendarAppointment(LocalDate date, List<Appointment> appointments, DoctorOfficeHours officeHours) {
-        List<CalendarAppointmentInfo> calendarAppointmentInfos = appointments.stream().map(DoctorCalendarManagerUtil::createCalendarAppointmentInfo).toList();
+    public static CalendarAppointment buildCalendarAppointment(LocalDate date, List<Appointment> appointments) {
+        List<CalendarAppointmentInfo> calendarAppointmentInfos = appointments.stream().map(DoctorCalendarManagerUtil::buildCalendarAppointmentInfo).toList();
 
-        return new CalendarAppointment(date,calendarAppointmentInfos, OfficeHoursMapper.INSTANCE.mapFromEntity(officeHours));
+        return new CalendarAppointment(date,calendarAppointmentInfos);
     }
 
-    private static CalendarAppointmentInfo createCalendarAppointmentInfo(Appointment app) {
+    private static CalendarAppointmentInfo buildCalendarAppointmentInfo(Appointment app) {
         return CalendarAppointmentInfo.builder()
                 .id(app.getId())
                 .hour(app.getAppointmentDateTime().toLocalTime())

@@ -19,9 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -70,5 +68,16 @@ public class AppointmentService {
 
     public Optional<Appointment> findNextPatientAppointment(PatientCard patientCard) {
         return appointmentRepository.findNextPatientAppointment(patientCard);
+    }
+
+    public Map<LocalDate, List<Appointment>> getAppointmentsGroupedByDate(LocalDate start, LocalDate end,Doctor doctor) {
+        Map<LocalDate,List<Appointment>> appointmentsGroupedByDate = new TreeMap<>(Comparator.naturalOrder());
+
+        for(LocalDate i = start; !i.isAfter(end); i=i.plusDays(1)){
+            List<Appointment> appointments = appointmentRepository.findAllDoctorAppointmentsForDate(doctor,i);
+            appointmentsGroupedByDate.put(i,appointments);
+        }
+
+        return appointmentsGroupedByDate;
     }
 }

@@ -5,7 +5,6 @@ import java.util.List;
 
 public record CalendarAppointment(
         LocalDate date,
-        List<CalendarAppointmentInfo> calendarAppointments,
-        OfficeHoursDto officeHoursDto
+        List<CalendarAppointmentInfo> calendarAppointments
 ) {
 }
