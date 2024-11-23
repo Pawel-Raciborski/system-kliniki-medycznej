@@ -1,0 +1,18 @@
+.max-height-300 {
+  max-height: 300px;
+  min-height: 300px;
+  overflow: auto;
+}
+
+.border-right {
+  border-right: 1px;
+  border-right: 1px solid #dee2e6;
+}
+
+.hover{
+  transition: .2s ease-in-out;
+  cursor: pointer;
+}
+.hover:hover {
+  background-color: #CDD1D5EE;
+}
