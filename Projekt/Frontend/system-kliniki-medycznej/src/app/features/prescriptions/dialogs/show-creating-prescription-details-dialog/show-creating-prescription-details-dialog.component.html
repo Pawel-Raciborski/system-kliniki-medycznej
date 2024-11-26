@@ -1,0 +1,21 @@
+<div class="container-fluid">
+  <div class="row p-2">
+    <div class="col-md-12 mt-3">
+      <h4 class="card-title">Lista leków</h4>
+      <div class="row">
+        <div class="col-md-12 max-parent-height">
+          @for (medicine of medicines; let id=$index; track id){
+            <div class="row m-1">
+              <div class="col-md-6 border align-content-center p-1">
+                <p class="m-0">{{medicine.registryNumber}}</p>
+              </div>
+              <div class="col-md-6 text-end bg-dark-subtle p-1">
+                <p class="m-0">{{medicine.dosage}}</p>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<form [formGroup]="formGroup">
+  <div class="row mt-3">
+    <div class="col-md-10">
+      <div class="input-group">
+        <input class="form-control" type="text" placeholder="Wyszukaj lekarstwo"
+               formControlName="medicinalProductName"/>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <button (click)="search()" class="btn btn-outline-dark"><i class="bi bi-search"></i></button>
+    </div>
+    <div class="col-md-12">
+      <span (click)="show()" class="text-muted underline fs-6">Wyszukiwanie zaawansowane</span>
+      @if (showAdvancedSearch) {
+        <div class="row" formGroupName="advancedSearchOptions">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label" for="atcCode">Kod ATC</label>
+              <input class="form-control" id="atcCode" type="text" formControlName="atcCode"/>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label" for="commonName">Powszechnie stosowana nazwa</label>
+              <input class="form-control" id="commonName" type="text" formControlName="commonName"/>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="mb-3">
+              <label class="form-label" for="gtinNumber">Numer GTIN</label>
+              <input class="form-control" id="gtinNumber" type="text" formControlName="gtinNumber"/>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</form>
