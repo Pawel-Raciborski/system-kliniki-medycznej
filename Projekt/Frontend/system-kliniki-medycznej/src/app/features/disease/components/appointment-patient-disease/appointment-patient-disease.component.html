@@ -1,0 +1,33 @@
+<div class="row p-1 border mt-3">
+  <div class="col-md-6">
+    <p class="text-dark mb-0">Nazwa choroby:</p>
+    <p class="fw-light">{{patientDisease.diseaseDto.icd11Title}}</p>
+
+    <p class="text-dark mb-0">Kod:</p>
+    <p class="fw-light">{{patientDisease.diseaseDto.icd11Code}}</p>
+  </div>
+  <div class="col-md-6 max-height-300">
+    <h5 class="fw-light">Przepisane leki</h5>
+    @if(patientDisease.hospitalization.length > 0){
+      @for(hospitalization of patientDisease.hospitalization; let i=$index; track i){
+        <div class="row border p-1 mt-1">
+          <div class="col-md-6">
+            <p class="fw-light">{{hospitalization.medicine.commonName}} | <span class="text-primary">{{hospitalization.medicine.atcCode}}</span></p>
+            <p class="small">Moc:{{hospitalization.medicine.medicinalProductPower}}</p>
+          </div>
+          <div class="col-md-6">
+            <p class="fw-light mb-0">Dawkowanie</p>
+            <p class="fw-light">{{hospitalization.dosage}}</p>
+
+            <p class="small">{{hospitalization.notes}}</p>
+          </div>
+        </div>
+      }
+    }@else{
+      <div class="col-md-12 text-center">
+        <p class="small">Brak przepisanych leków</p>
+      </div>
+    }
+
+  </div>
+</div>
