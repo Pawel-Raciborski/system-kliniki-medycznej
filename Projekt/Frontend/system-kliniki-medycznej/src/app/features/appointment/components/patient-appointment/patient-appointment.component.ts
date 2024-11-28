@@ -30,25 +30,6 @@ import {
   templateUrl: './patient-appointment.component.html',
   styleUrl: './patient-appointment.component.css'
 })
-export class PatientAppointmentComponent implements OnInit{
-  finishedAppointments!: PatientAppointmentInfo[];
-  patientPesel!: string;
-  constructor(
-    private appointmentService: AppointmentService,
-    private userService: UserService,
-    private patientService: PatientsService
-  ) {
-  }
+export class PatientAppointmentComponent {
 
-  ngOnInit(): void {
-    this.patientService.findPatientPesel(this.userService.email).subscribe(
-      pesel => {
-        this.patientPesel = pesel;
-      }
-    );
-  }
-
-  hasArrayPageSize(patientAppointments: PatientAppointmentInfo[], paginationOptions:{ page: number; pageSize: number }) {
-    return patientAppointments.length !== +paginationOptions.pageSize;
-  }
 }

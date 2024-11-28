@@ -4,6 +4,7 @@ import {AppointmentService} from '../../../services/appointment.service';
 import {PatientAppointmentsTableComponent} from '../../patient-appointments-table/patient-appointments-table.component';
 import {PaginationBarComponent} from '../../../../pagination/components/pagination-bar/pagination-bar.component';
 import {TableOptionsComponent} from '../../../../doctor/components/doctor-table/table-options/table-options.component';
+import {UserService} from '../../../../auth/services/user.service';
 
 @Component({
   selector: 'app-upcoming-appointments',
@@ -17,7 +18,7 @@ import {TableOptionsComponent} from '../../../../doctor/components/doctor-table/
   styleUrl: './upcoming-appointments.component.css'
 })
 export class UpcomingAppointmentsComponent implements OnInit {
-  @Input({required: true}) patientPesel!: string;
+  patientId!: number;
 
   patientAppointments!: PatientAppointmentInfo[];
   paginationOptions: { page: number; pageSize: number } = {
@@ -25,11 +26,16 @@ export class UpcomingAppointmentsComponent implements OnInit {
     pageSize: 10,
   };
 
-  constructor(private appointmentService: AppointmentService) {
+  constructor(
+    private appointmentService: AppointmentService,
+    private userService: UserService
+  ) {
   }
 
   ngOnInit(): void {
-    this.appointmentService.findPatientUpcomingAppointments(this.patientPesel, this.paginationOptions)
+    this.patientId = this.userService.getId("patientId");
+
+    this.appointmentService.findPatientUpcomingAppointments(this.patientId, this.paginationOptions)
       .subscribe(data => {
           this.patientAppointments = data;
         }
@@ -37,7 +43,7 @@ export class UpcomingAppointmentsComponent implements OnInit {
   }
 
   loadUpcomingAppointments(pagination: { page: number; pageSize: number }) {
-    this.appointmentService.findPatientUpcomingAppointments(this.patientPesel, pagination).subscribe(
+    this.appointmentService.findPatientUpcomingAppointments(this.patientId, pagination).subscribe(
       data => {
         this.patientAppointments = data;
         this.paginationOptions = pagination;

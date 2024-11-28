@@ -4,6 +4,7 @@ import {AppointmentService} from '../../../services/appointment.service';
 import {PatientAppointmentsTableComponent} from '../../patient-appointments-table/patient-appointments-table.component';
 import {PaginationBarComponent} from '../../../../pagination/components/pagination-bar/pagination-bar.component';
 import {TableOptionsComponent} from '../../../../doctor/components/doctor-table/table-options/table-options.component';
+import {UserService} from '../../../../auth/services/user.service';
 
 @Component({
   selector: 'app-finished-appointments',
@@ -17,8 +18,8 @@ import {TableOptionsComponent} from '../../../../doctor/components/doctor-table/
   styleUrl: './finished-appointments.component.css'
 })
 export class FinishedAppointmentsComponent implements OnInit {
-  @Input({required: true}) patientPesel!: string;
-
+  // @Input({required: true}) patientPesel!: string;
+  patientId!:number;
   patientAppointments!: PatientAppointmentInfo[];
   paginationOptions: { page: number; pageSize: number } = {
     page: 0,
@@ -26,11 +27,13 @@ export class FinishedAppointmentsComponent implements OnInit {
   };
 
   constructor(
-    private appointmentService: AppointmentService
+    private appointmentService: AppointmentService,
+    private userService: UserService
   ) {
   }
 
   ngOnInit(): void {
+    this.patientId = this.userService.getId("patientId");
     this.loadFinishedAppointments();
   }
 
@@ -42,7 +45,7 @@ export class FinishedAppointmentsComponent implements OnInit {
   }
 
   private loadFinishedAppointments() {
-    this.appointmentService.findPatientFinishedAppointments(this.patientPesel, this.paginationOptions).subscribe(
+    this.appointmentService.findPatientFinishedAppointments(this.patientId, this.paginationOptions).subscribe(
       data => {
         this.patientAppointments = data;
       }
