@@ -1,0 +1,52 @@
+<div class="container-fluid">
+  <div class="row mt-3">
+    <div class="col-md-12">
+      <h5 class="fw-light">Wyszukaj pacjenta</h5>
+    </div>
+    <div class="col-md-12 justify-content-center">
+      <app-patient-search-bar (searchEmitter)="searchPatient($event)"></app-patient-search-bar>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <h3 class="fw-light">Lista pacjentów</h3>
+    <section>
+      <table class="table table-hover mt-4">
+        <thead>
+        <th>Pesel</th>
+        <th>Imię i nazwisko</th>
+        <th>Dane</th>
+        <th>Numer telefonu</th>
+        </thead>
+        <tbody class="fw-light">
+          @for (patient of patients; track patient.id) {
+            <tr class="cursor-pointer" (click)="showPatientDetails(patient)">
+              <td>{{ patient.personalDetails.pesel }}</td>
+              <td>{{ patient.personalDetails.name }} {{ patient.personalDetails.surname }}</td>
+              <td>
+                <div class="row">
+                  <div class="col-md-12 font-small">
+                    <p class="fw-light mb-0">Płeć: <i [class]="setGenderClass(patient.personalDetails.gender)">
+                    </i></p>
+                    <p class="fw-light">Data urodzenia: <span class="text-success">{{patient.personalDetails.birthDate | date:"dd MMM yyyy" }}</span></p>
+
+                    <div class="row">
+                      <div class="col-md-2">
+                        <p class="fw-light mb-0">Adres:</p>
+                      </div>
+                      <div class="col-md-8 no-margin">
+                        <p><b>{{patient.personalDetails.address.city}}</b>, {{patient.personalDetails.address.street}} | {{patient.personalDetails.address.apartmentNumber}}</p>
+                        <p>{{patient.personalDetails.address.postalCode}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>{{ patient.personalDetails.phoneNumber }}</td>
+            </tr>
+
+          }
+        </tbody>
+      </table>
+    </section>
+  </div>
+</div>

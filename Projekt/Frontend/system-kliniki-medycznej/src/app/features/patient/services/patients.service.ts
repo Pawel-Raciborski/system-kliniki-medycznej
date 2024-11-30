@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import {Observable, of, throwError} from 'rxjs';
 import {PatientData} from '../model/patient-data';
 import {AccountInfo} from '../../account/model/account-info';
+import {PatientDetails} from '../model/patient-details';
+import {Pagination} from '../../pagination/model/pagination';
+import {SearchPatient} from '../model/search-patient';
 
 @Injectable({
   providedIn: 'root'
@@ -102,11 +105,11 @@ export class PatientsService {
 
   constructor() { }
 
-  getAllPatientsPaged(page: number, pageSize: number) : Observable<PatientData[]>{
+  getAllPatientsPaged(pagination:Pagination) : Observable<PatientData[]>{
     return of(this.patientData);
   }
 
-  findPatientDetails(id: number): Observable<PatientData> {
+  findPatientData(id: number): Observable<PatientData> {
     console.log(typeof id)
     let patient = this.patientData.find(patient => patient.id === +id);
     console.log(patient);
@@ -127,8 +130,25 @@ export class PatientsService {
     return of(account);
   }
 
-  findPatientPesel(email: string):Observable<string> {
-
+  findPatientPesel(id: number):Observable<string> {
     return of("12473625161");
+  }
+
+  findPatientDetails(pesel: string): Observable<PatientDetails>{
+    let patientPesel = {
+      pesel: pesel
+    };
+
+    return of({
+      id: 1,
+      heightInCm: "178cm",
+      weightInKg: '78kg',
+      bloodType: "A"
+    })
+  }
+
+  searchPatient(searchPatient: SearchPatient) : Observable<PatientData[]>{
+    let patient = this.patientData.filter(p => p.personalDetails.pesel.startsWith(searchPatient.pesel));
+    return of(patient);
   }
 }

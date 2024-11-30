@@ -1,0 +1,11 @@
+.no-margin > p {
+  margin-bottom: 0;
+}
+
+.font-small{
+  font-size:.875em
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}
