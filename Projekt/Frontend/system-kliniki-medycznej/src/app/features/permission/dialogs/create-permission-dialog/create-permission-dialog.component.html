@@ -12,8 +12,14 @@
       <div class="row mt-3">
         <form [formGroup]="form">
           <div class="col-md-12">
-            <label class="form-label" for="name">Nazwa</label>
-            <input class="form-control" id="name" name="name" formControlName="name"/>
+            <div class="mb-3">
+              <label class="form-label" for="name">Nazwa</label>
+              <input class="form-control" id="name" name="name" formControlName="name"/>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="description">Opis</label>
+              <input class="form-control" id="description" name="description" formControlName="description"/>
+            </div>
           </div>
           <div class="col-md-12 mt-4 text-end">
             <button (click)="close()" class="btn btn-outline-danger mx-2">Anuluj</button>

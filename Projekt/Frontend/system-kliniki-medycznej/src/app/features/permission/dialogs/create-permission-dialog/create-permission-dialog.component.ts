@@ -13,7 +13,8 @@ import {MatDialogRef} from '@angular/material/dialog';
 })
 export class CreatePermissionDialogComponent {
   form: FormGroup = new FormGroup({
-    name: new FormControl('')
+    name: new FormControl(''),
+    description: new FormControl('')
   });
 
   constructor(

@@ -35,10 +35,10 @@ export class PermissionComponent implements OnInit{
   openAddPermissionModal() {
     this.dialog.open(CreatePermissionDialogComponent,{
       minWidth: '450px'
-    }).afterClosed().subscribe(permissionNameToCreate => {
+    }).afterClosed().subscribe((permissionNameToCreate: Permission) => {
       if(permissionNameToCreate){
         console.log(permissionNameToCreate)
-        this.permissionService.create(permissionNameToCreate.name).subscribe(
+        this.permissionService.create(permissionNameToCreate).subscribe(
           p => {
             this.permissions.push(p);
           }
