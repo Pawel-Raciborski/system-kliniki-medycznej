@@ -5,6 +5,7 @@ import {Pagination} from '../../../pagination/model/pagination';
 import {DatePipe} from '@angular/common';
 import {PatientSearchBarComponent} from '../patient-search-bar/patient-search-bar.component';
 import {SearchPatient} from '../../model/search-patient';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-patients',
@@ -24,7 +25,8 @@ export class PatientsComponent implements OnInit{
   }
 
   constructor(
-    private patientsService: PatientsService
+    private patientsService: PatientsService,
+    private router: Router
   ) {
   }
   ngOnInit(): void {
@@ -36,7 +38,7 @@ export class PatientsComponent implements OnInit{
   }
 
   showPatientDetails(patient: PatientData) {
-
+    this.router.navigate(['doctor-panel','patients',patient.id,'patient-card']);
   }
 
   isMale(gender: string | null) {
