@@ -7,12 +7,14 @@
           <div class="col-md-12 border">
             <app-patient-data [patientData]="appointmentDetails.patientData"></app-patient-data>
           </div>
-          <div class="row mt-3">
+          <div class="row mt-3 mb-3">
             <div class="col-md-6 ">
-              <div class="row">
-                <h5 class="fw-light">Diagnoza</h5>
-                <textarea class="form-control"></textarea>
-              </div>
+              <form [formGroup]="form">
+                <div class="row">
+                  <h5 class="fw-light">Diagnoza</h5>
+                  <textarea formControlName="diagnosis" class="form-control min-height-300"></textarea>
+                </div>
+              </form>
             </div>
             <div class="col-md-6">
               <div class="row">
@@ -20,12 +22,49 @@
                 <div class="col-md-12 text-center">
                   <button (click)="openCreatePrescriptionDialog()" class="btn btn-outline-dark">Dodaj receptę</button>
                 </div>
+                @if (prescriptions.length > 0) {
+                  <div class="col-md-12 mt-3">
+                    @for (prescription of prescriptions; let i = $index; track i) {
+                      <div class="row justify-content-center mb-1">
+                        <div (click)="showPrescriptionMedicines(prescription.prescriptionMedicineList)"
+                             class="col-md-8 border bg-success p-1">
+                          <p class="text-center text-light m-0">Recepta {{ i + 1 }}</p>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-12 text-center">
+                    <button class="btn btn-outline-dark" (click)="showHospitalizations()">Wyświetl hospitalizacje
+                    </button>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <h5>Schorzenia</h5>
+                  <div class="col-md-12">
+                    <button (click)="openCreateDiseaseDialog()" class="btn btn-outline-success">Dodaj schorzenie
+                    </button>
+                  </div>
+                  @if (patientDiseases.length > 0) {
+                    <div class="col-md-12">
+                      @for (patientDisease of patientDiseases; let i = $index; track i) {
+                        <app-appointment-patient-disease
+                          [patientDisease]="patientDisease"></app-appointment-patient-disease>
+                      }
+                    </div>
+                  }
+                </div>
               </div>
             </div>
           </div>
-          <div class="col-md-12 text-end">
-            <button class="btn btn-outline-success">Zakończ</button>
-          </div>
+        </div>
+        <div class="col-md-12 text-end">
+          <button (click)="finishAppointment()" class="btn btn-outline-success">Zakończ</button>
         </div>
       </div>
     </div>
