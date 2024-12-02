@@ -1,0 +1,57 @@
+<div class="container-fluid">
+  <div class="row p-1">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12 border-bottom mb-4">
+          <div class="row">
+            <div class="col-md-8">
+              <h4 class="fw-light">Informacje o roli</h4>
+            </div>
+            <div class="col-md-4 text-end">
+              <button (click)="close()" class="btn btn-close"></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-12">
+              <p class="fw-light mb-0">Nazwa: <b>{{ roleDetails.role.name }}</b></p>
+              <p class="fw-light">Opis: <b>{{ roleDetails.role.description }}</b></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-12">
+              <h6>Przypisane permisje</h6>
+            </div>
+            <div class="col-md-12 mb-2 text-center">
+              <button (click)="addPermission()" class="btn btn-outline-success">Dodaj permisję</button>
+            </div>
+            <div class="col-md-12">
+              <table class="table table-hover max-height-300">
+                <thead>
+                <tr>
+                  <th>Nazwa</th>
+                  <th>Opis</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                  @for (permission of roleDetails.permissions; track permission.id){
+                    <tr>
+                      <td>{{permission.name}}</td>
+                      <td>{{permission.description}}</td>
+                      <td class="text-end"><button (click)="removePermissionRole(permission)" class="btn btn-danger"><i class="bi bi-trash"></i></button></td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
