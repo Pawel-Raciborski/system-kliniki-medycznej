@@ -1,6 +1,4 @@
-import {PrescriptionMedicine} from './prescription-medicine';
-
-export interface CreatePrescriptionForm {
+export interface CreatePrescriptionRequest {
   doctorId:number;
   patientId:number;
   prescriptionMedicineList: {registryNumber: string, dosage: string}[],
