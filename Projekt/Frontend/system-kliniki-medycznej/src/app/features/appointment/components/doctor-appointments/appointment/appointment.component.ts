@@ -73,7 +73,9 @@ export class AppointmentComponent implements OnInit {
       description: string,
       prescriptionMedicines: PrescriptionMedicine[]
     }) => {
-      this.createPrescription(data);
+      if(data){
+        this.createPrescription(data);
+      }
     });
   }
 
@@ -116,8 +118,10 @@ export class AppointmentComponent implements OnInit {
   openCreateDiseaseDialog() {
     this.dialog.open(CreateDiseaseDialogComponent).afterClosed().subscribe(
       (value: CreatePatientDiseasePart) => {
-        const patientDisease = this.buildPatientDisease(value);
-        this.patientDiseases.push(patientDisease);
+        if(value){
+          const patientDisease = this.buildPatientDisease(value);
+          this.patientDiseases.push(patientDisease);
+        }
       }
     )
   }
