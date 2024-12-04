@@ -1,1 +1,22 @@
-<p>doctor-prescriptions works!</p>
+<div class="row mt-5">
+  <div class="col-md-12 mt-5">
+    <div class="row justify-content-center mb-4">
+      <div class="col-md-10">
+        <div class="row mb-5">
+          <h2 class="fw-light">Przepisane recepty <i class="bi bi-file-earmark-text"></i></h2>
+        </div>
+        <app-patient-search-bar (searchEmitter)="searchPrescriptionsForPatient($event)"/>
+        @if(prescriptions.length > 0) {
+          <app-prescriptions-table [prescriptions]="prescriptions"></app-prescriptions-table>
+          <div class="col-md-12 text-center mt-4">
+            @if(lastLoadedPageSize === 10){
+              <button (click)="loadMore()" class="btn btn-outline-dark">Pokaż więcej</button>
+            }
+          </div>
+        } @else {
+          <p class="small text-center">Nie utworzyłeś jeszcze żadnej recepty</p>
+        }
+      </div>
+    </div>
+  </div>
+</div>
