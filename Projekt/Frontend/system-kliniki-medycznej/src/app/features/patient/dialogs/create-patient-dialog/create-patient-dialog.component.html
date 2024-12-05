@@ -1,1 +1,91 @@
-<p>create-patient-dialog works!</p>
+<div class="container-fluid">
+  <div class="row p-1">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-8">
+          <h4 class="modal-title">Dodawanie pacjenta</h4>
+        </div>
+        <div class="col-md-4 text-end">
+          <button (click)="cancel()" class="btn btn-close"></button>
+        </div>
+      </div>
+      <form [formGroup]="form">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mt-3">
+              <label class="form-label" for="pesel">Pesel</label>
+              <input class="form-control" type="text" id="pesel" name="pesel" formControlName="pesel"/>
+            </div>
+            <div class="mt-3">
+              <label class="form-label" for="parentPesel">Pesel rodzica(opcjonalny)</label>
+              <input class="form-control" type="text" id="parentPesel" name="parentPesel" formControlName="parentPesel"/>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mt-3">
+              <label class="form-label">Imię</label>
+              <input class="form-control" type="text" id="name" name="name" formControlName="name"/>
+            </div>
+            <div class="mt-3">
+              <label class="form-label">Nazwisko</label>
+              <input class="form-control" type="text" id="surname" name="surname" formControlName="surname"/>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mt-3">
+              <label class="form-label">Płeć</label>
+              <select formControlName="gender" class="form-control form-select-sm">
+                <option value="Mężczyzna">Mężczyzna</option>
+                <option value="Kobieta">Kobieta</option>
+                <option>-</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mt-3">
+              <label class="form-label">Data urodzenia</label>
+              <input class="form-control" type="date" id="birthDate" name="birthDate" formControlName="birthDate"/>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="mt-3">
+              <label class="form-label">Numer telefonu</label>
+              <input class="form-control" type="text" id="phoneNumber" name="phoneNumber"
+                     formControlName="phoneNumber"/>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <h4 class="fw-light">Adres</h4>
+            <div class="col-md-6" formGroupName="address">
+              <div class="mt-3">
+                <label class="form-label">Ulica</label>
+                <input class="form-control" type="text" id="street" name="street" formControlName="street"/>
+              </div>
+              <div class="mt-3">
+                <label class="form-label">Numer mieszkania</label>
+                <input class="form-control" type="text" id="apartmentNumber" name="apartmentNumber"
+                       formControlName="apartmentNumber"/>
+              </div>
+            </div>
+            <div class="col-md-6" formGroupName="address">
+              <div class="mt-3">
+                <label class="form-label">Kod pocztowy</label>
+                <input class="form-control" type="text" id="postalCode" name="postalCode" formControlName="postalCode"/>
+              </div>
+              <div class="mt-3">
+                <label class="form-label">Miasto</label>
+                <input class="form-control" type="text" id="city" name="city" formControlName="city"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="row mt-3 mb-3">
+        <div class="col-md-12 text-end">
+          <button class="btn btn-outline-danger mx-2" (click)="cancel()">Anuluj</button>
+          <button class="btn btn-outline-success" (click)="addPatient()">Dodaj</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
