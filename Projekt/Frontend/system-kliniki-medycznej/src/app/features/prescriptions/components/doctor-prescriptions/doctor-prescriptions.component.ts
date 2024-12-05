@@ -7,6 +7,12 @@ import {PrescriptionService} from '../../services/prescription.service';
 import {UserService} from '../../../auth/services/user.service';
 import {PatientSearchBarComponent} from '../../../patient/components/patient-search-bar/patient-search-bar.component';
 import {SearchPatient} from '../../../patient/model/search-patient';
+import {MatDialog} from '@angular/material/dialog';
+import {
+  AddPrescriptionMedicinesDialogComponent
+} from '../../dialogs/create-prescription-dialog/add-prescription-medicines-dialog.component';
+import {PrescriptionMedicine} from '../../model/prescription-medicine';
+import {CreatePrescriptionRequest} from '../../model/create-prescription-request';
 
 @Component({
   selector: 'app-doctor-prescriptions',
@@ -30,6 +36,7 @@ export class DoctorPrescriptionsComponent implements OnInit {
   constructor(
     private prescriptionService: PrescriptionService,
     private userService: UserService,
+    private dialog: MatDialog
   ) {
   }
 
@@ -59,4 +66,41 @@ export class DoctorPrescriptionsComponent implements OnInit {
     this.paginationOptions.page = 0;
     this.paginationOptions.pageSize = 10;
   }
+
+  openCreatePrescriptionDialog() {
+    this.dialog.open(AddPrescriptionMedicinesDialogComponent).afterClosed()
+      .subscribe((data) => {
+        let prescriptionToCreate = this.createPrescription(data);
+        this.prescriptionService.createPrescription(prescriptionToCreate).subscribe(
+          createdPrescription => {
+            this.prescriptions.unshift(createdPrescription);
+          }
+        )
+      });
+  }
+
+  private createPrescription(data: {
+    expirationDate: string;
+    description: string;
+    prescriptionMedicines: PrescriptionMedicine[],
+    patientPesel: string
+  }) {
+    let prescriptionMedicines = data.prescriptionMedicines.map(p => {
+      return {
+        registryNumber: p.medicine.registryNumber,
+        dosage: p.dosage
+      };
+    });
+
+    let prescription: CreatePrescriptionRequest = {
+      patientPesel: data.patientPesel,
+      doctorId: this.userService.getId('doctorId'),
+      prescriptionMedicineList: prescriptionMedicines,
+      description: data.description,
+      expirationDate: data.expirationDate,
+    };
+
+    return prescription;
+  }
+
 }

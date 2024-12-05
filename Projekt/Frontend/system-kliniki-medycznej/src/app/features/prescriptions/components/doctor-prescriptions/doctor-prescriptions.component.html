@@ -6,6 +6,11 @@
           <h2 class="fw-light">Przepisane recepty <i class="bi bi-file-earmark-text"></i></h2>
         </div>
         <app-patient-search-bar (searchEmitter)="searchPrescriptionsForPatient($event)"/>
+        <div class="row mt-3">
+          <div class="col-md-12 text-center">
+            <button (click)="openCreatePrescriptionDialog()" class="btn btn-outline-dark">Dodaj receptę</button>
+          </div>
+        </div>
         @if(prescriptions.length > 0) {
           <app-prescriptions-table [prescriptions]="prescriptions"></app-prescriptions-table>
           <div class="col-md-12 text-center mt-4">
