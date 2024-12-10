@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {LoginUserData} from '../model/login-user-data';
+import {JwtPayload} from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,8 @@ export class LocalStorageService {
 
   public saveMockedData() {
     let user: any = {
-      patientId: 997,
+      doctorId: 997,
+      // patientId: 23,
       username: 'jan_kowalski',
       email: 'jan.kowalski@mail.com',
       roles: [
@@ -19,6 +21,10 @@ export class LocalStorageService {
           name: 'DOCTOR',
           description: 'Rola lekarza'
         },
+        // {
+        //   name: 'PATIENT',
+        //   description: 'Rola pacjenta'
+        // },
         // {
         //   name: 'ADMIN',
         //   description: 'Administrator'
@@ -47,5 +53,9 @@ export class LocalStorageService {
 
   public getKeyValue(keyName: string) {
     return this.getLoggedUserJsonData()[keyName];
+  }
+
+  save(key: string, value: any) {
+    localStorage.setItem(key,JSON.stringify(value));
   }
 }
