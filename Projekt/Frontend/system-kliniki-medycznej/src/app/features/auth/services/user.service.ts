@@ -6,17 +6,14 @@ import {LoginUserData} from '../model/login-user-data';
   providedIn: 'root'
 })
 export class UserService {
-  loggedUser!: LoginUserData
+  loggedUser!: any
+  isAuthenticated = false;
   constructor(private localStorageService: LocalStorageService) {
     this.loggedUser = this.localStorageService.getLoggedUserJsonData();
   }
 
   public hasRole(roleName: string){
-    return this.userRoleNames.some(value => value === roleName);
-  }
-
-  get userRoleNames(): string[]{
-    return this.loggedUser.roles.map((role) => role.name);
+    return this.getUserRoles().some(value => value === roleName);
   }
 
   get username(): string{
@@ -29,5 +26,13 @@ export class UserService {
 
   get id(): number{
     return 1;
+  }
+
+  getId(key: string) : number {
+    return this.localStorageService.getKeyValue(key);
+  }
+
+  getUserRoles(): string[] {
+    return this.localStorageService.getKeyValue("roles");
   }
 }
