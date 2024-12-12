@@ -1,6 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {MedicineDto} from '../../model/medicine-dto';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {PrescriptionMedicine} from '../../../prescriptions/model/prescription-medicine';
 
 @Component({
   selector: 'app-added-medicines-to-prescription',
@@ -10,11 +9,10 @@ import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
   styleUrl: './added-medicines-to-prescription.component.css'
 })
 export class AddedMedicinesToPrescriptionComponent {
-  @Input() addedMedicines: MedicineDto[] = [];
-  constructor(private fb: FormBuilder) {
-  }
+  @Input() addedMedicines!: PrescriptionMedicine[];
+  @Output() removedMedicineEmitter = new EventEmitter<PrescriptionMedicine>();
 
-  removeMedicine(medicine: MedicineDto) {
-
+  removeMedicine(medicine: PrescriptionMedicine) {
+    this.removedMedicineEmitter.emit(medicine);
   }
 }

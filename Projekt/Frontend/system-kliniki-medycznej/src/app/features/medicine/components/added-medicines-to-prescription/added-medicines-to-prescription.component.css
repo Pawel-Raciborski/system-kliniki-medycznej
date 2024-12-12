@@ -1,0 +1,8 @@
+.hover-danger{
+  transition: .2s ease-in-out;
+}
+
+.hover-danger:hover{
+  background-color: rgba(172, 31, 45, 0.87);
+  color: #201f1f;
+}

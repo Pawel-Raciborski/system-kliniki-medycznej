@@ -1,17 +1,20 @@
 <div class="row max-height-300 mb-4 mt-5">
   <h5>Leki dodane do recepty</h5>
   <div class="col-md-12">
-    @for (medicine of addedMedicines; track medicine.id) {
-      <div class="row border-bottom hover" (click)="removeMedicine(medicine)">
+    @for (prescriptionMedicine of addedMedicines; track prescriptionMedicine.medicine.id) {
+      <div class="row border-bottom hover">
         <div class="col-md-2 border-right">
-          <p>{{ medicine.atcCode || "brak" }}</p>
+          <p>{{ prescriptionMedicine.medicine.atcCode || "brak" }}</p>
         </div>
         <div class="col-md-4">
-          <p class="mb-0">{{ medicine.medicinalProductName }} </p>
-          <p class="small text-primary">{{ medicine.commonName }}</p>
+          <p class="mb-0">{{ prescriptionMedicine.medicine.medicinalProductName }} </p>
+          <p class="small text-primary">{{ prescriptionMedicine.medicine.commonName }}</p>
         </div>
-        <div class="col-md-6">
-          <p>dawkowanie</p>
+        <div class="col-md-4">
+          <p>{{prescriptionMedicine.dosage}}</p>
+        </div>
+        <div class="col-md-2">
+          <button class="btn rounded-circle hover-danger bg-danger" (click)="removeMedicine(prescriptionMedicine)"><i class="bi bi-trash"></i></button>
         </div>
       </div>
     }
