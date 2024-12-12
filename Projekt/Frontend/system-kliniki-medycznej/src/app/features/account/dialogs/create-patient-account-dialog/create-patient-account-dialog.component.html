@@ -1,1 +1,46 @@
-<p>create-patient-account-dialog works!</p>
+<div class="container-fluid">
+  <div class="row p-2">
+    <div class="col-md-12">
+      <div class="row mb-3">
+        <div class="col-md-8">
+          <h3 class="fw-light">Tworzenie konta</h3>
+        </div>
+        <div class="col-md-4 text-end">
+          <button class="btn btn-close"></button>
+        </div>
+      </div>
+      <form [formGroup]="form">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="mb-3">
+              <label class="form-label" for="pesel">Pesel pacjenta</label>
+              <input class="form-control" type="text" id="pesel" name="pesel" formControlName="pesel">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label" for="username">Nazwa użytkownika</label>
+              <input class="form-control" type="text" id="username" name="username" formControlName="username">
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="password">Hasło</label>
+              <input class="form-control" type="text" id="password" name="password" formControlName="password">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label" for="email">Adres email</label>
+              <input class="form-control" type="text" id="email" name="email" formControlName="email">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-end">
+            <button class="btn btn-outline-danger mx-2">Anuluj</button>
+            <button class="btn btn-outline-success">Utwórz</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
