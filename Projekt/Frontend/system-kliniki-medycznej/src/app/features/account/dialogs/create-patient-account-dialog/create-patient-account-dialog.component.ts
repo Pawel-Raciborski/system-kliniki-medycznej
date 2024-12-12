@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {MatDialogRef} from '@angular/material/dialog';
+import {
+  CreatePatientDialogComponent
+} from '../../../patient/dialogs/create-patient-dialog/create-patient-dialog.component';
+import {CreateAccountRequest} from '../../model/create-account-request';
+import {Account} from '../../model/account';
 
 @Component({
   selector: 'app-create-patient-account-dialog',
@@ -17,4 +23,22 @@ export class CreatePatientAccountDialogComponent {
     password: new FormControl(''),
     email: new FormControl(''),
   });
+
+  constructor(
+    private dialogRef: MatDialogRef<CreatePatientDialogComponent>
+  ) {}
+
+  onCreateAccountSubmit(){
+    const {pesel, ...account} = this.form.value;
+    const accountToCreate : CreateAccountRequest = {
+      pesel: pesel,
+      accountCredentials: account
+    };
+
+    this.dialogRef.close(accountToCreate);
+  }
+
+  cancel() {
+    this.dialogRef.close();
+  }
 }

@@ -24,7 +24,7 @@
             </div>
             <div class="mb-3">
               <label class="form-label" for="password">Hasło</label>
-              <input class="form-control" type="text" id="password" name="password" formControlName="password">
+              <input class="form-control" type="password" id="password" name="password" formControlName="password">
             </div>
           </div>
           <div class="col-md-6">
@@ -36,8 +36,8 @@
         </div>
         <div class="row">
           <div class="col-md-12 text-end">
-            <button class="btn btn-outline-danger mx-2">Anuluj</button>
-            <button class="btn btn-outline-success">Utwórz</button>
+            <button (click)="cancel()" class="btn btn-outline-danger mx-2">Anuluj</button>
+            <button (click)="onCreateAccountSubmit()" class="btn btn-outline-success">Utwórz</button>
           </div>
         </div>
       </form>

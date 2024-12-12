@@ -3,6 +3,7 @@ import {AccountInfo} from '../model/account-info';
 import {Observable, of, throwError} from 'rxjs';
 import {ChangePassword} from '../../model/change-password';
 import {ChangePasswordForm} from '../../model/change-password-form';
+import {CreateAccountRequest} from '../model/create-account-request';
 
 @Injectable({
   providedIn: 'root'
@@ -27,5 +28,10 @@ export class AccountService {
 
   updatePassword(changePasswordForm: ChangePasswordForm) {
     console.log(changePasswordForm);
+  }
+
+  createPatientAccount(accountToCreate: CreateAccountRequest): Observable<any> {
+    console.log(accountToCreate);
+    return of();
   }
 }
