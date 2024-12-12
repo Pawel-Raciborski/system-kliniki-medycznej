@@ -14,5 +14,14 @@
   cursor: pointer;
 }
 .hover:hover {
-  background-color: #CDD1D5EE;
+  background-color: rgba(236, 236, 236, 0.93);
+}
+
+.hover-dark{
+  transition: .2s ease-in-out;
+}
+
+.hover-dark:hover{
+  background-color: #201f1f;
+  color: #ffffff;
 }

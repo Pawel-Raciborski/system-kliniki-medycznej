@@ -1,29 +1,36 @@
 <div class="row max-height-300 mb-4">
-    @if (medicines.length > 0) {
-        <div class="col-md-12">
-            <div class="row border-top border-bottom fw-bold mt-3 bg-dark text-light">
-                <div class="col-md-4 border-right ">
-                    <p>Kod ATC</p>
-                </div>
-                <div class="col-md-8">
-                    <p class="mb-0">Nazwa powszechna</p>
-                </div>
-            </div>
-            @for (medicine of medicines; track medicine.id) {
-                <div class="row border-bottom hover" (click)="addMedicine(medicine)">
-                    <div class="col-md-4 border-right">
-                        <p>{{ medicine.atcCode || "brak" }}</p>
-                    </div>
-                    <div class="col-md-8">
-                        <p class="mb-0">{{ medicine.medicinalProductName }} </p>
-                        <p class="small text-primary">{{ medicine.commonName }}</p>
-                    </div>
-                </div>
-            }
+  @if (medicines.length > 0) {
+    <div class="col-md-12">
+      <div class="row border-top border-bottom fw-bold mt-3 bg-dark text-light">
+        <div class="col-md-4 border-right ">
+          <p>Kod ATC</p>
         </div>
-    } @else {
-      <div class="col-md-12">
-        <p class="small text-center">Brak elementów</p>
+        <div class="col-md-8">
+          <p class="mb-0">Nazwa powszechna</p>
+        </div>
       </div>
-    }
+      @for (medicine of medicines; track medicine.id) {
+        <div class="row border-bottom hover">
+          <div class="col-md-2 border-right">
+            <p>{{ medicine.atcCode || "brak" }}</p>
+          </div>
+          <div class="col-md-8">
+            <p class="mb-0">{{ medicine.medicinalProductName }} </p>
+            <p class="small text-primary">{{ medicine.commonName }}</p>
+            <p class="small text-dark"><b>Moc</b>: {{ medicine.medicinalProductPower }}</p>
+          </div>
+          <div class="col-md-2 align-content-center">
+            @if (type !== 'medicinePanel') {
+              <button (click)="addMedicine(medicine)" class="btn border rounded-circle hover-dark"><i
+                class="bi bi-plus"></i></button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="col-md-12">
+      <p class="small text-center">Brak elementów</p>
+    </div>
+  }
 </div>
