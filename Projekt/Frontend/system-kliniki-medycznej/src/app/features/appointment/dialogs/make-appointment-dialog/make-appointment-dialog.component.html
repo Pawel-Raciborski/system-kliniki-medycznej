@@ -20,6 +20,12 @@
       <form [formGroup]="appointmentForm">
         <div class="row mb-2">
           <div class="col-md-12 mb-3">
+            @if(userService.hasRole("RECEPTIONIST")){
+              <mat-form-field class="w-100">
+                <mat-label>Pesel</mat-label>
+                <input matInput type="text" formControlName="pesel">
+              </mat-form-field>
+            }
             <mat-form-field class="w-100">
               <mat-label>Wybierz datę wizyty</mat-label>
               <input matInput

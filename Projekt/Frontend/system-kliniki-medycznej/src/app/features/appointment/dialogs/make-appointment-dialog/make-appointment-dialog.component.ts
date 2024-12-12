@@ -17,6 +17,7 @@ import {MatOption, MatSelect} from '@angular/material/select';
 import {PatientsService} from '../../../patient/services/patients.service';
 import {DatePipe} from '@angular/common';
 import {LocalStorageService} from '../../../auth/services/local-storage.service';
+import {UserService} from '../../../auth/services/user.service';
 
 @Component({
   selector: 'app-make-appointment-dialog',
@@ -53,7 +54,7 @@ export class MakeAppointmentDialogComponent implements OnInit {
     private officeHoursService: OfficeHoursService,
     private currentDialog: MatDialogRef<MakeAppointmentDialogComponent>,
     private patientService: PatientsService,
-    private localStorageService: LocalStorageService
+    public userService: UserService
   ) {
   }
 
@@ -64,8 +65,12 @@ export class MakeAppointmentDialogComponent implements OnInit {
       }
     );
 
-    this.patientService.findPatientPesel(this.localStorageService.getEmail())
-      .subscribe(pesel => this.patientPesel = pesel);
+    if(this.userService.hasRole("RECEPTIONIST")){
+      this.appointmentForm.addControl("pesel", new FormControl(''));
+    }else{
+      this.patientService.findPatientPesel(this.userService.getId('patientId'))
+        .subscribe(pesel => this.patientPesel = pesel);
+    }
   }
 
 
@@ -112,16 +117,18 @@ export class MakeAppointmentDialogComponent implements OnInit {
 
   makeAppointment() {
     let formatedDate = this.formatDate(this.date);
+    let pesel: string = this.userService.hasRole("RECEPTIONIST") ? this.appointmentForm.value.pesel : this.patientPesel;
+
     this.appointmentService.createAppointment({
-      patientPesel: this.patientPesel,
+      patientPesel: pesel,
       date: formatedDate,
       hour: this.formHour,
       doctorPwzNumber: this.doctorInfo.pwzNumber
     });
     this.currentDialog.close({
       appointmentCreated: true,
-      date : formatedDate,
-      hour : this.formHour
+      date: formatedDate,
+      hour: this.formHour
     });
   }
 
@@ -136,7 +143,7 @@ export class MakeAppointmentDialogComponent implements OnInit {
     return this.appointmentForm.controls['hour'].value;
   }
 
-  get date(): string{
+  get date(): string {
     return this.appointmentForm.controls['date'].value;
   }
 }
