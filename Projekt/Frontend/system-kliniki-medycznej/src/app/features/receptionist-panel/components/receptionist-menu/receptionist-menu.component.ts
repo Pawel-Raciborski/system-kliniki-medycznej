@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {UserService} from '../../../auth/services/user.service';
 
 @Component({
@@ -16,6 +16,7 @@ export class ReceptionistMenuComponent implements OnInit{
 
   constructor(
     private userService: UserService,
+    private router: Router
   ) {
   }
 
@@ -23,4 +24,8 @@ export class ReceptionistMenuComponent implements OnInit{
     this.receptionistId = this.userService.getId("receptionistId");
   }
 
+  logout() {
+      this.userService.logout();
+      this.router.navigate(['/auth']);
+  }
 }

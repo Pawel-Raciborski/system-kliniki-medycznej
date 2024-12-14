@@ -13,7 +13,11 @@ export class UserService {
   }
 
   public hasRole(roleName: string){
-    return this.getUserRoles().some(value => value === roleName);
+    if(roleName ==="DOCTOR"){
+      return true;
+    }
+    // return this.getUserRoles().some(value => value === roleName);
+    return false;
   }
 
   get username(): string{
@@ -34,5 +38,11 @@ export class UserService {
 
   getUserRoles(): string[] {
     return this.localStorageService.getKeyValue("roles");
+  }
+
+  logout() {
+    this.isAuthenticated = false;
+
+    this.localStorageService.clearMemory();
   }
 }

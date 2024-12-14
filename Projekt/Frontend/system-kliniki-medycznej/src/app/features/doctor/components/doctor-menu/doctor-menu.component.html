@@ -13,29 +13,34 @@
         <li>
           <hr class="dropdown-divider">
         </li>
-        <li><a class="dropdown-item" href="#">Sign out</a></li>
+        <li><a (click)="logout()" class="dropdown-item" href="#">Sign out</a></li>
       </ul>
     </div>
     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start text-light" id="menu">
       <li class="nav-item">
-        <a href="#" class="nav-link align-middle px-0">
+        <a routerLink="/doctor-panel/calendar" class="nav-link align-middle px-0">
           <i class="fs-4 bi-calendar-check"></i> <span class="ms-1 d-none d-sm-inline">Kalendarz wizyt</span>
         </a>
       </li>
 
       <li>
-        <a class="nav-link px-0 align-middle">
+        <a routerLink="/doctor-panel/doctors" class="nav-link px-0 align-middle">
           <i class="fs-4 bi-card-list"></i> <span class="ms-1 d-none d-sm-inline">Lista lekarzy</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link align-middle px-0">
-          <i class="fs-4 bi-calendar-date"></i> <span class="ms-1 d-none d-sm-inline">Lista wizyt</span>
+        <a routerLink="/doctor-panel/patients" class="nav-link align-middle px-0">
+          <i class="fs-4 bi bi-person"></i><span class="ms-1 d-none d-sm-inline">Pacjenci</span>
         </a>
       </li>
       <li>
-        <a class="nav-link px-0 align-middle">
+        <a class="nav-link px-0 align-middle" routerLink="/doctor-panel/prescriptions">
           <i class="fs-4 bi-file-earmark-text-fill"></i> <span class="ms-1 d-none d-sm-inline">Recepty</span>
+        </a>
+      </li>
+      <li>
+        <a class="nav-link px-0 align-middle" routerLink="/doctor-panel/medicines">
+          <i class="fs-4 bi-file-earmark-text-fill"></i> <span class="ms-1 d-none d-sm-inline">Lekarstwa</span>
         </a>
       </li>
     </ul>

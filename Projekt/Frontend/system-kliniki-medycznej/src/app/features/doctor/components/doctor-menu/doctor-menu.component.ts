@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {LocalStorageService} from '../../../auth/services/local-storage.service';
+import {UserService} from '../../../auth/services/user.service';
 
 @Component({
   selector: 'app-doctor-menu',
@@ -12,15 +13,20 @@ import {LocalStorageService} from '../../../auth/services/local-storage.service'
   styleUrl: './doctor-menu.component.css'
 })
 export class DoctorMenuComponent implements OnInit{
-  doctorId!: string;
+  doctorId!: number;
 
   constructor(
-    private localStorageService: LocalStorageService
+    private userService: UserService,
+    private router: Router
   ) {
   }
 
   ngOnInit(): void {
-    this.doctorId = "1";
+    this.doctorId = this.userService.getId("doctorId");
   }
 
+  logout() {
+    this.userService.logout();
+    this.router.navigate(['/auth']);
+  }
 }
