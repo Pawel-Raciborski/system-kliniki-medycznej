@@ -7,6 +7,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {
   CreatePermissionDialogComponent
 } from '../../dialogs/create-permission-dialog/create-permission-dialog.component';
+import {MessageDialogComponent} from '../../../message/message-dialog/message-dialog.component';
 
 @Component({
   selector: 'app-permission',
@@ -37,10 +38,24 @@ export class PermissionComponent implements OnInit{
       minWidth: '450px'
     }).afterClosed().subscribe((permissionNameToCreate: Permission) => {
       if(permissionNameToCreate){
-        console.log(permissionNameToCreate)
-        this.permissionService.create(permissionNameToCreate).subscribe(
-          p => {
+        this.permissionService.create(permissionNameToCreate).subscribe({
+          next: p => {
             this.permissions.push(p);
+            this.dialog.open(MessageDialogComponent,{
+              data: {
+                message: 'Pomyślnie utworzono permisję',
+                type: 'success'
+              }
+            });
+          },
+          error: err => {
+            this.dialog.open(MessageDialogComponent,{
+              data: {
+                message: err.error,
+                type: 'error'
+              }
+            });
+          }
           }
         )
       }

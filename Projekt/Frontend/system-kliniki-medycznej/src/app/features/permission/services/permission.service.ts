@@ -2,43 +2,42 @@ import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {Permission} from '../model/permission';
 import {Role} from '../../roles/domain/role';
+import {environment} from '../../../../environments/environment.dev';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PermissionService {
+  url = `${environment.serverUrl}/permissions`
 
-  constructor() {
+  constructor(
+    private httpClient: HttpClient
+  ) {
   }
 
   findAllPermissions(): Observable<Permission[]> {
-    return of([]);
+    return this.httpClient.get<Permission[]>(
+      `${this.url}/all`
+    );
   }
 
   create(permission: Permission): Observable<Permission> {
-    return of({
-      id: 1,
-      name: permission.name,
-      description: permission.description
-    })
+    return this.httpClient.post<Permission>(
+      `${this.url}/create`,
+      permission
+    );
   }
 
   remove(permissionToRemove: Permission): Observable<Permission> {
-    return of(permissionToRemove);
+    return this.httpClient.delete<Permission>(
+      `${this.url}/delete`,
+      {
+        params: {
+          name: permissionToRemove.name
+        }
+      }
+    );
   }
 
-  findAvailablePermissionsForRole(role: Role) : Observable<Permission[]> {
-    return of([
-      {
-        id: 29,
-        name:"modify_1",
-        description:"modify_1",
-      },
-      {
-        id: 30,
-        name:"modify_2",
-        description:"modify_2",
-      }
-    ])
-  }
 }
