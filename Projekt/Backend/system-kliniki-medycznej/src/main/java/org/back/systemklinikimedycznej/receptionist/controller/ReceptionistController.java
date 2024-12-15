@@ -3,13 +3,15 @@ package org.back.systemklinikimedycznej.receptionist.controller;
 import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.receptionist.controller.dto.ReceptionistDetails;
 import org.back.systemklinikimedycznej.receptionist.controller.dto.ReceptionistDto;
+import org.back.systemklinikimedycznej.receptionist.controller.dto.ReceptionistInfo;
 import org.back.systemklinikimedycznej.receptionist.controller.dto.RegisterReceptionistForm;
 import org.back.systemklinikimedycznej.receptionist.mapper.ReceptionistMapper;
-import org.back.systemklinikimedycznej.receptionist.repositories.entities.Receptionist;
 import org.back.systemklinikimedycznej.receptionist.services.ReceptionistService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/receptionist")
@@ -18,10 +20,10 @@ public class ReceptionistController {
     private final ReceptionistService receptionistService;
 
     @PostMapping("/create")
-    public ResponseEntity<ReceptionistDto> create(
+    public ResponseEntity<ReceptionistInfo> create(
             @RequestBody RegisterReceptionistForm registerReceptionistForm
     ) {
-        ReceptionistDto createdReceptionist = ReceptionistMapper.INSTANCE.mapFromEntity(receptionistService.register(registerReceptionistForm));
+        ReceptionistInfo createdReceptionist = ReceptionistMapper.INSTANCE.mapFromEntityToReceptionistInfo(receptionistService.register(registerReceptionistForm));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdReceptionist);
     }
 
@@ -41,5 +43,14 @@ public class ReceptionistController {
         receptionistService.delete(email);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<ReceptionistInfo>> getAllReceptionist(){
+        var allReceptionist = receptionistService.findAll().stream()
+                .map(ReceptionistMapper.INSTANCE::mapFromEntityToReceptionistInfo)
+                .toList();
+
+        return ResponseEntity.ok(allReceptionist);
     }
 }
