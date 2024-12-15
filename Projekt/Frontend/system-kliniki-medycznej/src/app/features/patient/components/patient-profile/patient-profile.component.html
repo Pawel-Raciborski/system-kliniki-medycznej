@@ -1,6 +1,19 @@
-<div class="container-fluid">
-  <app-header-title [title]="'Dane pacjenta'"></app-header-title>
-  <app-account [account]="getAccountInfo"></app-account>
-  <app-personal-details [personalDetails]="getPersonalDetails"></app-personal-details>
-  <app-account-roles [username]="patientAccount.username"></app-account-roles>
-</div>
+@if (patientData) {
+  <div class="container-fluid">
+    <app-header-title [title]="'Dane pacjenta'"></app-header-title>
+    @if (userService.hasRole("ADMIN")) {
+      <div class="row mb-3">
+        <div class="col-md-12 text-end">
+          <button (click)="deletePatient()" class="btn btn-danger">Usuń</button>
+        </div>
+      </div>
+    }
+    @if(patientAccount){
+    <app-account [account]="getAccountInfo"></app-account>
+    }
+    <app-personal-details [personalDetails]="this.patientData.personalDetails"></app-personal-details>
+    @if (userService.hasRole("ADMIN") && patientAccount) {
+      <app-account-roles [username]="patientAccount.username"></app-account-roles>
+    }
+  </div>
+}

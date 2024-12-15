@@ -8,6 +8,9 @@ import {
 } from '../../../personal-details/components/personal-details/personal-details.component';
 import {AccountInfo} from '../../../account/model/account-info';
 import {AccountRolesComponent} from '../../../account-role/components/account-roles/account-roles.component';
+import {UserService} from '../../../auth/services/user.service';
+import {HttpStatusCode} from '@angular/common/http';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-patient-profile',
@@ -23,35 +26,46 @@ import {AccountRolesComponent} from '../../../account-role/components/account-ro
 })
 export class PatientProfileComponent implements OnInit {
   @Input() id!: number;
-  patientDetails!: PatientData;
+  patientData!: PatientData;
   patientAccount!: AccountInfo;
 
   constructor(
     private patientsService: PatientsService,
+    public userService: UserService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {
   }
 
   ngOnInit(): void {
-    this.patientsService.findPatientDetails(this.id).subscribe(
+    this.patientsService.findPatientData(this.id).subscribe(
       {
         next: foundPatient => {
-          this.patientDetails = foundPatient;
+          this.patientData = foundPatient;
         },
-        error: err => console.log(err)
+        error: err => console.log(`ERROR`,err)
       }
     );
+    this.patientsService.findPatientAccount(this.id).subscribe(data => {
+      this.patientAccount = data;
+    });
   }
 
   get getAccountInfo() {
-    if (!this.patientAccount) {
-      this.patientsService.findPatientAccount(this.id).subscribe(data => {
-        this.patientAccount = data;
-      });
-    }
     return this.patientAccount;
   }
 
   get getPersonalDetails() {
-    return this.patientDetails.personalDetails;
+    console.log(this.patientData);
+    return this.patientData.personalDetails;
+  }
+
+  deletePatient() {
+    this.patientsService.deleteById(this.id).subscribe(response => {
+      if(response.status === HttpStatusCode.Ok){
+        this.router.navigate(['../'],{relativeTo: this.activatedRoute});
+      }
+    });
+
   }
 }
