@@ -9,6 +9,11 @@ import {DatePipe} from '@angular/common';
 import {PaginationBarComponent} from '../../../pagination/components/pagination-bar/pagination-bar.component';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatTable} from '@angular/material/table';
+import {
+  BasicAppointmentDetailsDialogComponent
+} from '../doctor-appointments/dialogs/basic-appoitment-details-dialog/basic-appointment-details-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-patient-appointments-table',
@@ -30,7 +35,17 @@ import {MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatT
   templateUrl: './patient-appointments-table.component.html',
   styleUrl: './patient-appointments-table.component.css'
 })
-export class PatientAppointmentsTableComponent{
+export class PatientAppointmentsTableComponent {
   @Input({required: true}) patientAppointments!: PatientAppointmentInfo[];
 
+  constructor(
+    private dialog: MatDialog,
+  ) {
+  }
+
+  showAppointmentDetails(appointmentInfo: PatientAppointmentInfo) {
+    this.dialog.open(BasicAppointmentDetailsDialogComponent, {
+      data: appointmentInfo.id
+    });
+  }
 }
