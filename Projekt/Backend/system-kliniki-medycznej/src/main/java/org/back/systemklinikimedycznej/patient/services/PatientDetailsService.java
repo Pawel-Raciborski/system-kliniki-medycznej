@@ -1,14 +1,11 @@
 package org.back.systemklinikimedycznej.patient.services;
 
 import lombok.RequiredArgsConstructor;
-import org.back.systemklinikimedycznej.patient.controllers.dto.CollectedPatientData;
 import org.back.systemklinikimedycznej.patient.controllers.dto.PatientDetailsDto;
-import org.back.systemklinikimedycznej.patient.controllers.dto.PatientPesel;
-import org.back.systemklinikimedycznej.patient.exceptions.PersonalDetailsException;
+import org.back.systemklinikimedycznej.patient.exceptions.PatientException;
 import org.back.systemklinikimedycznej.patient.repositories.PatientDetailsRepository;
 import org.back.systemklinikimedycznej.patient.repositories.entities.PatientDetails;
 import org.back.systemklinikimedycznej.patient.repositories.entities.patient_card.PatientCard;
-import org.back.systemklinikimedycznej.patient.util.PatientCardManagerUtil;
 import org.back.systemklinikimedycznej.patient.util.PatientDetailsManagerUtil;
 import org.back.systemklinikimedycznej.patient.validators.PatientDetailsValidator;
 import org.springframework.http.HttpStatus;
@@ -23,8 +20,8 @@ public class PatientDetailsService {
     private final PatientDetailsRepository patientDetailsRepository;
 
     @Transactional
-    public PatientDetails create(CollectedPatientData collectedPatientData) {
-        PatientCard patientCard = patientCardService.findPatientCardWithPesel(collectedPatientData.patientPesel());
+    public PatientDetails create(PatientDetailsDto collectedPatientData, String pesel) {
+        PatientCard patientCard = patientCardService.findPatientCardWithPesel(pesel);
 
         patientDetailsValidator.validatePersonalDetailsNotExistForPatientCard(patientCard);
 
@@ -37,12 +34,10 @@ public class PatientDetailsService {
 
     public PatientDetails findPatientDetailsByPesel(String pesel) {
         return patientDetailsRepository.findPatientDetailsByPesel(pesel)
-                .orElseThrow(() -> new PersonalDetailsException("Nie znaleziono danych dla pacjenta o peselu %s".formatted(pesel), HttpStatus.NOT_FOUND));
+                .orElse(null);
     }
 
-    public PatientDetails update(CollectedPatientData collectedPatientData) {
-        PatientDetails patientDetailsToUpdate = findPatientDetailsByPesel(collectedPatientData.patientPesel());
-
+    public PatientDetails update(PatientDetails patientDetailsToUpdate, PatientDetailsDto collectedPatientData) {
         PatientDetailsManagerUtil.updatePatientDetails(patientDetailsToUpdate,collectedPatientData);
 
         return patientDetailsRepository.save(patientDetailsToUpdate);
@@ -56,5 +51,11 @@ public class PatientDetailsService {
         patientDetailsRepository.delete(patientDetailsToRemove);
 
         return patientDetailsToRemove;
+    }
+
+    public PatientDetails findById(Long id) {
+        return patientDetailsRepository.findById(id).orElseThrow(
+                () -> new PatientException("Nie znaleziono danych pacjenta!", HttpStatus.NOT_FOUND)
+        );
     }
 }
