@@ -34,7 +34,7 @@ export class DoctorSpecializationsComponent {
     this.dialog.open(CreateDoctorSpecializationComponent).afterClosed()
       .subscribe((doctorSpecializationToCreate: DoctorSpecialization) => {
         if(doctorSpecializationToCreate){
-          this.doctorSpecializationService.create(doctorSpecializationToCreate).subscribe(createdDoctorSpecialization => {
+          this.doctorSpecializationService.create(this.doctorPwzNumber,doctorSpecializationToCreate).subscribe(createdDoctorSpecialization => {
             this.addDoctorSpecializationToArray(createdDoctorSpecialization);
           });
         }
@@ -46,9 +46,10 @@ export class DoctorSpecializationsComponent {
       data: doctorSpecialization
     }).afterClosed().subscribe(doctorSpecializationToUpdate => {
       if(doctorSpecializationToUpdate){
+        doctorSpecializationToUpdate.id = doctorSpecialization.id;
         this.doctorSpecializationService.update(doctorSpecializationToUpdate).subscribe(updatedDoctorSpecialization => {
           this.updateDoctorSpecializationArray(updatedDoctorSpecialization);
-        })
+        });
       }
     })
   }
@@ -61,8 +62,8 @@ export class DoctorSpecializationsComponent {
     });
   }
 
-  private addDoctorSpecializationToArray(doctorSpecialization: DoctorSpecialization) {
-    this.doctorSpecializations.push(doctorSpecialization);
+  private addDoctorSpecializationToArray(doctorSpecialization: DoctorSpecialization[]) {
+    this.doctorSpecializations.push(...doctorSpecialization);
   }
 
   private updateDoctorSpecializationArray(doctorSpecialization: DoctorSpecialization) {
