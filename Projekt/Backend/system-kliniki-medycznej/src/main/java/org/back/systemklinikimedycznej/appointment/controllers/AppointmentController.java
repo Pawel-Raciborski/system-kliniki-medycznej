@@ -1,17 +1,20 @@
 package org.back.systemklinikimedycznej.appointment.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.back.systemklinikimedycznej.appointment.controllers.dto.AppointmentDetails;
-import org.back.systemklinikimedycznej.appointment.controllers.dto.AppointmentDto;
-import org.back.systemklinikimedycznej.appointment.controllers.dto.AppointmentInfo;
+import org.back.systemklinikimedycznej.appointment.controllers.dto.*;
 import org.back.systemklinikimedycznej.appointment.domain.AppointmentStatus;
 import org.back.systemklinikimedycznej.appointment.repositories.entities.Appointment;
 import org.back.systemklinikimedycznej.appointment.services.AppointmentService;
 import org.back.systemklinikimedycznej.appointment.util.AppointmentManagerUtil;
+import org.back.systemklinikimedycznej.disease.services.DiseaseService;
+import org.back.systemklinikimedycznej.patient.services.PatientDiseaseService;
+import org.back.systemklinikimedycznej.prescription.services.PrescriptionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -19,6 +22,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AppointmentController {
     private final AppointmentService appointmentService;
+    private final PrescriptionService prescriptionService;
+    private final PatientDiseaseService patientDiseaseService;
     @PostMapping("/schedule-appointment")
     public ResponseEntity<AppointmentInfo> create(@RequestBody AppointmentDto appointmentDto){
         Appointment createdAppointment = appointmentService.createScheduledAppointment(appointmentDto);
@@ -47,5 +52,27 @@ public class AppointmentController {
         AppointmentDetails appointmentDetails = appointmentService.getAppointmentDetails(appointment);
 
         return ResponseEntity.ok(appointmentDetails);
+    }
+
+    @PutMapping("/finish")
+    public ResponseEntity<Void> finishAppointment(
+            @RequestBody FinishAppointmentRequest appointmentRequest
+            ){
+        Appointment appointmentToFinish = appointmentService.findById(appointmentRequest.appointmentId());
+        appointmentToFinish.setDiagnosis(appointmentToFinish.getDiagnosis());
+        appointmentRequest.appointmentPrescriptions().forEach(prescriptionService::create);
+        appointmentRequest.patientDiseases().forEach(patientDiseaseService::create);
+        appointmentService.finishAppointment(appointmentToFinish);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/available-statuses")
+    public ResponseEntity<List<AppointmentStatusDto>> getAvailableStatuses(){
+        var statuses = Arrays.stream(AppointmentStatus.values()).map(
+                appointmentStatus -> new AppointmentStatusDto(appointmentStatus.name(),appointmentStatus.getAppointmentStatusName())
+        ).toList();
+
+        return ResponseEntity.ok(statuses);
     }
 }

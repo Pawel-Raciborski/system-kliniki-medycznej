@@ -72,7 +72,7 @@ public class AppointmentService {
         return appointmentRepository.findNextPatientAppointment(patientCard);
     }
 
-    public Map<LocalDate, List<Appointment>> getAppointmentsGroupedByDate(LocalDate start, LocalDate end,Doctor doctor) {
+    public Map<LocalDate, List<Appointment>> getDoctorAppointmentsGroupedByDate(LocalDate start, LocalDate end, Doctor doctor) {
         Map<LocalDate,List<Appointment>> appointmentsGroupedByDate = new TreeMap<>(Comparator.naturalOrder());
 
         for(LocalDate i = start; !i.isAfter(end); i=i.plusDays(1)){
@@ -87,7 +87,13 @@ public class AppointmentService {
     public AppointmentDetails getAppointmentDetails(Appointment appointment) {
         PatientCard patientCard = appointment.getPatientCard();
         Patient patient = patientCard.getPatient();
+        Doctor doctor = appointment.getDoctor();
 
-        return AppointmentManagerUtil.buildAppointmentDetails(appointment,patientCard,patient);
+        return AppointmentManagerUtil.buildAppointmentDetails(appointment,patientCard,patient, doctor);
+    }
+
+    public void finishAppointment(Appointment appointmentToFinish) {
+        AppointmentManagerUtil.updateFinishAppointment(appointmentToFinish);
+        appointmentRepository.save(appointmentToFinish);
     }
 }
