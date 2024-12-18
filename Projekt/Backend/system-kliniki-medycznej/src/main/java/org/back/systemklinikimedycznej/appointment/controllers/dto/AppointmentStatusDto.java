@@ -1,2 +1,7 @@
-package org.back.systemklinikimedycznej.appointment.controllers.dto;public class AppointmentStatusDto {
+package org.back.systemklinikimedycznej.appointment.controllers.dto;
+
+public record AppointmentStatusDto(
+        String value,
+        String name
+) {
 }
