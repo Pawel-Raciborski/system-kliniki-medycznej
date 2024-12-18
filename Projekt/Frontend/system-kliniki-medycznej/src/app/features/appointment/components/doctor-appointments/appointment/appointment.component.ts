@@ -9,7 +9,6 @@ import {
 import {PrescriptionMedicine} from '../../../../prescriptions/model/prescription-medicine';
 import {CreatePrescriptionRequest} from '../../../../prescriptions/model/create-prescription-request';
 import {UserService} from '../../../../auth/services/user.service';
-import {LocalStorageService} from '../../../../auth/services/local-storage.service';
 import {
   ShowPatientHospitalizationsDialogComponent
 } from '../../../../patient-card/dialogs/show-patient-hospitalizations-dialog/show-patient-hospitalizations-dialog.component';
@@ -20,14 +19,14 @@ import {
   CreateDiseaseDialogComponent
 } from '../../../../disease/dialogs/create-disease-dialog/create-disease-dialog.component';
 import {CreatePatientDiseaseRequest} from '../../../../patient-disease/create-patient-disease-request';
-import {DiseaseDto} from '../../../../disease/model/disease-dto';
-import {PatientDiseaseService} from '../../../../patient-disease/services/patient-disease.service';
 import {CreatePatientDiseasePart} from '../../../../disease/model/create-patient-disease-part';
 import {
   AppointmentPatientDiseaseComponent
 } from '../../../../disease/components/appointment-patient-disease/appointment-patient-disease.component';
 import {FinishAppointmentRequest} from '../../../model/finish-appointment-request';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {NgIf} from '@angular/common';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-appointment',
@@ -35,7 +34,8 @@ import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
   imports: [
     PatientDataComponent,
     AppointmentPatientDiseaseComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgIf
   ],
   templateUrl: './appointment.component.html',
   styleUrl: './appointment.component.css'
@@ -52,14 +52,16 @@ export class AppointmentComponent implements OnInit {
   constructor(
     private appointmentService: AppointmentService,
     private dialog: MatDialog,
-    private userService: UserService,
-    private patientDiseaseService: PatientDiseaseService
+    public userService: UserService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
   ) {
   }
 
   ngOnInit(): void {
     this.appointmentService.getAppointmentDetails(this.id).subscribe(
       data => {
+        console.log(data);
         this.appointmentDetails = data;
       }
     )
@@ -71,9 +73,10 @@ export class AppointmentComponent implements OnInit {
     }).afterClosed().subscribe((data: {
       expirationDate: string,
       description: string,
-      prescriptionMedicines: PrescriptionMedicine[]
+      prescriptionMedicines: PrescriptionMedicine[],
+      patientPesel: string
     }) => {
-      if(data){
+      if (data) {
         this.createPrescription(data);
       }
     });
@@ -82,7 +85,8 @@ export class AppointmentComponent implements OnInit {
   private createPrescription(data: {
     expirationDate: string;
     description: string;
-    prescriptionMedicines: PrescriptionMedicine[]
+    prescriptionMedicines: PrescriptionMedicine[],
+    patientPesel: string
   }) {
     let prescriptionMedicines = data.prescriptionMedicines.map(p => {
       return {
@@ -92,7 +96,7 @@ export class AppointmentComponent implements OnInit {
     });
 
     let prescription: CreatePrescriptionRequest = {
-      patientId: this.appointmentDetails.patientData.id,
+      patientPesel: data.patientPesel,
       doctorId: this.userService.getId('doctorId'),
       prescriptionMedicineList: prescriptionMedicines,
       description: data.description,
@@ -118,7 +122,7 @@ export class AppointmentComponent implements OnInit {
   openCreateDiseaseDialog() {
     this.dialog.open(CreateDiseaseDialogComponent).afterClosed().subscribe(
       (value: CreatePatientDiseasePart) => {
-        if(value){
+        if (value) {
           const patientDisease = this.buildPatientDisease(value);
           this.patientDiseases.push(patientDisease);
         }
@@ -139,7 +143,12 @@ export class AppointmentComponent implements OnInit {
   finishAppointment() {
     let appointmentRequest = this.buildAppointmentRequest();
 
-    this.appointmentService.finishAppointment(appointmentRequest)
+    this.appointmentService.finishAppointment(appointmentRequest).subscribe(
+      data => {
+        this.router.navigate(['../../calendar'], {relativeTo: this.activatedRoute});
+      }
+    );
+
   }
 
   private buildAppointmentRequest(): FinishAppointmentRequest {
