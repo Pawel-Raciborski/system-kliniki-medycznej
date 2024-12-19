@@ -9,7 +9,8 @@ import java.util.UUID;
 public record CalendarAppointmentInfo(
         UUID id,
         LocalTime hour,
-        String status
+        String status,
+        String patientFullName
 ) {
 
 }

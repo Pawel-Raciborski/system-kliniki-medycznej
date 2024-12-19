@@ -13,7 +13,7 @@ public record DoctorDetails(
         PersonalDetailsDto personalDetails,
         String description,
         List<DoctorSpecializationDto> doctorSpecializations,
-        List<DoctorOfficeHoursDto> doctorOfficeHours,
+        List<OfficeHoursDto> doctorOfficeHours,
         String pwzNumber,
         LocalDate dateOfEmployment
 
