@@ -36,15 +36,28 @@ public class DoctorSpecializationsService {
     }
 
     @Transactional
-    public DoctorSpecialization removeDoctorSpecialization(Doctor doctor, String specializationName) {
-        DoctorSpecialization doctorSpecializationToRemove = findByDoctorAndName(doctor, specializationName);
-
+    public DoctorSpecialization removeDoctorSpecialization(DoctorSpecialization doctorSpecializationToRemove) {
         doctorSpecializationRepository.delete(doctorSpecializationToRemove);
         return doctorSpecializationToRemove;
     }
 
-    private DoctorSpecialization findByDoctorAndName(Doctor doctor, String specializationName) {
+    public DoctorSpecialization findByDoctorAndName(Doctor doctor, String specializationName) {
         return doctorSpecializationRepository.findByDoctorAndName(doctor, specializationName)
                 .orElseThrow(() -> new DoctorSpecializationNotFoundException("Nie znaleziono specjalizacji o nazwie [%s] dla podanego doktora".formatted(specializationName), HttpStatus.NOT_FOUND));
+    }
+
+    public List<String> getAllSpecializationNames() {
+        return doctorSpecializationRepository.getAllSpecializationNames();
+    }
+
+    public DoctorSpecialization findById(Long id) {
+        return doctorSpecializationRepository.findById(id).orElseThrow(
+                () -> new DoctorSpecializationNotFoundException("Nie znaleziono podanej specjalizacji",HttpStatus.NOT_FOUND)
+        );
+    }
+
+    public DoctorSpecialization update(DoctorSpecialization doctorSpecializationToUpdate, DoctorSpecializationDto doctorSpecialization) {
+        DoctorSpecializationManagerUtil.updateValues(doctorSpecializationToUpdate,doctorSpecialization);
+        return doctorSpecializationRepository.save(doctorSpecializationToUpdate);
     }
 }
