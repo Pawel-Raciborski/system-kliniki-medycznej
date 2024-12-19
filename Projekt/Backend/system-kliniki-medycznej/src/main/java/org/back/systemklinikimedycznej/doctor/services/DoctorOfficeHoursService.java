@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.appointment.services.AppointmentService;
 import org.back.systemklinikimedycznej.doctor.controller.dto.AvailableOfficeHours;
 import org.back.systemklinikimedycznej.doctor.controller.dto.OfficeHoursDto;
+import org.back.systemklinikimedycznej.doctor.controller.dto.WorkingDays;
 import org.back.systemklinikimedycznej.doctor.exceptions.DoctorOfficeHoursException;
 import org.back.systemklinikimedycznej.doctor.repositories.DoctorOfficeHoursRepository;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
@@ -69,5 +70,11 @@ public class DoctorOfficeHoursService {
 
         List<LocalTime> appointmentOfficeHours = OfficeHoursManagerUtil.buildListOfAvailableAppointmentOfficeHours(officeHoursForDoctorForDay, bookedOfficeHours);
         return OfficeHoursManagerUtil.buildAvailableHours(appointmentOfficeHours);
+    }
+
+    public List<Integer> findWorkingDays(Doctor doctor) {
+        List<DoctorOfficeHours> officeHours = doctorOfficeHoursRepository.findAllByDoctor(doctor);
+
+        return officeHours.stream().map(officeHour -> officeHour.getDay().getValue()).toList();
     }
 }
