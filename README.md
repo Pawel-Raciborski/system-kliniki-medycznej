@@ -28,12 +28,13 @@ Aplikacja przedstawia prosty system kliniki medycznej z podstawowymi funkcjonaln
 ### Architektura oprogramowania
 Aplikacja monolityczna
 
-### Wykorzystane technologie(alpha v0.1):
+### Wykorzystane technologie:
 
 #### Front-end:
 - Angular
 - TypeScript
-- CSS(lub SCSS)
+- CSS
+- Bootstrap
 - HTML5
 
 #### Back-end:
@@ -45,3 +46,4 @@ Aplikacja monolityczna
 
 #### Inne technologie:
 - Postman
+- Docker
