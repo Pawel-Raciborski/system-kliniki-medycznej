@@ -24,4 +24,10 @@ public class DoctorSpecializationManagerUtil {
                 .map(DoctorSpecializationMapper.INSTANCE::mapFromDto)
                 .collect(Collectors.toSet());
     }
+
+    public static void updateValues(DoctorSpecialization doctorSpecializationToUpdate, DoctorSpecializationDto doctorSpecialization) {
+        doctorSpecializationToUpdate.setName(doctorSpecialization.name());
+        doctorSpecializationToUpdate.setDescription(doctorSpecialization.description());
+        doctorSpecializationToUpdate.setRealizedDate(doctorSpecialization.realizedDate());
+    }
 }
