@@ -1,7 +1,7 @@
 package org.back.systemklinikimedycznej.appointment.controllers.dto;
 
 import org.back.systemklinikimedycznej.patient.controllers.dto.CreatePatientDiseaseRequest;
-import org.back.systemklinikimedycznej.prescription.controller.dto.CreatePrescriptionRequest;
+import org.back.systemklinikimedycznej.prescription.dto.CreatePrescriptionRequest;
 
 import java.util.List;
 import java.util.UUID;
