@@ -12,10 +12,7 @@ import {LocalStorageService} from './features/auth/services/local-storage.servic
 export class AppComponent implements OnInit{
   title = 'system-kliniki-medycznej';
 
-  constructor(private localStorageService: LocalStorageService) {
-  }
 
   ngOnInit(): void {
-        this.localStorageService.saveMockedData();
     }
 }

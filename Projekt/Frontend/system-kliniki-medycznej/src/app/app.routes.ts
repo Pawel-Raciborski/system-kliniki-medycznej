@@ -6,12 +6,26 @@ import {PatientPanelComponent} from './features/patient/components/patient-panel
 import {patientRoutes} from './features/patient/routes/patients-route';
 import {DoctorPanelComponent} from './features/doctor/components/doctor-panel/doctor-panel.component';
 import {doctorRoutes} from './features/doctor/routes/doctor-routes';
+import {
+  ReceptionistPanelComponent
+} from './features/receptionist-panel/components/receptionist-panel/receptionist-panel.component';
+import {AuthComponent} from './features/auth/components/auth/auth.component';
+import {roleAuthGuard} from './features/auth/guards/role-auth.guard';
+import {receptionistRoutes} from './features/receptionist-panel/routes/receptionist-routes';
+import {
+  DoctorPatientCardComponent
+} from './features/patient-card/components/doctor-patient-card/doctor-patient-card.component';
+import {PatientCardComponent} from './features/patient-card/components/patient-card/patient-card.component';
 
 export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'home'
+    redirectTo: 'auth'
+  },
+  {
+    path: 'auth',
+    component: AuthComponent
   },
   {
     path: 'home',
@@ -20,16 +34,37 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: AdminPageComponent,
-    children: adminRoutes
+    children: adminRoutes,
+    // canActivate: [roleAuthGuard],
+    // data: {
+    //   role: "ADMIN"
+    // }
   },
   {
     path:'patient-panel',
     component: PatientPanelComponent,
-    children: patientRoutes
+    children: patientRoutes,
+    // canActivate: [roleAuthGuard],
+    // data: {
+    //   role: 'PATIENT'
+    // }
   },
   {
     path:'doctor-panel',
     component: DoctorPanelComponent,
-    children: doctorRoutes
-  }
+    children: doctorRoutes,
+    // canActivate: [roleAuthGuard],
+    // data: {
+    //   role: 'DOCTOR'
+    // }
+  },
+  {
+    path: 'receptionist-panel',
+    component: ReceptionistPanelComponent,
+    children: receptionistRoutes
+    // canActivate: [roleAuthGuard],
+    // data: {
+    //   role: 'RECEPTIONIST'
+    // }
+  },
 ];
