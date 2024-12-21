@@ -1,74 +1,30 @@
-import { Injectable } from '@angular/core';
-import {Observable, of} from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
 import {ReceptionistInfo} from '../model/receptionist-info';
 import {RegisterReceptionistForm} from '../model/register-receptionist-form';
-import {ReceptionistDto} from '../model/receptionist-dto';
 import {ReceptionistDetails} from '../model/receptionist-details';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {environment} from '../../../../environments/environment.dev';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReceptionistService {
+  url = `${environment.serverUrl}/receptionist`;
 
-  constructor() { }
+  constructor(
+    private httpClient: HttpClient
+  ) { }
 
   get receptionists(): Observable<ReceptionistInfo[]>{
-    const receptionistList: ReceptionistInfo[] = [
-      {
-        id: 1,
-        name: "Emily",
-        surname: "Watson",
-        email: "emily.watson@example.com",
-        phoneNumber: "+1-202-555-0136",
-        dateOfEmployment: "2021-06-15",
-      },
-      {
-        id: 2,
-        name: "John",
-        surname: "Doe",
-        email: "john.doe@example.com",
-        phoneNumber: "+1-202-555-0178",
-        dateOfEmployment: "2020-09-22",
-      },
-      {
-        id: 3,
-        name: "Sophie",
-        surname: "Miller",
-        email: "sophie.miller@example.com",
-        phoneNumber: "+44-1632-960437",
-        dateOfEmployment: "2019-01-10",
-      },
-      {
-        id: 4,
-        name: "Carlos",
-        surname: "Rodriguez",
-        email: "carlos.rodriguez@example.com",
-        phoneNumber: "+34-911-123456",
-        dateOfEmployment: "2023-03-12",
-      },
-      {
-        id: 5,
-        name: "Aisha",
-        surname: "Khan",
-        email: "aisha.khan@example.com",
-        phoneNumber: "+91-98112-34567",
-        dateOfEmployment: "2022-11-01",
-      }
-    ];
-
-    return of(receptionistList);
+    return this.httpClient.get<ReceptionistInfo[]>(`${this.url}/all`);
   }
 
   register(registerReceptionistForm: RegisterReceptionistForm): Observable<ReceptionistInfo> {
-    let receptionistInfo: ReceptionistInfo = {
-      id: 12,
-      name: registerReceptionistForm.personalDetails.name,
-      surname: registerReceptionistForm.personalDetails.surname,
-      dateOfEmployment: registerReceptionistForm.dateOfEmployment,
-      email: registerReceptionistForm.registerAccountData.email,
-      phoneNumber: registerReceptionistForm.personalDetails.phoneNumber
-    };
-    return of(receptionistInfo);
+    return this.httpClient.post<ReceptionistInfo>(
+      `${this.url}/create`,
+      registerReceptionistForm
+    );
   }
 
   findById(id: number) {
@@ -77,6 +33,7 @@ export class ReceptionistService {
       username: "jan_kowalski",
       email: "jan.kowalski@mail.com",
       personalDetails: {
+        id:1,
         pesel: "93817263611",
         name: "Jan",
         surname: "Kowalski",
@@ -84,6 +41,7 @@ export class ReceptionistService {
         gender: null,
         phoneNumber: "+48 726 361 631",
         address: {
+          id: 1,
           street: "Mickiewicza 6",
           apartmentNumber: "6/12",
           postalCode: "10-100",
@@ -93,6 +51,17 @@ export class ReceptionistService {
       dateOfEmployment: '02-10-2024'
     }
 
-    return of(receptionistDetails);
+    return this.httpClient.get<ReceptionistDetails>(
+      `${this.url}/${id}`
+    );
+  }
+
+  delete(receptionistId: number): Observable<HttpResponse<ReceptionistInfo>> {
+    return this.httpClient.delete<ReceptionistInfo>(
+      `${this.url}/${receptionistId}/delete`,
+      {
+        observe: 'response'
+      }
+    )
   }
 }
