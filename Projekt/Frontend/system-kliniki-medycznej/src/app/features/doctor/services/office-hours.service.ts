@@ -2,24 +2,22 @@ import { Injectable } from '@angular/core';
 import {Observable, of, throwError} from 'rxjs';
 import {OfficeHours} from '../domain/office-hours';
 import {HttpClient} from '@angular/common/http';
+import {environment} from '../../../../environments/environment.dev';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OfficeHoursService {
+  private url = `${environment.serverUrl}/doctor/office-hours`;
 
   constructor(private httpClient: HttpClient) { }
 
   // Tutaj będzie przekazywane ID
   update(data: OfficeHours): Observable<OfficeHours> {
-    let randomNumber = Math.floor(Math.random() * 11);
-    console.log(randomNumber);
-    if(randomNumber%2==0){
-      console.log("dwada");
-      return throwError(() => new Error("Mock backend error"));
-    }
-
-    return of(data);
+    return this.httpClient.put<OfficeHours>(
+      `${this.url}/update`,
+      data
+    );
   }
 
   delete(officeHoursToRemove: OfficeHours): Observable<OfficeHours> {
@@ -28,25 +26,38 @@ export class OfficeHoursService {
   }
 
   create(officeHoursToCreate: OfficeHours, pwzNumber: string) : Observable<OfficeHours> {
-    return of(officeHoursToCreate);
+    return this.httpClient.post<OfficeHours>(
+      `${this.url}/add`,
+      officeHoursToCreate,
+      {
+        params: {
+          pwzNumber: pwzNumber
+        }
+      }
+    );
   }
 
 
-  findDoctorWorkingDays(pwzNumber: string) : Observable<{day:number, hours: string[]}[]>{
-    let workingDaysWithHours = [
+  findDoctorWorkingDays(pwzNumber: string) : Observable<number[]>{
+    return this.httpClient.get<number[]>(
+      `${this.url}/doctor-working-days`,
       {
-        day: 1,
-        hours: ["09:00","09:30","11:30","13:30","16:00"]
-      },
-      {
-        day: 2,
-        hours: ["10:00","11:30","12:00","13:30","16:00"]
-      },
-      {
-        day: 3,
-        hours: ["13:30","14:00","15:30","16:00"]
+        params: {
+          pwzNumber: pwzNumber
+        }
       }
-    ]
-    return of(workingDaysWithHours);
+    );
+  }
+
+  findOfficeHoursForDay(pwzNumber: string, date: string): Observable<string[]> {
+    return this.httpClient.get<string[]>(
+      `${this.url}/available-working-hours`,
+      {
+        params: {
+          pwzNumber: pwzNumber,
+          date: date
+        }
+      }
+    )
   }
 }
