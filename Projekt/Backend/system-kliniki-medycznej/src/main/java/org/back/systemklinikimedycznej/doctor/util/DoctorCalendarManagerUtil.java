@@ -63,6 +63,13 @@ public class DoctorCalendarManagerUtil {
                 .build();
     }
 
+    /**
+     * Method responsible for return week date period
+     * @param date date of the week
+     * @param formatType responsible for choose how long period is
+     *
+     * @return Returns DatePeriod with beginning of the week/month and end of the week/month depending on selected formatType
+     * */
     public static DatePeriod getDatePeriod(LocalDate date, CalendarFormatType formatType) {
         LocalDate now = LocalDate.now();
 
