@@ -23,6 +23,7 @@ public interface PatientDiseaseRepository extends JpaRepository<PatientDisease,L
     SELECT pd FROM PatientDisease pd
     WHERE pd.patientCard = :patientCard
     AND pd.cureStatus IN :cureStatusList
+    ORDER BY pd.detectionDate DESC
     """)
     Page<PatientDisease> findByPatientCardAndWithCureStatusPaged(PatientCard patientCard, List<CureStatus> cureStatusList, PageRequest pageRequest);
 }
