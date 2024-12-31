@@ -5,7 +5,6 @@ import org.back.systemklinikimedycznej.account.repositories.entities.Account;
 import org.back.systemklinikimedycznej.account.services.AccountService;
 import org.back.systemklinikimedycznej.personal_details.repositories.entities.PersonalDetails;
 import org.back.systemklinikimedycznej.personal_details.services.PersonalDetailsService;
-import org.back.systemklinikimedycznej.receptionist.controller.dto.ReceptionistDetails;
 import org.back.systemklinikimedycznej.receptionist.controller.dto.RegisterReceptionistForm;
 import org.back.systemklinikimedycznej.receptionist.exceptions.ReceptionistNotFoundException;
 import org.back.systemklinikimedycznej.receptionist.repositories.ReceptionistRepository;
@@ -16,6 +15,8 @@ import org.back.systemklinikimedycznej.role.services.AccountRoleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -36,12 +37,13 @@ public class ReceptionistService {
         return receptionistRepository.save(receptionistToAdd);
     }
 
-    public void delete(String email) {
-        Receptionist receptionistToRemove = findByEmail(email);
+    public Receptionist delete(Receptionist receptionistToRemove) {
         PersonalDetails personalDetailsToRemove = receptionistToRemove.getPersonalDetails();
 
         receptionistRepository.delete(receptionistToRemove);
         personalDetailsService.deletePersonalDetails(personalDetailsToRemove);
+
+        return receptionistToRemove;
     }
 
     private Receptionist findByEmail(String email) {
@@ -52,5 +54,14 @@ public class ReceptionistService {
     public Receptionist findById(Long receptionistId) {
         return receptionistRepository.findById(receptionistId).orElseThrow(
                 () -> new ReceptionistNotFoundException(("Nie znaleziono recepcjonisty z podanym id"), HttpStatus.NOT_FOUND));
+    }
+
+    public Receptionist findByAccount(Account account) {
+        return receptionistRepository.findByAccount(account)
+                .orElseThrow(() -> new ReceptionistNotFoundException("Nie znaleziono konta!",HttpStatus.NOT_FOUND));
+    }
+
+    public List<Receptionist> findAll() {
+        return receptionistRepository.findAll();
     }
 }
