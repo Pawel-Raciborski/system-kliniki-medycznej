@@ -6,6 +6,7 @@ import org.back.systemklinikimedycznej.receptionist.controller.dto.ReceptionistD
 import org.back.systemklinikimedycznej.receptionist.controller.dto.ReceptionistInfo;
 import org.back.systemklinikimedycznej.receptionist.controller.dto.RegisterReceptionistForm;
 import org.back.systemklinikimedycznej.receptionist.mapper.ReceptionistMapper;
+import org.back.systemklinikimedycznej.receptionist.repositories.entities.Receptionist;
 import org.back.systemklinikimedycznej.receptionist.services.ReceptionistService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,13 +37,14 @@ public class ReceptionistController {
         return ResponseEntity.ok(receptionistDetails);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<Void> delete(
-            @RequestParam(name = "email") String email
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<ReceptionistInfo> delete(
+            @PathVariable("id") Long id
     ) {
-        receptionistService.delete(email);
+        Receptionist receptionistToRemove = receptionistService.findById(id);
+        ReceptionistInfo removedReceptionist = ReceptionistMapper.INSTANCE.mapFromEntityToReceptionistInfo(receptionistService.delete(receptionistToRemove));
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(removedReceptionist);
     }
 
     @GetMapping("/all")
