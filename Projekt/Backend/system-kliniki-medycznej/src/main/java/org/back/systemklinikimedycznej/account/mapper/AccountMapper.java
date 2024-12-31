@@ -17,8 +17,8 @@ public interface AccountMapper {
     AccountDto mapFromEntity(Account account);
 
     @Mappings({
-            @Mapping(target = "newUsername", source = "username"),
-            @Mapping(target = "newEmail", source = "email")
+            @Mapping(target = "username", source = "username"),
+            @Mapping(target = "email", source = "email")
     })
     AccountInfo mapFromAccountToAccountInfo(Account account);
 

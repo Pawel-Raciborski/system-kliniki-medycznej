@@ -10,6 +10,7 @@ import org.back.systemklinikimedycznej.account.repositories.entities.Account;
 import org.back.systemklinikimedycznej.account.util.AccountManagerUtil;
 import org.back.systemklinikimedycznej.account.validators.AccountValidator;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,12 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccountService {
     private final AccountRepository accountRepository;
     private final AccountValidator accountValidator;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public Account create(AccountDto accountDto) {
         accountValidator.validateEmailAndUsername(accountDto.email(),accountDto.username());
 
         Account accountToRegister = AccountManagerUtil.buildUserFromRegistrationForm(accountDto);
+        accountToRegister.setPassword(passwordEncoder.encode(accountDto.password()));
 
         return accountRepository.save(accountToRegister);
     }
@@ -46,16 +49,15 @@ public class AccountService {
     public void changePassword(ChangePasswordDto changePasswordForm) {
         Account accountToChangePassword = findByEmail(changePasswordForm.userEmail());
 
-        accountValidator.validatePasswordEqual(accountToChangePassword.getPassword(),changePasswordForm.previousPassword());
+        accountValidator.validatePasswordEqual(accountToChangePassword.getPassword(), changePasswordForm.previousPassword());
 
-        AccountManagerUtil.updatePassword(accountToChangePassword,changePasswordForm.newPassword());
+        AccountManagerUtil.updatePassword(accountToChangePassword,passwordEncoder.encode(changePasswordForm.newPassword()));
         accountRepository.save(accountToChangePassword);
     }
 
     @Transactional
     public Account updateAccountDetails(Account accountToUpdate, AccountInfo accountInfo) {
-        accountValidator.validateEmailAndUsername(accountInfo.newEmail(),accountInfo.newUsername());
-        AccountManagerUtil.updateAccountDetails(accountToUpdate, accountInfo.newUsername(), accountInfo.newEmail());
+        AccountManagerUtil.updateAccountDetails(accountToUpdate, accountInfo.username(), accountInfo.email());
 
         return accountRepository.save(accountToUpdate);
     }
