@@ -1,13 +1,13 @@
 package org.back.systemklinikimedycznej.account.validators;
 
 import lombok.RequiredArgsConstructor;
-import org.back.systemklinikimedycznej.account.dto.AccountDto;
 import org.back.systemklinikimedycznej.account.exceptions.AccountEmailAlreadyExistException;
 import org.back.systemklinikimedycznej.account.exceptions.UsernameAlreadyExistException;
 import org.back.systemklinikimedycznej.account.repositories.AccountRepository;
 import org.back.systemklinikimedycznej.account.repositories.entities.Account;
 import org.back.systemklinikimedycznej.auth.exceptions.InvalidPasswordException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AccountValidator {
     private final AccountRepository accountRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public void validateEmailAndUsername(String email, String username) {
@@ -47,7 +48,7 @@ public class AccountValidator {
     }
 
     public void validatePasswordEqual(String currentPassword, String passedPassword) {
-        if(!currentPassword.equals(passedPassword)){
+        if(!passwordEncoder.matches(passedPassword,currentPassword)){
             throw new InvalidPasswordException("Nieprawidłowe hasło!",HttpStatus.CONFLICT);
         }
     }
