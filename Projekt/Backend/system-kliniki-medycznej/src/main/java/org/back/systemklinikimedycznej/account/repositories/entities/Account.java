@@ -30,15 +30,6 @@ public class Account {
     @Column(name = "date_time_of_creation")
     private LocalDateTime dateTimeOfCreation;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Set<AccountRole> accountRoles;
-
-    @OneToOne(mappedBy = "account")
-    private Doctor doctor;
-
-    @OneToOne(mappedBy = "account")
-    private Patient patient;
-
-    @OneToOne(mappedBy = "account")
-    private Receptionist receptionist;
 }
