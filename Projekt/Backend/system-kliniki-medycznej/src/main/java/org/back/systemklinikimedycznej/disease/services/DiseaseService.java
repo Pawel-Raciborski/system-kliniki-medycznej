@@ -49,7 +49,7 @@ public class DiseaseService {
         String diseaseCode = searchDisease.code();
 
         if(isNotEmptyAndBlank(diseaseName)){
-            predicates.add(criteriaBuilder.like(root.get("icd11title"), PrefixBuilder.startsWith(diseaseName)));
+            predicates.add(criteriaBuilder.like(root.get("icd11Title"), PrefixBuilder.startsWith(diseaseName)));
         }
 
         if(isNotEmptyAndBlank(diseaseCode)){
