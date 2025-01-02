@@ -1,6 +1,7 @@
 package org.back.systemklinikimedycznej.disease.mapper;
 
 import org.back.systemklinikimedycznej.disease.dto.BasicDiseaseInfo;
+import org.back.systemklinikimedycznej.disease.dto.DiseaseDto;
 import org.back.systemklinikimedycznej.disease.repository.entities.Disease;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,4 +17,9 @@ public interface DiseaseMapper {
             @Mapping(target = "title",source = "icd11Title")
     })
     BasicDiseaseInfo mapToBasicDiseaseInfo(Disease disease);
+
+    @Mappings({
+            @Mapping(target = "category", source = "category.name")
+    })
+    DiseaseDto mapToDto(Disease disease);
 }
