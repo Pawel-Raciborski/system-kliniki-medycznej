@@ -1,9 +1,9 @@
-package org.back.systemklinikimedycznej.prescription.dto;
+package org.back.systemklinikimedycznej.prescription.controller.dto;
 
 import lombok.Builder;
 import org.back.systemklinikimedycznej.cure.dto.PrescriptionMedicineInfo;
 import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorInfo;
-import org.back.systemklinikimedycznej.patient.repositories.entities.PatientDetails;
+import org.back.systemklinikimedycznej.patient.controllers.dto.PatientData;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,6 +16,7 @@ public record PrescriptionDetails(
         String description,
         LocalDate createdAt,
         LocalDate expirationDate,
+        PatientData patient,
         List<PrescriptionMedicineInfo> prescriptionMedicineInfoList
 
 ) {

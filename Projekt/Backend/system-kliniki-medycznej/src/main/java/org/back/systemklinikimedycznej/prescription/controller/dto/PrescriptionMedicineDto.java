@@ -1,4 +1,4 @@
-package org.back.systemklinikimedycznej.prescription.dto;
+package org.back.systemklinikimedycznej.prescription.controller.dto;
 
 public record PrescriptionMedicineDto(
         String registryNumber,

@@ -1,11 +1,11 @@
-package org.back.systemklinikimedycznej.prescription.dto;
+package org.back.systemklinikimedycznej.prescription.controller.dto;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public record CreatePrescriptionRequest(
         Long doctorId,
-        Long patientId,
+        String patientPesel,
         List<PrescriptionMedicineDto> prescriptionMedicineList,
         LocalDate expirationDate,
         String description
