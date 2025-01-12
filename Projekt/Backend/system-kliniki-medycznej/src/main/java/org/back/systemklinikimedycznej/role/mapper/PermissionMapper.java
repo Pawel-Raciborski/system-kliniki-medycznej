@@ -13,4 +13,6 @@ public interface PermissionMapper {
 
     PermissionDto mapFromEntity(Permission permission);
 
+    Permission mapToEntity(PermissionDto permissionDto);
+
 }
