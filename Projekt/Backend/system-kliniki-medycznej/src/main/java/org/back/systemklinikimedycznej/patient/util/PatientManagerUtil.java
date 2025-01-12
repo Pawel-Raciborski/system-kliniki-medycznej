@@ -22,10 +22,10 @@ public class PatientManagerUtil {
         patient.setAccount(createdPatientAccount);
     }
 
-    public static RegisteredPatientAccount buildRegisteredPatientAccountData(Account account, PersonalDetails personalDetails) {
+    public static RegisteredPatientAccount buildRegisteredPatientAccountData(Patient patient) {
         return RegisteredPatientAccount.builder()
-                .accountDto(AccountMapper.INSTANCE.mapFromEntity(account))
-                .personalDetailsDto(PersonalDetailsMapper.INSTANCE.mapFromEntity(personalDetails))
+                .accountDto(AccountMapper.INSTANCE.mapFromEntity(patient.getAccount()))
+                .personalDetailsDto(PersonalDetailsMapper.INSTANCE.mapFromEntity(patient.getPersonalDetails()))
                 .build();
 
     }

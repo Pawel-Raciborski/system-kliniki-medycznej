@@ -10,6 +10,6 @@ public record CreatePatientDiseaseRequest(
         DiseaseDto diseaseDto,
         Long doctorId,
         String description,
-        List<CreateHospitalizationRequest> hospitalization
+        List<CreateHospitalizationRequest> hospitalizations
 ) {
 }

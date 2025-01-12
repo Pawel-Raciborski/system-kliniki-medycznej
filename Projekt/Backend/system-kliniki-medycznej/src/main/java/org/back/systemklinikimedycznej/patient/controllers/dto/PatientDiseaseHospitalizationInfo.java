@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 @Builder
 public record PatientDiseaseHospitalizationInfo(
-        Long id,
+        Long diseaseId,
         String description,
         String doctorFullName,
         LocalDate detectionDate,
@@ -23,7 +23,7 @@ public record PatientDiseaseHospitalizationInfo(
         ) {
         public static PatientDiseaseHospitalizationInfo buildPatientDiseaseHospitalization(PatientDisease patientDisease, Hospitalization currentHospitalization, String fullName, Disease disease) {
                 return builder()
-                        .id(patientDisease.getId())
+                        .diseaseId(patientDisease.getId())
                         .description(patientDisease.getDescription())
                         .doctorFullName(fullName)
                         .detectionDate(patientDisease.getDetectionDate())

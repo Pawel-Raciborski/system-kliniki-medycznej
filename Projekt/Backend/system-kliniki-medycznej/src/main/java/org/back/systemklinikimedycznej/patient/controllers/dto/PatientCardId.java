@@ -1,2 +1,6 @@
-package org.back.systemklinikimedycznej.patient.controllers.dto;public record PatientCardId() {
+package org.back.systemklinikimedycznej.patient.controllers.dto;
+
+public record PatientCardId(
+        String patientCardId
+) {
 }

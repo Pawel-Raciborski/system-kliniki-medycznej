@@ -9,6 +9,7 @@ public record HospitalizationInfo(
         MedicineDto medicine,
         String cureDosage,
         String notes,
-        LocalDate medicineUpdateDate
+        LocalDate medicineUpdateDate,
+        LocalDate finishDate
 ) {
 }
