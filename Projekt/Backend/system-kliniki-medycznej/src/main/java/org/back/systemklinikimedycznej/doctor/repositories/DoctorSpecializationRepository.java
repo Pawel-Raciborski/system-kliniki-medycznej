@@ -23,4 +23,12 @@ public interface DoctorSpecializationRepository extends JpaRepository<DoctorSpec
     """)
     Page<Doctor> findPagedDoctorsWithSpecialization(@Param("specializationName") String specializationName, Pageable pageable);
 
+
+    @Query(
+            """
+            SELECT DISTINCT d.name FROM DoctorSpecialization d
+            """
+    )
+    List<String> getAllSpecializationNames();
+
 }

@@ -17,7 +17,7 @@ public class DoctorSpecialization {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = " name")
+    @Column(name = "name")
     private String name;
 
     @Column(name = "description")

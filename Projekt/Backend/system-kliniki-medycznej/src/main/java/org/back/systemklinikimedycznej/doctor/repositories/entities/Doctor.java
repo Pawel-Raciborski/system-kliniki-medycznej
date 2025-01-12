@@ -24,18 +24,18 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JoinColumn(name = "personal_details_id")
     private PersonalDetails personalDetails;
 
-    @OneToOne(mappedBy = "doctor", cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "doctor", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private DoctorCalendar calendar;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 2056)
     private String description;
 
     @OneToMany(mappedBy = "doctor", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
@@ -44,7 +44,7 @@ public class Doctor {
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.REMOVE)
     private Set<DoctorOfficeHours> doctorOfficeHours;
 
-    @Column(name = "profile_image_path")
+    @Column(name = "profile_image_path", length = 1024)
     private String profileImagePath;
 
     @Column(name = "pwz_number")
