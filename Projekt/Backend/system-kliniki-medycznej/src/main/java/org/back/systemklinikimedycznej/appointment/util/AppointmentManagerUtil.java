@@ -4,8 +4,8 @@ import org.back.systemklinikimedycznej.appointment.controllers.dto.AppointmentDe
 import org.back.systemklinikimedycznej.appointment.controllers.dto.AppointmentInfo;
 import org.back.systemklinikimedycznej.appointment.controllers.dto.PatientAppointmentInfo;
 import org.back.systemklinikimedycznej.appointment.domain.AppointmentStatus;
-import org.back.systemklinikimedycznej.appointment.mappers.AppointmentMapper;
 import org.back.systemklinikimedycznej.appointment.repositories.entities.Appointment;
+import org.back.systemklinikimedycznej.doctor.mapper.DoctorMapper;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.patient.mapper.PatientMapper;
 import org.back.systemklinikimedycznej.patient.repositories.entities.Patient;
@@ -23,7 +23,7 @@ public class AppointmentManagerUtil {
                 .build();
     }
 
-    public static PatientAppointmentInfo buildUpcomingAppointmentInfo(Appointment appointment) {
+    public static PatientAppointmentInfo buildPatientAppointmentInfo(Appointment appointment) {
         return PatientAppointmentInfo.builder()
                 .id(appointment.getId())
                 .doctorName(appointment.getDoctor().getPersonalDetails().getName())
@@ -47,11 +47,17 @@ public class AppointmentManagerUtil {
                 .build();
     }
 
-    public static AppointmentDetails buildAppointmentDetails(Appointment appointment, PatientCard patientCard, Patient patient) {
+    public static AppointmentDetails buildAppointmentDetails(Appointment appointment, PatientCard patientCard, Patient patient, Doctor doctor) {
         return AppointmentDetails.builder()
                 .patientCardId(patientCard.getId())
                 .appointment(buildAppointmentInfo(appointment))
                 .patientData(PatientMapper.INSTANCE.mapFromEntity(patient))
+                .doctor(DoctorMapper.INSTANCE.mapToDoctorInfo(doctor))
                 .build();
+    }
+
+    public static void updateFinishAppointment(Appointment appointmentToFinish) {
+        updateStatus(appointmentToFinish,AppointmentStatus.CHECK_OUT);
+        appointmentToFinish.setFinishDateTime(LocalDateTime.now());
     }
 }

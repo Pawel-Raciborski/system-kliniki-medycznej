@@ -31,3 +31,7 @@ logging:
   level:
     org.springframework.web.reactive.function.client.WebClient: DEBUG
     reactor.netty.http.client: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework: DEBUG
+
+secret.key: ${SECRET_KEY}

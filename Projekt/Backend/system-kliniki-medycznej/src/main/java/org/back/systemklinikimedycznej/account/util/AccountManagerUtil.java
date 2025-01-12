@@ -13,7 +13,6 @@ public class AccountManagerUtil {
     public Account buildUserFromRegistrationForm(AccountDto accountDto) {
         return Account.builder()
                 .username(accountDto.username())
-                .password(accountDto.password())
                 .email(accountDto.email())
                 .dateTimeOfCreation(LocalDateTime.now())
                 .build();

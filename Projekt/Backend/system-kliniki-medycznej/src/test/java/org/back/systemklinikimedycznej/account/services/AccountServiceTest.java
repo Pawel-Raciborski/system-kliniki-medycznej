@@ -14,8 +14,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
-import java.util.Optional;
-
 @ExtendWith(MockitoExtension.class)
 class AccountServiceTest {
     @InjectMocks
@@ -48,7 +46,6 @@ class AccountServiceTest {
     void shouldThrowAnExceptionDuringUsernameAndEmailValidation(){
         //given
         AccountDto accountToCreate = AccountDto.builder().username("janek123").password("janek123").email("janek123@mail.com").build();
-        Account createdAccountMock = Account.builder().id(1L).username("janek123").password("janek123").email("janek123@mail.com").build();
 
         Mockito.doThrow(new UsernameAlreadyExistException("Nazwa użytkownika już zajęta!", HttpStatus.CONFLICT)).when(accountValidator).validateEmailAndUsername(accountToCreate.email(),accountToCreate.username());
 

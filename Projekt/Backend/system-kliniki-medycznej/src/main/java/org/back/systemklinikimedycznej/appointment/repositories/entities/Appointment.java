@@ -23,13 +23,13 @@ public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="doctor_id")
     private Doctor doctor;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="calendar_id")
     private DoctorCalendar doctorCalendar;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="patient_card_id")
     private PatientCard patientCard;
     @Column(name="appointment_date_time")
@@ -41,6 +41,4 @@ public class Appointment {
     private AppointmentStatus status;
     @Column(name="diagnosis")
     private String diagnosis;
-    @OneToMany(mappedBy = "appointment",cascade = CascadeType.REMOVE)
-    private Set<AppointmentPrescription> appointmentPrescriptions;
 }

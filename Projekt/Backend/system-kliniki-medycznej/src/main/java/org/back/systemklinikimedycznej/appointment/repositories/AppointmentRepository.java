@@ -1,8 +1,10 @@
 package org.back.systemklinikimedycznej.appointment.repositories;
 
+import org.back.systemklinikimedycznej.appointment.controllers.dto.PatientAppointmentInfo;
 import org.back.systemklinikimedycznej.appointment.repositories.entities.Appointment;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.patient.repositories.entities.patient_card.PatientCard;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -85,4 +87,15 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
             AND DATE(a.appointmentDateTime) = :date
             """)
     List<Appointment> findAllDoctorAppointmentsForDate(@Param("doctor") Doctor doctor, @Param("date") LocalDate date);
+
+    @Query(
+        """
+        SELECT a FROM Appointment a
+        JOIN a.patientCard as pc
+        JOIN pc.patient as p
+        WHERE p.personalDetails.pesel = :pesel
+        AND a.status = org.back.systemklinikimedycznej.appointment.domain.AppointmentStatus.CHECK_OUT
+        """
+    )
+    Page<Appointment> findPatientFinishedAppointments(String pesel, Pageable pageable);
 }

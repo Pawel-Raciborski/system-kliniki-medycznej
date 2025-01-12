@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.back.systemklinikimedycznej.appointment.repositories.entities.AppointmentPrescription;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.patient.repositories.entities.Patient;
 
@@ -41,7 +40,4 @@ public class Prescription {
 
     @OneToMany(mappedBy = "prescription")
     private Set<PrescriptionMedicine> prescriptionMedicines;
-    
-    @OneToMany(mappedBy = "prescription")
-    private Set<AppointmentPrescription> appointmentPrescriptions;
 }
