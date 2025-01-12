@@ -39,8 +39,7 @@ public class PersonalDetailsService {
     }
 
     @Transactional
-    public PersonalDetails update(PersonalDetailsDto newPersonalDetails) {
-        PersonalDetails personalDetailsToUpdate = getByPesel(newPersonalDetails);
+    public PersonalDetails update(PersonalDetailsDto newPersonalDetails, PersonalDetails personalDetailsToUpdate) {
         Address updatedAddress = addressService.update(newPersonalDetails.address(), personalDetailsToUpdate.getAddress());
 
         PersonalDetailsManagerUtil.setFields(newPersonalDetails, personalDetailsToUpdate, updatedAddress);
@@ -49,7 +48,11 @@ public class PersonalDetailsService {
     }
 
     private PersonalDetails getByPesel(PersonalDetailsDto newPersonalDetails) {
-        return personalDetailsRepository.findByPesel(newPersonalDetails.pesel())
+        return findByPesel(newPersonalDetails.pesel());
+    }
+
+    public PersonalDetails findByPesel(String pesel) {
+        return personalDetailsRepository.findByPesel(pesel)
                 .orElseThrow(() -> new GlobalAppException("Nie znaleziono danych z podanym PESELEM", HttpStatus.NOT_FOUND));
     }
 
@@ -61,5 +64,11 @@ public class PersonalDetailsService {
     public PersonalDetails findByPhoneNumber(String phoneNumber){
         return personalDetailsRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new PersonalDetailsException("Nie znaleziono danych z podanym numerem telefonu!",HttpStatus.NOT_FOUND));
+    }
+
+    public PersonalDetails findById(Long id){
+        return personalDetailsRepository.findById(id).orElseThrow(
+                () -> new PersonalDetailsException("Nie znaleziono danych osobowych",HttpStatus.NOT_FOUND)
+        );
     }
 }
