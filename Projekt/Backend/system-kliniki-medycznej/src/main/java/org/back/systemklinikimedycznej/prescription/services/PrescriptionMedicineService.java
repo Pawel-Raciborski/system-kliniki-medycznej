@@ -3,7 +3,7 @@ package org.back.systemklinikimedycznej.prescription.services;
 import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.cure.repositories.entities.Medicine;
 import org.back.systemklinikimedycznej.cure.service.MedicineService;
-import org.back.systemklinikimedycznej.prescription.dto.PrescriptionMedicineDto;
+import org.back.systemklinikimedycznej.prescription.controller.dto.PrescriptionMedicineDto;
 import org.back.systemklinikimedycznej.prescription.repositories.PrescriptionMedicineRepository;
 import org.back.systemklinikimedycznej.prescription.repositories.entities.Prescription;
 import org.back.systemklinikimedycznej.prescription.repositories.entities.PrescriptionMedicine;

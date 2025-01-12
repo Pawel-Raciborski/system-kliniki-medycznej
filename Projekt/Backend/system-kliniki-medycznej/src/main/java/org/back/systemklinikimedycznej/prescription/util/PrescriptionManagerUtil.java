@@ -5,9 +5,8 @@ import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.patient.mapper.PatientMapper;
 import org.back.systemklinikimedycznej.patient.repositories.entities.Patient;
 import org.back.systemklinikimedycznej.prescription.controller.dto.PrescriptionInfo;
-import org.back.systemklinikimedycznej.prescription.dto.PrescriptionDetails;
+import org.back.systemklinikimedycznej.prescription.controller.dto.PrescriptionDetails;
 import org.back.systemklinikimedycznej.prescription.repositories.entities.Prescription;
-import org.back.systemklinikimedycznej.prescription.repositories.entities.PrescriptionMedicine;
 
 import java.time.LocalDate;
 

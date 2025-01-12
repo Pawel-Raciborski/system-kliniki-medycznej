@@ -7,12 +7,11 @@ import org.back.systemklinikimedycznej.model.Pagination;
 import org.back.systemklinikimedycznej.patient.repositories.entities.Patient;
 import org.back.systemklinikimedycznej.patient.services.PatientService;
 import org.back.systemklinikimedycznej.prescription.controller.dto.PrescriptionInfo;
-import org.back.systemklinikimedycznej.prescription.dto.CreatePrescriptionForm;
-import org.back.systemklinikimedycznej.prescription.dto.PrescriptionDetails;
+import org.back.systemklinikimedycznej.prescription.controller.dto.CreatePrescriptionRequest;
+import org.back.systemklinikimedycznej.prescription.controller.dto.PrescriptionDetails;
 import org.back.systemklinikimedycznej.prescription.exceptions.PrescriptionException;
 import org.back.systemklinikimedycznej.prescription.repositories.PrescriptionRepository;
 import org.back.systemklinikimedycznej.prescription.repositories.entities.Prescription;
-import org.back.systemklinikimedycznej.prescription.repositories.entities.PrescriptionMedicine;
 import org.back.systemklinikimedycznej.prescription.util.PrescriptionManagerUtil;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,14 +31,14 @@ public class PrescriptionService {
     private final PrescriptionRepository prescriptionRepository;
 
     @Transactional
-    public PrescriptionInfo create(CreatePrescriptionForm createPrescriptionForm) {
-        Doctor doctor = doctorService.findById(createPrescriptionForm.doctorId());
-        Patient patient = patientService.findById(createPrescriptionForm.patientId());
+    public PrescriptionInfo create(CreatePrescriptionRequest createPrescriptionRequest) {
+        Doctor doctor = doctorService.findById(createPrescriptionRequest.doctorId());
+        Patient patient = patientService.findByPesel(createPrescriptionRequest.patientPesel());
 
 
-        Prescription prescriptionToCreate = PrescriptionManagerUtil.buildPrescription(doctor, patient, createPrescriptionForm.expirationDate(), createPrescriptionForm.description());
+        Prescription prescriptionToCreate = PrescriptionManagerUtil.buildPrescription(doctor, patient, createPrescriptionRequest.expirationDate(), createPrescriptionRequest.description());
         Prescription savedPrescription = prescriptionRepository.save(prescriptionToCreate);
-        prescriptionMedicineService.savePrescriptionMedicines(savedPrescription,createPrescriptionForm.prescriptionMedicineList());
+        prescriptionMedicineService.savePrescriptionMedicines(savedPrescription, createPrescriptionRequest.prescriptionMedicineList());
 
         return PrescriptionManagerUtil.buildPrescriptionInfo(savedPrescription);
     }
@@ -61,11 +60,21 @@ public class PrescriptionService {
 
     public List<PrescriptionInfo> findPatientPrescriptions(Long patientId, Pagination pagination) {
         Patient patient = patientService.findById(patientId);
-        Pageable pageRequest = PageRequest.of(pagination.page(),pagination.pageSize());
+        Pageable pageRequest = createPageRequest(pagination);
 
         return prescriptionRepository.findPatientPrescriptions(patient,pageRequest).getContent()
                 .stream()
                 .map(PrescriptionManagerUtil::buildPrescriptionInfo)
                 .toList();
+    }
+
+    private static PageRequest createPageRequest(Pagination pagination) {
+        return PageRequest.of(pagination.page(), pagination.pageSize());
+    }
+
+    public List<Prescription> findAllPaged(Pagination pagination) {
+        Pageable page = createPageRequest(pagination);
+
+        return prescriptionRepository.findAll(page).getContent();
     }
 }
