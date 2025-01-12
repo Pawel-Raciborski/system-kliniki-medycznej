@@ -3,6 +3,7 @@ package org.back.systemklinikimedycznej.personal_details.controller;
 import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.personal_details.dto.PersonalDetailsDto;
 import org.back.systemklinikimedycznej.personal_details.mapper.PersonalDetailsMapper;
+import org.back.systemklinikimedycznej.personal_details.repositories.entities.PersonalDetails;
 import org.back.systemklinikimedycznej.personal_details.services.PersonalDetailsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,8 +19,9 @@ public class PersonalDetailsController {
 
     @PutMapping("/update")
     public ResponseEntity<PersonalDetailsDto> update(@RequestBody PersonalDetailsDto personalDetails) {
+        PersonalDetails personalDetailsToUpdate = personalDetailsService.findById(personalDetails.id());
         PersonalDetailsDto updatedPersonalDetails = PersonalDetailsMapper.INSTANCE.mapFromEntity(
-                personalDetailsService.update(personalDetails)
+                personalDetailsService.update(personalDetails,personalDetailsToUpdate)
         );
         return ResponseEntity.ok(updatedPersonalDetails);
     }
