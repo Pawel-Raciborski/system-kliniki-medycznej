@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -87,15 +88,31 @@ public class PatientService {
     }
 
     @Transactional
-    public RegisteredPatientAccount createAccountForPatient(PatientToRegisterCredentials patientToRegisterCredentials) {
-        Account createdPatientAccount = accountService.create(patientToRegisterCredentials.accountCredentials());
-        PersonalDetails patientPersonalDetails = personalDetailsService.findByPhoneNumber(patientToRegisterCredentials.phoneNumber());
+    public RegisteredPatientAccount createAccountForPatient(PatientToRegisterCredentials patientToRegisterCredentials, Patient patient) {
+        if(Objects.nonNull(patient.getAccount())){
+            throw new PatientException("Podany pacjent posiada już konto!",HttpStatus.CONFLICT);
+        }
 
-        Patient patient = findByPesel(patientPersonalDetails.getPesel());
+        Account createdPatientAccount = accountService.create(patientToRegisterCredentials.accountCredentials());
+
         PatientManagerUtil.setPatientAccount(patient, createdPatientAccount);
 
         patientRepository.save(patient);
         accountRoleService.processAccountRoleCreation(createdPatientAccount, BasicAppRoles.PATIENT.name());
-        return PatientManagerUtil.buildRegisteredPatientAccountData(createdPatientAccount, patientPersonalDetails);
+        return PatientManagerUtil.buildRegisteredPatientAccountData(patient);
+    }
+
+    public Patient findByAccount(Account account) {
+        return patientRepository.findByAccount(account)
+                .orElseThrow(
+                        () -> new PatientException("Nie znaleziono konta pacjenta!",HttpStatus.NOT_FOUND)
+                );
+    }
+
+    public List<Patient> searchPatientsWithPesel(String pesel) {
+        if(pesel.isBlank() || pesel.isEmpty()){
+           return patientRepository.findAll();
+        }
+        return patientRepository.findPatientsStartsWithPesel(pesel);
     }
 }

@@ -6,6 +6,7 @@ import org.back.systemklinikimedycznej.appointment.repositories.AppointmentRepos
 import org.back.systemklinikimedycznej.appointment.repositories.entities.Appointment;
 import org.back.systemklinikimedycznej.appointment.util.AppointmentManagerUtil;
 import org.back.systemklinikimedycznej.patient.controllers.dto.PatientPesel;
+import org.back.systemklinikimedycznej.patient.repositories.entities.Patient;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -25,7 +26,7 @@ public class PatientAppointmentService {
         Optional<Appointment> nextAppointment = appointmentRepository.findNextAppointmentForPatient(patientPesel.pesel(),currentDate);
 
         if(nextAppointment.isPresent()){
-            return AppointmentManagerUtil.buildUpcomingAppointmentInfo(nextAppointment.get());
+            return AppointmentManagerUtil.buildPatientAppointmentInfo(nextAppointment.get());
         }
 
         return PatientAppointmentInfo.builder()
@@ -36,11 +37,25 @@ public class PatientAppointmentService {
     }
 
     @Transactional
-    public List<PatientAppointmentInfo> findUpcomingAppointments(Integer page, Integer pageSize, String pesel) {
-        Pageable pageable = PageRequest.of(page,pageSize).withSort(Sort.by("appointmentDateTime").descending());
+    public List<PatientAppointmentInfo> findUpcomingAppointments(Integer page, Integer pageSize, Patient patient) {
+        Pageable pageable = buildPageRequest(page, pageSize).withSort(Sort.by("appointmentDateTime").ascending());
+        String pesel = patient.getPersonalDetails().getPesel();
 
         return appointmentRepository.findUpcomingAppointments(pageable,pesel).stream()
-                .map(AppointmentManagerUtil::buildUpcomingAppointmentInfo)
+                .map(AppointmentManagerUtil::buildPatientAppointmentInfo)
                 .toList();
+    }
+
+    public List<PatientAppointmentInfo> findFinishedAppointments(Patient patient, Integer page, Integer pageSize) {
+        Pageable pageable = buildPageRequest(page,pageSize).withSort(Sort.by("appointmentDateTime").descending());
+
+        return appointmentRepository.findPatientFinishedAppointments(patient.getPersonalDetails().getPesel(),pageable)
+                .getContent().stream()
+                .map(AppointmentManagerUtil::buildPatientAppointmentInfo)
+                .toList();
+    }
+
+    private static PageRequest buildPageRequest(Integer page, Integer pageSize) {
+        return PageRequest.of(page, pageSize);
     }
 }

@@ -29,4 +29,6 @@ public class Hospitalization {
     private String notes;
     @Column(name="medicine_update_date")
     private LocalDate medicineUpdateDate;
+    @Column(name="finish_date")
+    private LocalDate finishDate;
 }
