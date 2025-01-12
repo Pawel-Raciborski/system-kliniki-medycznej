@@ -8,5 +8,4 @@ public interface PrescriptionMapper {
     PrescriptionMapper INSTANCE = Mappers.getMapper(PrescriptionMapper.class);
 
 
-
 }
