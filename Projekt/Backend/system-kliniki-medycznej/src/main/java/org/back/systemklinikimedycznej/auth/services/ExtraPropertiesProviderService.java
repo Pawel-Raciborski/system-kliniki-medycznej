@@ -3,43 +3,63 @@ package org.back.systemklinikimedycznej.auth.services;
 import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.account.repositories.entities.Account;
 import org.back.systemklinikimedycznej.account.services.AccountService;
+import org.back.systemklinikimedycznej.auth.domain.ApplicationUser;
+import org.back.systemklinikimedycznej.auth.domain.LoginData;
+import org.back.systemklinikimedycznej.auth.jwt.JwtService;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
+import org.back.systemklinikimedycznej.doctor.services.DoctorService;
 import org.back.systemklinikimedycznej.patient.repositories.entities.Patient;
-import org.back.systemklinikimedycznej.patient.services.PatientAccountService;
+import org.back.systemklinikimedycznej.patient.services.PatientService;
 import org.back.systemklinikimedycznej.receptionist.repositories.entities.Receptionist;
+import org.back.systemklinikimedycznej.receptionist.services.ReceptionistService;
 import org.back.systemklinikimedycznej.role.controller.dto.RoleDto;
-import org.back.systemklinikimedycznej.role.repository.entities.Role;
+import org.back.systemklinikimedycznej.role.mapper.RoleMapper;
+import org.back.systemklinikimedycznej.role.repository.entities.AccountRole;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class ExtraPropertiesProviderService {
-    private final AccountService accountService;
+    private final DoctorService doctorService;
+    private final ReceptionistService receptionistService;
+    private final PatientService patientService;
+    private final JwtService jwtService;
 
-    public void addExtraData(Map<String, Object> data) {
-        Account account = accountService.findByUsername((String) data.get("username"));
+    public LoginData generateToken(ApplicationUser user) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("username", user.getUsername());
+        map.put("email", user.getAccount().getEmail());
+        map.put("roles", user.getAccount().getAccountRoles().stream().map(r -> r.getRole().getName()).toList());
+        map.put("accountId", user.getAccount().getId());
+        user.getAccount().getAccountRoles().stream()
+                .map(AccountRole::getRole)
+                .map(RoleMapper.INSTANCE::mapFromEntity)
+                .forEach(r -> addData(map,r,user.getAccount()));
 
-        List<RoleDto> roles = extractRoles(data);
+        String token = jwtService.generateToken(map,user);
 
-        roles.forEach(role -> addData(data, role, account));
-
+        return LoginData.builder()
+                .token(token)
+                .build();
     }
 
     private void addData(Map<String, Object> data, RoleDto role, Account account) {
         switch (role.name()) {
             case "DOCTOR" -> {
-                Doctor doctor = account.getDoctor();
+                Doctor doctor = doctorService.findByAccount(account);
                 data.put("doctorId",doctor.getId());
             }
             case "RECEPTIONIST" -> {
-                Receptionist receptionist = account.getReceptionist();
+                Receptionist receptionist = receptionistService.findByAccount(account);
                 data.put("receptionistId",receptionist.getId());
             }
             case "PATIENT" -> {
-                Patient patient = account.getPatient();
+                Patient patient = patientService.findByAccount(account);
                 data.put("patientId",patient.getId());
             }
         }

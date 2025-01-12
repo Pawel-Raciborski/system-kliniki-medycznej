@@ -9,6 +9,6 @@ import java.util.UUID;
 
 @Builder
 public record LoginData(
-        Map<String,Object> data
+        String token
 ) {
 }
