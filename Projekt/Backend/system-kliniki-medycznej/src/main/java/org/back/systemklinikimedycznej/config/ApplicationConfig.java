@@ -41,7 +41,7 @@ public class ApplicationConfig {
         javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(isoDate));
         javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(dateFormatter));
         javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(reverseDate));
-
+        
         javaTimeModule.addSerializer(LocalTime.class,new LocalTimeSerializer(timeFormatter));
         javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(timeFormatter));
 
