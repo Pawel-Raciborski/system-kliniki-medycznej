@@ -1,5 +1,8 @@
 package org.back.systemklinikimedycznej.doctor.domain;
 
-public class SearchParams {
-    String doctorFullName
+public record DoctorSearchParams(
+        String doctorFullName,
+        AdvancedSearch advancedSearch
+) {
+
 }
