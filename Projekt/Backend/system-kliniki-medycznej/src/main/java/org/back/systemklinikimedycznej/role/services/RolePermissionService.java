@@ -1,8 +1,10 @@
 package org.back.systemklinikimedycznej.role.services;
 
 import lombok.RequiredArgsConstructor;
+import org.back.systemklinikimedycznej.role.controller.dto.RoleDetails;
 import org.back.systemklinikimedycznej.role.controller.dto.RolePermissionDto;
 import org.back.systemklinikimedycznej.role.exceptions.RolePermissionException;
+import org.back.systemklinikimedycznej.role.mapper.PermissionMapper;
 import org.back.systemklinikimedycznej.role.repository.RolePermissionRepository;
 import org.back.systemklinikimedycznej.role.repository.entities.Permission;
 import org.back.systemklinikimedycznej.role.repository.entities.Role;
@@ -13,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RolePermissionService {
@@ -22,24 +26,31 @@ public class RolePermissionService {
     private final PermissionService permissionService;
 
     @Transactional
-    public RolePermission create(String roleName, String permissionName) {
-        Role role = roleService.findByName(roleName);
-        Permission permission = permissionService.findByName(permissionName);
+    public List<Permission> create(RoleDetails roleDetails) {
+        Role role = roleService.findById(roleDetails.role().id());
+        List<Permission> permissions = roleDetails.permissions()
+                .stream()
+                .map(PermissionMapper.INSTANCE::mapToEntity)
+                .toList();
 
-        RolePermission rolePermissionToCreate = RolePermissionManagerUtil.buildRolePermission(role,permission);
-        rolePermissionValidator.validateRolePermissionNotExist(rolePermissionToCreate);
+        List<RolePermission> rolePermissionToCreate = permissions.stream()
+                .map(p -> RolePermissionManagerUtil.buildRolePermission(role,p))
+                .toList();
 
-        return rolePermissionRepository.save(rolePermissionToCreate);
+        rolePermissionToCreate.forEach(rolePermissionValidator::validateRolePermissionNotExist);
+
+        List<RolePermission> rolePermissions = rolePermissionRepository.saveAll(rolePermissionToCreate);
+        return rolePermissions.stream().map(RolePermission::getPermission).toList();
     }
 
     @Transactional
-    public RolePermission delete(String roleName, String permissionName) {
+    public Permission delete(String roleName, String permissionName) {
         Role role = roleService.findByName(roleName);
         Permission permissionToRemove = permissionService.findByName(permissionName);
 
         RolePermission rolePermissionToRemove = findByRoleAndPermission(role,permissionToRemove);
         rolePermissionRepository.delete(rolePermissionToRemove);
-        return rolePermissionToRemove;
+        return rolePermissionToRemove.getPermission();
     }
 
     private RolePermission findByRoleAndPermission(Role role, Permission permission) {

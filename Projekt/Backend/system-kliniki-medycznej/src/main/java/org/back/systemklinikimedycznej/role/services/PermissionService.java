@@ -5,11 +5,15 @@ import org.back.systemklinikimedycznej.role.controller.dto.PermissionDto;
 import org.back.systemklinikimedycznej.role.exceptions.PermissionException;
 import org.back.systemklinikimedycznej.role.repository.PermissionRepository;
 import org.back.systemklinikimedycznej.role.repository.entities.Permission;
+import org.back.systemklinikimedycznej.role.repository.entities.Role;
+import org.back.systemklinikimedycznej.role.repository.entities.RolePermission;
 import org.back.systemklinikimedycznej.role.util.PermissionManagerUtil;
 import org.back.systemklinikimedycznej.role.validators.PermissionValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -36,5 +40,18 @@ public class PermissionService {
         permissionRepository.delete(permissionToRemove);
 
         return permissionToRemove;
+    }
+
+    public List<Permission> findAvailablePermissionsForRole(Role role) {
+        List<String> assignedPermission = role.getRolePermissions().stream()
+                .map(RolePermission::getPermission)
+                .map(Permission::getName)
+                .toList();
+
+        return permissionRepository.findAllNotInPermissionNames(assignedPermission);
+    }
+
+    public List<Permission> findAllPermissions() {
+        return permissionRepository.findAll();
     }
 }
