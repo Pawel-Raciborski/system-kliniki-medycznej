@@ -12,7 +12,7 @@ public interface PatientDetailsMapper {
     PatientDetailsMapper INSTANCE = Mappers.getMapper(PatientDetailsMapper.class);
 
     @Mappings({
-            @Mapping(target = "bloodType",source = "bloodType.bloodTypeName")
+            @Mapping(target = "bloodType",source = "bloodType")
     })
     PatientDetailsDto mapFromEntity(PatientDetails patientDetails);
 }
