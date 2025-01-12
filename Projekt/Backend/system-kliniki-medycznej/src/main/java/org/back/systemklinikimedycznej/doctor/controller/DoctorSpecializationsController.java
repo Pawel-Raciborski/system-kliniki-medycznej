@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.doctor.controller.dto.DoctorSpecializationDto;
 import org.back.systemklinikimedycznej.doctor.mapper.DoctorSpecializationMapper;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
+import org.back.systemklinikimedycznej.doctor.repositories.entities.DoctorSpecialization;
 import org.back.systemklinikimedycznej.doctor.services.DoctorService;
 import org.back.systemklinikimedycznej.doctor.services.DoctorSpecializationsService;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,16 @@ public class DoctorSpecializationsController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSpecializations);
     }
 
+    @PutMapping()
+    public ResponseEntity<DoctorSpecializationDto> update(
+            @RequestBody DoctorSpecializationDto doctorSpecialization
+    ){
+        DoctorSpecialization doctorSpecializationToUpdate = this.doctorSpecializationsService.findById(doctorSpecialization.id());
+        DoctorSpecializationDto updatedDoctorSpecialization = DoctorSpecializationMapper.INSTANCE.mapFromEntity(doctorSpecializationsService.update(doctorSpecializationToUpdate,doctorSpecialization));
+
+        return ResponseEntity.ok(updatedDoctorSpecialization);
+    }
+
     @GetMapping
     public ResponseEntity<List<DoctorSpecializationDto>> getDoctorSpecializations(@RequestParam("pwzNumber") String pwzNumber){
         Doctor doctor = doctorService.findByPwzNumber(pwzNumber);
@@ -50,11 +61,18 @@ public class DoctorSpecializationsController {
             @RequestParam(name="specializationName") String specializationName
     ){
         Doctor doctor = doctorService.findByPwzNumber(pwzNumber);
-
+        DoctorSpecialization specializationToRemove = doctorSpecializationsService.findByDoctorAndName(doctor,specializationName);
         DoctorSpecializationDto removedDoctorSpecialization = DoctorSpecializationMapper.INSTANCE.mapFromEntity(
-                doctorSpecializationsService.removeDoctorSpecialization(doctor,specializationName)
+                doctorSpecializationsService.removeDoctorSpecialization(specializationToRemove)
         );
 
         return ResponseEntity.ok(removedDoctorSpecialization);
+    }
+
+    @GetMapping("/specialization-names")
+    public ResponseEntity<List<String>> getSpecializationNames(){
+        List<String> allSpecializationNames = doctorSpecializationsService.getAllSpecializationNames();
+
+        return ResponseEntity.ok(allSpecializationNames);
     }
 }

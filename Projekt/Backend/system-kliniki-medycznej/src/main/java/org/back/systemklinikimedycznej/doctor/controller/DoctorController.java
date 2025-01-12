@@ -2,6 +2,7 @@ package org.back.systemklinikimedycznej.doctor.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.back.systemklinikimedycznej.doctor.controller.dto.*;
+import org.back.systemklinikimedycznej.doctor.domain.DoctorSearchParams;
 import org.back.systemklinikimedycznej.doctor.mapper.DoctorMapper;
 import org.back.systemklinikimedycznej.doctor.repositories.entities.Doctor;
 import org.back.systemklinikimedycznej.doctor.services.DoctorSearchingService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/doctors")
@@ -89,5 +91,23 @@ public class DoctorController {
         DoctorsInfo doctorsInfo = doctorInfoService.findPagedWithSpecialization(specializationName, page, pageSize);
 
         return ResponseEntity.ok(doctorsInfo);
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<List<DoctorInfo>> searchForDoctors(
+            @RequestBody DoctorSearchParams doctorSearchParams
+            ){
+        List<DoctorInfo> doctors = this.doctorService.searchForDoctors(doctorSearchParams);
+
+        return ResponseEntity.ok(doctors);
+    }
+
+    @GetMapping("/{id}/details")
+    public ResponseEntity<DoctorDetails> findById(
+            @PathVariable("id") Long doctorId
+    ){
+        DoctorDetails doctor = DoctorMapper.INSTANCE.mapToDoctorDetails(doctorService.findById(doctorId));
+
+        return ResponseEntity.ok(doctor);
     }
 }

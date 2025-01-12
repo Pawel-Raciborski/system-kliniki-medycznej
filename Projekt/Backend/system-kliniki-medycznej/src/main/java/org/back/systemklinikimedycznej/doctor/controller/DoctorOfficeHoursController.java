@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/doctor/office-hours")
@@ -69,13 +71,23 @@ public class DoctorOfficeHoursController {
     }
 
     @GetMapping("/available-working-hours")
-    public ResponseEntity<AvailableOfficeHours> getDoctorAvailableHours(
+    public ResponseEntity<List<LocalTime>> getDoctorAvailableHours(
             @RequestParam(name="pwzNumber") String doctorPwzNumber,
             @RequestParam(name="date") @DateTimeFormat(pattern=DateFormatter.DATE_FORMAT) LocalDate appointmentDate
             ){
         Doctor doctor = doctorService.findByPwzNumber(doctorPwzNumber);
         AvailableOfficeHours availableOfficeHours = doctorOfficeHoursService.findAvailableHoursInGivenDayForDoctor(doctor, appointmentDate);
 
-        return ResponseEntity.ok(availableOfficeHours);
+        return ResponseEntity.ok(availableOfficeHours.officeHours());
+    }
+
+    @GetMapping("/doctor-working-days")
+    public ResponseEntity<List<Integer>> findDoctorWorkingDays(
+            @RequestParam("pwzNumber") String doctorPwzNumber
+    ){
+        Doctor doctor = doctorService.findByPwzNumber(doctorPwzNumber);
+        List<Integer> workingDays = doctorOfficeHoursService.findWorkingDays(doctor);
+
+        return ResponseEntity.ok(workingDays);
     }
 }

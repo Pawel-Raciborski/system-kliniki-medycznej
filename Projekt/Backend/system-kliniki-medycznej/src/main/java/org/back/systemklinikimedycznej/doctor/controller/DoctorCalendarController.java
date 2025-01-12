@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/doctors/calendar")
@@ -39,8 +40,8 @@ public class DoctorCalendarController {
 
     @GetMapping("/all-appointments")
     public ResponseEntity<CalendarAppointmentsResponse> getAppointments(
-            @RequestParam(name = "date", required = false) @DateTimeFormat(pattern = DateFormatter.DATE_FORMAT) LocalDate date,
-            @RequestParam(name="doctorId") Long id,
+            @RequestParam(name="date", required = false) @DateTimeFormat(pattern = DateFormatter.DATE_FORMAT) LocalDate date,
+            @RequestParam(name="doctorId", required = false) Long id,
             @RequestParam(name="formatType", defaultValue = "week") String calendarFormatType
     ){
         CalendarFormatType formatType = CalendarFormatType.valueOf(calendarFormatType.toUpperCase());
