@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/permissions")
 @RequiredArgsConstructor
@@ -26,5 +28,14 @@ public class PermissionController {
         PermissionDto removedPermission = PermissionMapper.INSTANCE.mapFromEntity(permissionService.delete(permissionName));
 
         return ResponseEntity.ok(removedPermission);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<PermissionDto>> findAllPermissions(){
+        var permissions = permissionService.findAllPermissions().stream()
+                .map(PermissionMapper.INSTANCE::mapFromEntity)
+                .toList();
+
+        return ResponseEntity.ok(permissions);
     }
 }
