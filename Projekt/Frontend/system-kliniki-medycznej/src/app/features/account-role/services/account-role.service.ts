@@ -17,6 +17,7 @@ export class AccountRoleService {
       //   description: 'Rola lekarza'
       // },
       {
+        id: 1,
         name: 'ADMIN',
         description: 'Administrator'
       }

@@ -24,7 +24,10 @@ export class AccountRolesComponent implements OnInit{
 
   ngOnInit(): void {
     console.log(this.username);
-    this.roles = this.userService.loggedUser.roles;
+    // this.roles = this.userService.loggedUser.roles;
+    this.roleService.getAccountRoles(this.username).subscribe(data => {
+      this.roles = data;
+    })
   }
 
   addRole() {
