@@ -5,6 +5,9 @@ import {AccountInfo} from '../../model/account-info';
 import {AccountService} from '../../services/account.service';
 import {ChangePasswordForm} from '../../../model/change-password-form';
 import {ChangePassword} from '../../../model/change-password';
+import {MatDialog} from '@angular/material/dialog';
+import {MessageDialogComponent} from '../../../message/message-dialog/message-dialog.component';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-account',
@@ -22,7 +25,8 @@ export class AccountComponent implements OnInit {
 
   constructor(
     private formGeneratorService: FormGeneratorService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private dialog: MatDialog
   ) {
   }
 
@@ -33,7 +37,15 @@ export class AccountComponent implements OnInit {
   }
 
   changePassword() {
-    this.accountService.updatePassword(this.buildChangePasswordForm());
+    this.accountService.updatePassword(this.buildChangePasswordForm()).subscribe({
+      next: response => {
+          this.openSuccessDialog();
+      },
+      error: (err) => {
+        console.log(err);
+        this.openErrorMessage(err.message);
+      }
+    });
   }
 
   private buildChangePasswordForm(): ChangePasswordForm {
@@ -53,10 +65,11 @@ export class AccountComponent implements OnInit {
       next: value => {
         this.accountSignal.set(value);
         this.patchAccountValues();
+        this.openSuccessDialog()
       },
       error: err => {
-        console.log(err);
         this.patchAccountValues();
+        this.openErrorMessage(err.error);
       }
     });
   }
@@ -77,5 +90,23 @@ export class AccountComponent implements OnInit {
 
   cancelPasswordChange() {
     this.accountForm.get('changePasswordForm')?.reset();
+  }
+
+  private openSuccessDialog() {
+    this.dialog.open(MessageDialogComponent, {
+      data: {
+        message: 'Pomyślnie zaktualizowano dane',
+        type: 'success'
+      }
+    });
+  }
+
+  private openErrorMessage(error: string) {
+    this.dialog.open(MessageDialogComponent,{
+      data: {
+        message: error,
+        type: 'error'
+      }
+    });
   }
 }
