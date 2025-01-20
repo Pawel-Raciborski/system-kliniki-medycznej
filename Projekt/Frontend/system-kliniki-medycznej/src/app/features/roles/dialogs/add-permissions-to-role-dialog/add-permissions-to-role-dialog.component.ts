@@ -22,13 +22,14 @@ export class AddPermissionsToRoleDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public role: Role,
     private permissionService: PermissionService,
-    private dialogRef: MatDialogRef<AddPermissionsToRoleDialogComponent>
+    private dialogRef: MatDialogRef<AddPermissionsToRoleDialogComponent>,
+    private roleService: RoleService
   ) {
     console.log(role);
   }
 
   ngOnInit(): void {
-    this.permissionService.findAvailablePermissionsForRole(this.role).subscribe(data => {
+    this.roleService.findAvailablePermissionsForRole(this.role).subscribe(data => {
       this.availablePermissions = data;
     })
   }
