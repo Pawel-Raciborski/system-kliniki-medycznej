@@ -6,6 +6,7 @@ import {CreateDoctorComponent} from '../create-doctor/create-doctor.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RegisterDoctorForm} from '../../../../doctor/domain/register-doctor-form';
 import {DoctorsTableComponent} from '../../../../doctor/components/doctor-table/doctors-table/doctors-table.component';
+import {MessageDialogComponent} from '../../../../message/message-dialog/message-dialog.component';
 
 @Component({
   selector: 'app-doctor-list',
@@ -25,6 +26,7 @@ export class DoctorListComponent implements OnInit{
 
   ngOnInit() {
     this.doctorService.getPagedDoctors(this.paginationOptions).subscribe((data) => {
+      console.log(data);
       this.doctors = data;
     })
   }
@@ -41,8 +43,24 @@ export class DoctorListComponent implements OnInit{
       if(doctorToRegisterFormData){
         let {profileImage,...doctorToRegister} = doctorToRegisterFormData;
         console.log(doctorToRegister,profileImage);
-        this.doctorService.create(doctorToRegister,profileImage).subscribe(registeredDoctor => {
-          this.addToArray(registeredDoctor);
+        this.doctorService.create(doctorToRegister,profileImage).subscribe({
+          next: registeredDoctor => {
+            this.addToArray(registeredDoctor);
+            this.dialog.open(MessageDialogComponent, {
+              data: {
+                message: 'Utworzono lekarza!',
+                type: 'success'
+              }
+            })
+          },
+          error: err => {
+            this.dialog.open(MessageDialogComponent, {
+              data: {
+                message: err.error,
+                type: 'error'
+              }
+            })
+          }
         })
       }
     });

@@ -5,29 +5,34 @@
 </div>
 <div class="row mt-5">
   <h3>Lista recepcjonistów</h3>
-  <section>
-    <table class="table table-hover mt-4">
-      <thead>
-      <th>Id</th>
-      <th>Imię</th>
-      <th>Nazwisko</th>
-      <th>Email</th>
-      <th>Numer telefonu</th>
-      <th>Data zatrudnienia</th>
-      </thead>
-      <tbody>
-        @for (receptionist of getReceptionists; track receptionist.id) {
-          <tr class="cursor-pointer" (click)="showReceptionistDetails(receptionist)">
-            <td>{{ receptionist.id }}</td>
-            <td>{{ receptionist.name }}</td>
-            <td>{{ receptionist.surname }}</td>
-            <td>{{ receptionist.email }}</td>
-            <td>{{ receptionist.phoneNumber }}</td>
-            <td>{{ receptionist.dateOfEmployment }}</td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  </section>
+  @if(getReceptionists.length !== 0){
+    <section>
+      <table class="table table-hover mt-4">
+        <thead>
+        <th>Id</th>
+        <th>Imię</th>
+        <th>Nazwisko</th>
+        <th>Email</th>
+        <th>Numer telefonu</th>
+        <th>Data zatrudnienia</th>
+        </thead>
+        <tbody>
+          @for (receptionist of getReceptionists; track receptionist.id) {
+            <tr class="cursor-pointer" (click)="showReceptionistDetails(receptionist)">
+              <td>{{ receptionist.id }}</td>
+              <td>{{ receptionist.name }}</td>
+              <td>{{ receptionist.surname }}</td>
+              <td>{{ receptionist.email }}</td>
+              <td>{{ receptionist.phoneNumber }}</td>
+              <td>{{ receptionist.dateOfEmployment }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+  } @else {
+    <p class="small text-center">Lista jest pusta</p>
+  }
+
 </div>
 

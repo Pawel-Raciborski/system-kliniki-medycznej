@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
+import {UserService} from '../../../auth/services/user.service';
 
 @Component({
   selector: 'app-admin-menu',
@@ -12,4 +13,14 @@ import {RouterLink} from '@angular/router';
 })
 export class AdminMenuComponent {
 
+  constructor(
+    private userService: UserService,
+    private router: Router
+  ) {
+  }
+
+  logout() {
+    this.userService.logout();
+    this.router.navigate(['/auth']);
+  }
 }

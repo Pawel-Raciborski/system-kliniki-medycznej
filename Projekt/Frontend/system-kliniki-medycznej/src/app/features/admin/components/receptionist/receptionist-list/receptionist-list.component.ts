@@ -16,7 +16,7 @@ import {Router} from '@angular/router';
   styleUrl: './receptionist-list.component.css'
 })
 export class ReceptionistListComponent implements OnInit {
-  private receptionists!: ReceptionistInfo[]
+  private receptionists: ReceptionistInfo[] = [];
 
   constructor(
     private receptionistService: ReceptionistService,
@@ -37,6 +37,7 @@ export class ReceptionistListComponent implements OnInit {
       width: '700px',
     }).afterClosed().subscribe((receptionistToRegister: RegisterReceptionistForm) => {
       if(receptionistToRegister){
+        console.log(receptionistToRegister);
         this.receptionistService.register(receptionistToRegister).subscribe(registeredReceptionist => {
           console.log(registeredReceptionist);
           this.receptionists.push(registeredReceptionist);

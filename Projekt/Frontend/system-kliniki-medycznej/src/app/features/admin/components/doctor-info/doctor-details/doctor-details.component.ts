@@ -63,16 +63,15 @@ export class DoctorDetailsComponent implements OnInit {
   constructor(
     private doctorService: DoctorService,
     public userService: UserService,
-    private localStorageService: LocalStorageService,
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
-    this.localStorageService.saveMockedData();
 
   }
 
   ngOnInit(): void {
     this.doctorService.findById(this.id).subscribe(doctorDetails => {
+      console.log(doctorDetails);
       this.doctorDetails = doctorDetails;
     });
   }

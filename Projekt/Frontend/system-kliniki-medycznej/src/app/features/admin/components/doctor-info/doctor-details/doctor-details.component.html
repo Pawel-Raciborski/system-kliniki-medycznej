@@ -2,12 +2,19 @@
   <div class="container-fluid p-3">
     <div class="row border">
       <app-header-title [title]="'Dane lekarza'"></app-header-title>
-      <div class="row justify-content-end mb-3">
-        <div class="col-md-4 text-end">
-          <button class="btn btn-danger" (click)="deleteDoctor()">Usuń lekarza</button>
+      @if (userService.hasRole('ADMIN')) {
+        <div class="row justify-content-end mb-3">
+          <div class="col-md-4 text-end">
+            <button class="btn btn-danger" (click)="deleteDoctor()">Usuń lekarza</button>
+          </div>
+        </div>
+      }
+      <app-account [account]="getAccountInfo()"></app-account>
+      <div class="row mb-2">
+        <div class="col-md-6">
+          <p class="text-primary">Numer PWZ: <span class="fw-bold">{{doctorDetails.pwzNumber}}</span></p>
         </div>
       </div>
-      <app-account [account]="getAccountInfo()"></app-account>
       <div class="row mb-3 g-2">
         <div class="col-md-8 p-3">
           <app-personal-details [personalDetails]="doctorDetails.personalDetails"></app-personal-details>

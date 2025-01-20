@@ -20,10 +20,10 @@
           <a class="nav-link" routerLink="receptionists">Zarządzanie recepcjonistami</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Zarządzanie rolami</a>
+          <a class="nav-link" routerLink="roles">Zarządzanie rolami</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Zarządzanie permisjami</a>
+          <a class="nav-link" routerLink="permissions">Zarządzanie permisjami</a>
         </li>
       </ul>
     </div>
@@ -33,9 +33,7 @@
           Ustawienia
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <li><a class="dropdown-item" href="#">Action</a></li>
-          <li><a class="dropdown-item" href="#">Another action</a></li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li>
+          <li><a class="dropdown-item" href="#" (click)="logout()">Wyloguj się</a></li>
         </ul>
       </div>
     </div>

@@ -10,7 +10,6 @@ import {
 import {
   ReceptionistProfileComponent
 } from '../../receptionist/components/receptionist-profile/receptionist-profile.component';
-import {PatientsManagementComponent} from '../../patient/components/patients-management/patients-management.component';
 import {PatientProfileComponent} from '../../patient/components/patient-profile/patient-profile.component';
 import {PermissionComponent} from '../../permission/components/permission/permission.component';
 import {RolesComponent} from '../../roles/components/roles/roles.component';
