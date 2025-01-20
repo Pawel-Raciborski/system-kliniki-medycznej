@@ -10,14 +10,15 @@ export class UserService {
   isAuthenticated = false;
   constructor(private localStorageService: LocalStorageService) {
     this.loggedUser = this.localStorageService.getLoggedUserJsonData();
+    console.log(this.loggedUser);
   }
 
   public hasRole(roleName: string){
-    if(roleName ==="DOCTOR"){
-      return true;
-    }
-    // return this.getUserRoles().some(value => value === roleName);
-    return false;
+    // if(roleName ==="DOCTOR"){
+    //   return true;
+    // }
+    return this.getUserRoles().some(value => value === roleName);
+    // return false;
   }
 
   get username(): string{

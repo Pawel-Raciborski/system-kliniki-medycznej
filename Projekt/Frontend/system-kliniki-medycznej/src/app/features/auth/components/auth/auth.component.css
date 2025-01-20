@@ -1,3 +1,12 @@
 .bg-blue{
   background-color: rgb(2, 59, 109);
 }
+
+.cursor-pointer{
+  cursor: pointer;
+  color: #f4f4f4;
+}
+
+.cursor-pointer:hover{
+  text-decoration: underline;
+}

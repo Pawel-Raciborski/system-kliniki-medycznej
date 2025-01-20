@@ -17,7 +17,12 @@ export class TokenService {
   }
 
   saveToken(token: Token) {
-    const decodedToken = this.decodeJwt(token.token);
+    const decodedToken  = this.decodeJwt(token.token);
+    this.localStorageService.save("token",token.token);
     this.localStorageService.save("user",decodedToken);
+  }
+
+  public getToken(): string{
+    return this.localStorageService.getKeyValue("token");
   }
 }

@@ -58,4 +58,8 @@ export class LocalStorageService {
   save(key: string, value: any) {
     localStorage.setItem(key,JSON.stringify(value));
   }
+
+  clearMemory() {
+    localStorage.clear();
+  }
 }
