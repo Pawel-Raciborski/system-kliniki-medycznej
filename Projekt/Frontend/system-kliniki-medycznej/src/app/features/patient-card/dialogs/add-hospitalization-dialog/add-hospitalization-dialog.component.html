@@ -1,0 +1,14 @@
+<div class="container-fluid">
+  <div class="row p-1">
+    <div class="col-md-8">
+      <h5 class="modal-title">Dodawanie leczenia</h5>
+    </div>
+    <div class="col-md-4 text-end">
+      <button (click)="close()" class="btn btn-close"></button>
+    </div>
+    <div class="col-md-12">
+      <app-search-medicine-bar (searchFormEmitter)="onMedicineSearch($event)"></app-search-medicine-bar>
+      <app-found-medicines (medicineToAddEmitter)="createNewHospitalization($event)" type="hospitalization" [medicines]="medicines"></app-found-medicines>
+    </div>
+  </div>
+</div>

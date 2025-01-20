@@ -1,10 +1,9 @@
 import {MedicineDto} from '../../medicine/model/medicine-dto';
 
-export interface HospitalizationInfo {
-  id: number;
+export interface CreateHospitalizationRequest {
+  patientDiseaseId: number;
   medicine: MedicineDto;
-  cureDosage: string;
+  dosage: string;
   notes: string;
-  medicineUpdateDate: string;
   finishDate: string;
 }

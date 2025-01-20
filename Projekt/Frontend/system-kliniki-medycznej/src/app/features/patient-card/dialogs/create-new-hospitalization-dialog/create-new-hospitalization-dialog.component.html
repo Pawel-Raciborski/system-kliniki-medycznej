@@ -1,0 +1,45 @@
+<div class="container-fluid">
+  <div class="row pt-2">
+    <div class="col-md-8">
+      <h4 class="modal-title">Podaj dawkę</h4>
+    </div>
+    <div class="col-md-4 text-end">
+      <button (click)="close()" class="btn btn-close"></button>
+    </div>
+  </div>
+  <div class="row mt-2 fw-light border-bottom">
+    <h5>Informacje o lekarstwie</h5>
+    <div class="col-md-6">
+      <p class="mb-0">Nazwa powszechna: <span class="text-primary">{{ medicine.commonName }}</span></p>
+      <p class="mb-0">Kod ATC: <span class="text-primary">{{ medicine.atcCode }}</span></p>
+    </div>
+    <div class="col-md-6">
+      <p class="mb-0">Moc lekarstwa: {{medicine.medicinalProductPower}}</p>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-md-12">
+      <div class="col-md-6">
+        <form [formGroup]="dosageForm">
+          <div class="mb-3">
+            <label class="form-label" for="dosage">Dawkowanie</label>
+            <input class="form-control" id="dosage" name="dosage" type="text" formControlName="dosage"/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="notes">Notatki</label>
+            <input class="form-control" id="notes" name="notes" type="text" formControlName="notes"/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="finishDate">Data ukończenia leczenia</label>
+            <input class="form-control" id="finishDate" name="finishDate" type="date" formControlName="finishDate"/>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3 mb-3">
+    <div class="col-md-12 text-center">
+      <button (click)="save(medicine)" class="btn btn-outline-dark">Zapisz</button>
+    </div>
+  </div>
+</div>

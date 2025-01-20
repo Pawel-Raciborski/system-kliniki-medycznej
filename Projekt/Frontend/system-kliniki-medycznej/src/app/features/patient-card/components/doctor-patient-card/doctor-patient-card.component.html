@@ -5,9 +5,10 @@
         <div class="row mb-5">
           <h2 class="fw-light">Karta pacjenta <i class="bi bi-person-vcard-fill"></i></h2>
         </div>
-        <app-card-summary patientCardId="ferfe-23rfe-d23d2-23dd"></app-card-summary>
-        <app-patient-hospitalization [patientCardId]="'ferfe-23rfe-d23d2-23dd'"></app-patient-hospitalization>
+        <app-card-summary *ngIf="patientCardId" [patientCardId]="patientCardId"></app-card-summary>
+        <app-patient-hospitalization *ngIf="patientCardId" [patientCardId]="patientCardId"></app-patient-hospitalization>
       </div>
     </div>
   </div>
 </div>
+

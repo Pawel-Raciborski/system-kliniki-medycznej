@@ -1,7 +1,15 @@
 <div class="col-md-12 border m-1 p-3 shadow-sm">
-  <h6>Data aktualizacji: <span
-    class="fw-light text-success">{{ hospitalizationHistory.medicineUpdateDate | date:"d MMM yyyy" }}</span></h6>
-  <hr/>
+  <div class="row border-bottom mb-2 pb-2">
+    <div class="col-md-8">
+      <h6>Data aktualizacji: <span
+        class="fw-light text-success">{{ hospitalizationHistory.medicineUpdateDate | date:"d MMM yyyy" }}</span></h6>
+    </div>
+    @if(userService.hasRole('DOCTOR') && isBefore()){
+      <div class="col-md-4 text-end">
+        <button (click)="updateHospitalization()" class="btn btn-outline-dark">Edytuj</button>
+      </div>
+    }
+  </div>
   <div class="row pb-3">
     <h6 class="card-title mb-2">Informacje o lekarstwie</h6>
     <div class="col-md-6">
@@ -24,9 +32,13 @@
       <p class="mb-0">Notatka lekarza</p>
       <p class="fw-light">{{ hospitalizationHistory.notes }}</p>
     </div>
-    <div class="col-md-12">
+    <div class="col-md-6">
       <p class="mb-0">Dawkowanie</p>
       <p class="fw-light">{{hospitalizationHistory.cureDosage}}</p>
+    </div>
+    <div class="col-md-6">
+      <p class="mb-0">Data zakończenia leczenia</p>
+      <p class="fw-light">{{hospitalizationHistory.finishDate || "nie określono"}}</p>
     </div>
   </div>
 </div>

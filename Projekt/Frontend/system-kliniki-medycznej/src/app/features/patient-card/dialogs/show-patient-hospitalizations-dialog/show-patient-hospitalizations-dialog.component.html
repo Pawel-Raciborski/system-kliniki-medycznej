@@ -1,0 +1,12 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12 text-end mb-3">
+      <button (click)="close()" class="btn btn-close"></button>
+    </div>
+    <div class="col-md-12">
+      <mat-dialog-content>
+        <app-patient-hospitalization [patientCardId]="patientCardId"></app-patient-hospitalization>
+      </mat-dialog-content>
+    </div>
+  </div>
+</div>

@@ -24,10 +24,13 @@
   </div>
   <div class="col-md-4 border p-3">
     <div class="row mb-2">
-      <div class="col-md-8">
+      <div class="col-md-4">
         <h5 class="card-title fw-light">Aktualne leczenie</h5>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-8 text-end">
+        @if(userService.hasRole("DOCTOR") && isBefore()){
+          <button (click)="updateHospitalization()" class="btn btn-outline-dark mx-2">Edytuj</button>
+        }
         <button (click)="showHospitalizationHistory()" class="btn btn-outline-primary">Szczegóły</button>
       </div>
     </div>
@@ -49,6 +52,8 @@
         <p class="fw-light">{{ patientDiseaseHospitalizationInfo.currentHospitalization.notes }}</p>
         <p>Data aktualizacji: <span
           class="fw-light">{{ getHospitalization.medicineUpdateDate | date:"d MMM yyyy" }}</span></p>
+        <p class="mb-0">Zakończenie leczenia:</p>
+        <p class="mb-0 fw-light">{{ patientDiseaseHospitalizationInfo.currentHospitalization.finishDate || "nie określono" }}</p>
       </div>
     </div>
   </div>

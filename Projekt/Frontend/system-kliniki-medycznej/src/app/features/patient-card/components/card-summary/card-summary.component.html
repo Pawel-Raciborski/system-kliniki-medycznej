@@ -5,58 +5,64 @@
       <div class="row personal-details">
         <div class="col-md-6 p-3">
           <p class="fw-light"><b>Imię i nazwisko</b></p>
-          <h2 class="fw-light text-center">Jan Kowalski</h2>
+          <h2 class="fw-light text-center">{{ cardSummary.fullName }}</h2>
         </div>
         <div class="col-md-6 p-3">
           <p class="fw-light text-light"><b>PESEL</b></p>
-          <h2 class="fw-light text-center">12345678911</h2>
+          <h2 class="fw-light text-center">{{ cardSummary.pesel }}</h2>
         </div>
         <div class="col-md-6 p-3">
           <p>Data urodzenia</p>
-          <h2 class="text-center">20-11-2001</h2>
+          <h2 class="text-center">{{ cardSummary.birthDate }}</h2>
         </div>
         <div class="col-md-6 p-3 align-content-center">
           <p>Płeć</p>
-          <h2 class="fw-light text-center">Mężczyzna</h2>
+          <h2 class="fw-light text-center">{{ cardSummary.gender }}</h2>
         </div>
       </div>
     </div>
-    <div class="col-md-6 text-dark">
-      <div class="row border hover-div">
-        <div class="col-md-6 p-3 text-center border-right">
-          <h2><i class="bi bi-graph-up text-orange mx-2"></i>178 cm</h2>
-          <p>Wzrost</p>
-        </div>
-        <div class="col-md-6 p-3 text-center">
-          <h2><i class="bi bi-clipboard mx-2 text-success"></i>75.5 kg</h2>
-          <p>Waga</p>
-        </div>
-        <div class="col-md-12 p-3 text-center border-top">
-          <h2><i class="bi bi-droplet-fill text-danger mx-2"></i>A</h2>
-          <p>Grupa krwi</p>
+    @if (cardSummary.patientDetails) {
+      <div (click)="editPatientDetails()" class="col-md-6 text-dark">
+        <div class="row border hover-div">
+          <div class="col-md-6 p-3 text-center border-right">
+            <h2><i class="bi bi-graph-up text-orange mx-2"></i>{{ cardSummary.patientDetails.heightInCm }} cm</h2>
+            <p>Wzrost</p>
+          </div>
+          <div class="col-md-6 p-3 text-center">
+            <h2><i class="bi bi-clipboard mx-2 text-success"></i>{{ cardSummary.patientDetails.weightInKg }} kg</h2>
+            <p>Waga</p>
+          </div>
+          <div class="col-md-12 p-3 text-center border-top">
+            <h2><i class="bi bi-droplet-fill text-danger mx-2"></i>{{ cardSummary.patientDetails.bloodType }}</h2>
+            <p>Grupa krwi</p>
+          </div>
         </div>
       </div>
-    </div>
+    } @else if (userService.hasRole("DOCTOR")) {
+      <div class="col-md-6 align-content-center hover-div text-center">
+        <button (click)="editPatientDetails()" class="btn btn-outline-dark">Dodaj dane pacjenta</button>
+      </div>
+    }
     <div class="col-md-12 bg-dark text-light">
       <div class="row bg-dark-hover">
         <div routerLink="../doctors" class="col-md-2 p-2 text-center">
-          <h2>6</h2>
+          <h2>{{ cardSummary.numberOfDoctors }}</h2>
           <p>Liczba lekarzy</p>
         </div>
         <div routerLink="../appointments" class="col-md-2 p-2 text-center">
-          <h2>12</h2>
+          <h2>{{ cardSummary.numberOfAppointments }}</h2>
           <p>Wizyt </p>
         </div>
         <div routerLink="../prescriptions" class="col-md-2 p-2 text-center">
-          <h2>7</h2>
+          <h2>{{ cardSummary.numberOfPrescriptions }}</h2>
           <p>Recept</p>
         </div>
         <div class="col-md-3 p-2 text-center">
-          <h2>5</h2>
+          <h2>{{ cardSummary.numberOfHospitalizations }}</h2>
           <p>Hospitalizacji</p>
         </div>
         <div class="col-md-3 p-2 text-center">
-          <h2>19 lis 2024</h2>
+          <h2>{{ cardSummary.nextAppointmentDate === 'brak' ? cardSummary.nextAppointmentDate : cardSummary.nextAppointmentDate | date: 'MM MMMM yyyy' }}</h2>
           <p>Najbliższa wizyta</p>
         </div>
       </div>

@@ -1,11 +1,17 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 import {HospitalizationInfo} from '../../../model/hospitalization-info';
 import {Pagination} from '../../../../pagination/model/pagination';
 import {DatePipe} from '@angular/common';
 import {HospitalizationHistoryComponent} from '../hospitalization-history/hospitalization-history.component';
 import {TableOptionsComponent} from '../../../../doctor/components/doctor-table/table-options/table-options.component';
-import {PatientDiseaseService} from '../../../../patient-disease/services/patient-disease.service';
+import {HospitalizationService} from '../../../../patient-disease/services/hospitalization.service';
+import {UserService} from '../../../../auth/services/user.service';
+import {
+  AddHospitalizationDialogComponent
+} from '../../../dialogs/add-hospitalization-dialog/add-hospitalization-dialog.component';
+import {CreateHospitalizationRequest} from '../../../model/create-hospitalization-request';
+import {MedicineDto} from '../../../../medicine/model/medicine-dto';
 
 @Component({
   selector: 'app-hospitalization-table-history',
@@ -30,8 +36,10 @@ export class HospitalizationTableHistoryComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private patientDiseaseId: number,
-    private patientDiseaseService: PatientDiseaseService,
-    private currentDialog: MatDialogRef<HospitalizationTableHistoryComponent>
+    private hospitalizationService: HospitalizationService,
+    private currentDialog: MatDialogRef<HospitalizationTableHistoryComponent>,
+    private dialog: MatDialog,
+    public userService: UserService
   ) {
 
   }
@@ -41,7 +49,7 @@ export class HospitalizationTableHistoryComponent implements OnInit {
   }
 
   private loadFirstPageHospitalizationHistory() {
-    this.patientDiseaseService.getHospitalizationHistory(this.patientDiseaseId, this.pagination).subscribe(
+    this.hospitalizationService.getHospitalizationHistory(this.patientDiseaseId, this.pagination).subscribe(
       hospitalizations => {
         this.hospitalizationHistoryList = hospitalizations;
         this.lastLoadedPageSize = hospitalizations.length;
@@ -59,12 +67,12 @@ export class HospitalizationTableHistoryComponent implements OnInit {
 
     this.pagination.pageSize = +newPageSize;
     this.pagination.page = 0;
-    console.log('pagination: ',this.pagination);
+    console.log('pagination: ', this.pagination);
     this.loadFirstPageHospitalizationHistory();
   }
 
   private loadMoreHospitalizationHistory() {
-    this.patientDiseaseService.getHospitalizationHistory(this.patientDiseaseId, this.pagination).subscribe(
+    this.hospitalizationService.getHospitalizationHistory(this.patientDiseaseId, this.pagination).subscribe(
       hospitalizations => {
         this.hospitalizationHistoryList.push(...hospitalizations);
         this.lastLoadedPageSize = hospitalizations.length;
@@ -74,5 +82,32 @@ export class HospitalizationTableHistoryComponent implements OnInit {
 
   close() {
     this.currentDialog.close();
+  }
+
+  openAddHospitalizationDialog() {
+    this.dialog.open(AddHospitalizationDialogComponent).afterClosed().subscribe((data: {
+      medicine: MedicineDto,
+      dosage: string,
+      notes: string,
+      finishDate: string
+    }) => {
+      if(data){
+        let hospitalizationRequest= this.hospitalizationService.buildHospitalizationRequest(data,this.patientDiseaseId);
+        this.hospitalizationService.create(hospitalizationRequest).subscribe(createdHospitalization => {
+          this.addToArray(createdHospitalization);
+        });
+      }
+    });
+  }
+
+  private addToArray(createdHospitalization: HospitalizationInfo) {
+    this.hospitalizationHistoryList.unshift(createdHospitalization);
+  }
+
+  updateHospitalization(hospitalizationInfo: HospitalizationInfo) {
+    this.hospitalizationService.updateDiseaseHospitalization(hospitalizationInfo).subscribe(
+      updatedHospitalization => {
+      }
+    )
   }
 }
