@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-md-12 mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-10">
+        <h3 class="card-title fw-light">Kalendarz lekarza</h3>
+        <select [formControl]="pwzNumberControl" class="form-select mt-3" (change)="selectedDoctor($event)">
+          @for (doctor of availableDoctors; track doctor.id) {
+            <option [value]="doctor.id"><p class="text-center">{{ doctor.name }} {{ doctor.surname }}
+              | {{ doctor.pwzNumber }}</p></option>
+          }
+        </select>
+        @if(pwzNumberControl && pwzNumberControl.value !== ''){
+        <app-calendar [events]="doctorCalendar.calendarAppointments" [startDate]="doctorCalendar.start"
+                      [endDate]="doctorCalendar.end"
+                      (loadDate)="loadAppointments($event)"
+        ></app-calendar>
+        }
+      </div>
+    </div>
+  </div>
+</div>

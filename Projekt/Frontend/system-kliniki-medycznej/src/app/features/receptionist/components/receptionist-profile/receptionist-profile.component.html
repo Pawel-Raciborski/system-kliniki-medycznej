@@ -1,6 +1,15 @@
 <div class="container-fluid">
   <app-header-title [title]="'Dane recepcjonisty'"></app-header-title>
+  @if(userService.hasRole("ADMIN")){
+    <div class="row mb-3">
+      <div class="col-md-12 text-end">
+        <button (click)="onDeleteReceptionist()" class="btn btn-danger">Usuń</button>
+      </div>
+    </div>
+  }
   <app-account [account]="getAccountInfo"></app-account>
   <app-personal-details [personalDetails]="getPersonalDetails"></app-personal-details>
-  <app-account-roles [username]="receptionist.username"></app-account-roles>
+  @if(userService.hasRole("ADMIN")){
+    <app-account-roles [username]="receptionist.username"></app-account-roles>
+  }
 </div>

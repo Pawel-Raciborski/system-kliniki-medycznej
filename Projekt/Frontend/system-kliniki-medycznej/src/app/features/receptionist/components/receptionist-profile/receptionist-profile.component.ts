@@ -9,6 +9,9 @@ import {AccountComponent} from '../../../account/components/account/account.comp
 import {AccountInfo} from '../../../account/model/account-info';
 import {PersonalDetails} from '../../../personal-details/domain/personal-details';
 import {AccountRolesComponent} from '../../../account-role/components/account-roles/account-roles.component';
+import {UserService} from '../../../auth/services/user.service';
+import {HttpStatusCode} from '@angular/common/http';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-receptionist-profile',
@@ -26,7 +29,12 @@ export class ReceptionistProfileComponent implements OnInit {
   @Input() id!: number;
   public receptionist!: ReceptionistDetails;
 
-  constructor(private receptionistService: ReceptionistService) {
+  constructor(
+    private receptionistService: ReceptionistService,
+    public userService: UserService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    ) {
 
   }
 
@@ -46,5 +54,13 @@ export class ReceptionistProfileComponent implements OnInit {
 
   get getPersonalDetails(): PersonalDetails {
     return this.receptionist.personalDetails;
+  }
+
+  onDeleteReceptionist() {
+    this.receptionistService.delete(this.id).subscribe(response => {
+      if(response.status === HttpStatusCode.Ok){
+        this.router.navigate(['../'],{relativeTo: this.activatedRoute});
+      }
+    })
   }
 }
