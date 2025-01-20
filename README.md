@@ -1,4 +1,4 @@
-# Praca dyplomowa - System kliniki medycznej
+# System kliniki medycznej
 
 ### Opis aplikacji
 
