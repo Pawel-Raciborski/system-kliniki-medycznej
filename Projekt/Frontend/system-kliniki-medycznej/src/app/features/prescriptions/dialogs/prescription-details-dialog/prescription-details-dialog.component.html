@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div *ngIf="prescriptionDetails" class="container-fluid">
   <div class="row mt-3">
     <div class="col-md-8">
       <h4 class="modal-title">Informacje o recepcie</h4>
@@ -16,6 +16,26 @@
     </div>
     <div class="col-md-12">
       <p class="mb-0">Wystawiono przez: <span (click)="showDoctorDetails()" class="text-primary click">{{getDoctorFullName}}</span></p>
+    </div>
+    <div class="col-md-12 mt-2 mb-4 border-bottom">
+      <h5 class="fw-light">Dane pacjenta</h5>
+      <div class="row small">
+        <div class="col-md-6">
+          <p class="mb-0">Imię i nazwisko: {{personalDetails.name}}</p>
+          <p class="mb-0">PESEL: <span class="text-success">{{personalDetails.pesel}}</span></p>
+          <p class="mb-0">Data urodzenia: {{personalDetails.birthDate | date:"dd MMM yyyy"}}</p>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-12">
+              <h6 class="fw-light">Dane zamieszkania</h6>
+              <p class="mb-0"><b>{{personalDetails.address.city}}</b> {{personalDetails.address.street}}</p>
+              <p class="mb-0">{{personalDetails.address.postalCode}} {{personalDetails.address.city}}</p>
+            </div>
+          </div>
+          <p class="mb-0">Numer telefonu: {{personalDetails.phoneNumber}}</p>
+        </div>
+      </div>
     </div>
     <div class="col-md-6">
       <p class="mb-0">Data wystawienia: <span class="fw-light"><b>{{prescriptionDetails.createdAt | date:"d MMM yyyy"}}</b></span></p>

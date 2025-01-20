@@ -28,8 +28,9 @@ import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 export class AddPrescriptionMedicinesDialogComponent implements OnInit {
   prescriptionForm = new FormGroup({
     expirationDate: new FormControl(''),
-    description: new FormControl('')
-  })
+    description: new FormControl(''),
+    patientPesel: new FormControl('')
+  });
   medicines: MedicineDto[] = [];
   medicinesOnPrescription: PrescriptionMedicine[] = [];
   pagination: Pagination = {
@@ -79,8 +80,13 @@ export class AddPrescriptionMedicinesDialogComponent implements OnInit {
     this.dialogRef.close({
         expirationDate: prescriptionFormValues.expirationDate,
         description: prescriptionFormValues.description,
-        prescriptionMedicines: this.medicinesOnPrescription
+        prescriptionMedicines: this.medicinesOnPrescription,
+        patientPesel: prescriptionFormValues.patientPesel,
       }
     );
+  }
+
+  cancel() {
+    this.dialogRef.close();
   }
 }

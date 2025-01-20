@@ -3,13 +3,14 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog
 import {PrescriptionService} from '../../services/prescription.service';
 import {PrescriptionDetails} from '../../model/prescription-details';
 import {DoctorInfoDialogComponent} from '../../../doctor/dialogs/doctor-info-dialog/doctor-info-dialog.component';
-import {DatePipe} from '@angular/common';
+import {DatePipe, NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-prescription-details-dialog',
   standalone: true,
   imports: [
-    DatePipe
+    DatePipe,
+    NgIf
   ],
   templateUrl: './prescription-details-dialog.component.html',
   styleUrl: './prescription-details-dialog.component.css'
@@ -28,6 +29,7 @@ export class PrescriptionDetailsDialogComponent implements OnInit {
   ngOnInit(): void {
     this.prescriptionService.getPrescriptionDetails(this.prescriptionId)
       .subscribe(prescriptionDetails => {
+        console.log(prescriptionDetails);
         this.prescriptionDetails = prescriptionDetails;
       });
   }
@@ -45,7 +47,12 @@ export class PrescriptionDetailsDialogComponent implements OnInit {
       data: {
         doctorInfo: this.prescriptionDetails.doctorInfo,
         showCreateAppointmentButton: false
-      }
+      },
+      minWidth: '600px'
     });
+  }
+
+  get personalDetails(){
+    return this.prescriptionDetails.patient.personalDetails;
   }
 }

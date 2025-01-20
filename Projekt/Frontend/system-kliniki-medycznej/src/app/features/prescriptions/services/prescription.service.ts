@@ -1,14 +1,20 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {PrescriptionInfo} from '../model/prescription-info';
 import {LocalStorageService} from '../../auth/services/local-storage.service';
 import {PrescriptionDetails} from '../model/prescription-details';
+import {Pagination} from '../../pagination/model/pagination';
+import {SearchPatient} from '../../patient/model/search-patient';
+import {CreatePrescriptionRequest} from '../model/create-prescription-request';
+import {environment} from '../../../../environments/environment.dev';
+import {HttpClient, HttpParams} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PrescriptionService {
-  private prescriptions: PrescriptionInfo[] =[
+  url = `${environment.serverUrl}/prescriptions`
+  private prescriptions: PrescriptionInfo[] = [
     {
       uuid: "e51f28b7-1e75-4a90-bff4-1f77d9b2d001",
       expirationDate: "2024-11-30",
@@ -162,20 +168,32 @@ export class PrescriptionService {
   ];
 
   constructor(
-    private localStorage: LocalStorageService,
-  ) { }
-
-  public getPrescriptions(paginationOptions: {page:number,pageSize:number}): Observable<PrescriptionInfo[]> {
-    console.log(paginationOptions);
-    let patientId = this.localStorage.getKeyValue("patientId");
-    console.log(patientId);
-
-    const slicedPrescriptions = this.prescriptions.slice(paginationOptions.page * paginationOptions.pageSize, (paginationOptions.page + 1) * paginationOptions.pageSize)
-    return of(slicedPrescriptions);
+    private httpClient: HttpClient
+  ) {
   }
 
-  getPrescriptionDetails(prescriptionId: string):Observable<PrescriptionDetails> {
-    let prescriptionDetails : PrescriptionDetails = {
+  /**
+   * Get all prescriptions, paged
+   * */
+  public getPrescriptions( paginationOptions: { page: number, pageSize: number }, patientId?: number): Observable<PrescriptionInfo[]> {
+    let params = new HttpParams();
+    params = params.append("page",paginationOptions.page);
+    params = params.append("pageSize",paginationOptions.pageSize);
+
+    if(patientId){
+      params = params.append("patientId",patientId);
+    }
+
+    return this.httpClient.get<PrescriptionInfo[]>(
+      `${this.url}`,
+      {
+        params
+      }
+    );
+  }
+
+  getPrescriptionDetails(prescriptionId: string): Observable<PrescriptionDetails> {
+    let prescriptionDetails: PrescriptionDetails = {
       id: prescriptionId,
       doctorInfo: {
         id: 10,
@@ -190,6 +208,26 @@ export class PrescriptionService {
       description: "Prescription for managing hypertension and cholesterol",
       createdAt: "2024-11-11",
       expirationDate: "2025-11-11",
+      patient: {
+        id: 1,
+        personalDetails: {
+          id: 1,
+          pesel: "90010112345",
+          name: "John",
+          surname: "Doe",
+          birthDate: "1990-01-01",
+          gender: "male",
+          phoneNumber: "+48123456789",
+          address: {
+            id: 3,
+            street: "Main Street",
+            apartmentNumber: "12A",
+            postalCode: "00-123",
+            city: "Warsaw",
+          },
+        },
+        parentPesel: "70100112345",
+      },
       prescriptionMedicineInfoList: [
         {
           medicineName: "Lisinopril",
@@ -218,6 +256,22 @@ export class PrescriptionService {
 
       ]
     }
-    return of(prescriptionDetails);
+    return this.httpClient.get<PrescriptionDetails>(
+      `${this.url}/${prescriptionId}`
+    );
+  }
+
+  getDoctorPrescriptions(id: number, paginationOptions: Pagination) : Observable<PrescriptionInfo[]> {
+    return of(this.prescriptions);
+  }
+
+  findAllPrescriptionsForPatient(searchPatient: SearchPatient) {
+    return of(this.prescriptions.filter(p => p.uuid.startsWith("d")));
+  }
+
+  createPrescription(prescriptionToCreate: CreatePrescriptionRequest): Observable<PrescriptionInfo> {
+    let prescriptionInfo = this.prescriptions[0];
+    prescriptionInfo.expirationDate = prescriptionToCreate.expirationDate;
+    return of(prescriptionInfo);
   }
 }

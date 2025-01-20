@@ -45,8 +45,7 @@ export class DoctorPrescriptionsComponent implements OnInit {
   }
 
   loadMore() {
-    this.prescriptionService.getDoctorPrescriptions(
-      this.userService.getId("doctorId"),
+    this.prescriptionService.getPrescriptions(
       this.paginationOptions
     ).subscribe(data => {
         this.prescriptions = [...this.prescriptions,...data];

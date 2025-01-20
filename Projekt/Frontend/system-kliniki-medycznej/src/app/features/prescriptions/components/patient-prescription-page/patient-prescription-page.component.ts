@@ -3,6 +3,7 @@ import {PrescriptionsTableComponent} from '../prescriptions-table/prescriptions-
 import {PrescriptionInfo} from '../../model/prescription-info';
 import {PrescriptionService} from '../../services/prescription.service';
 import {TableOptionsComponent} from '../../../doctor/components/doctor-table/table-options/table-options.component';
+import {UserService} from '../../../auth/services/user.service';
 
 @Component({
   selector: 'app-patient-prescription-page',
@@ -22,7 +23,8 @@ export class PatientPrescriptionPageComponent implements OnInit {
   }
 
   constructor(
-    private prescriptionService: PrescriptionService
+    private prescriptionService: PrescriptionService,
+    private userService: UserService
   ) {
   }
 
@@ -36,7 +38,7 @@ export class PatientPrescriptionPageComponent implements OnInit {
   }
 
   private loadPrescriptionData() {
-    this.prescriptionService.getPrescriptions(this.paginationOptions).subscribe(data => {
+    this.prescriptionService.getPrescriptions(this.paginationOptions,this.userService.getId("patientId")).subscribe(data => {
       this.prescriptions = data;
     });
   }
