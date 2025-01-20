@@ -1,3 +1,4 @@
+@if(calendarAppointments){
 <div class="row mt-5">
   <div class="col-md-12 mt-5">
     <div class="row justify-content-center mb-4">
@@ -6,8 +7,15 @@
           <h2 class="fw-light">Kalendarz wizyt<i class="bi bi-calendar-date mx-2"></i></h2>
         </div>
       </div>
-      <app-calendar></app-calendar>
+      <app-calendar
+        [events]="calendarAppointments.calendarAppointments"
+        [startDate]="calendarAppointments.start"
+        [endDate]="calendarAppointments.end"
+        (loadDate)="loadAppointments($event)"
+      >
+
+      </app-calendar>
     </div>
   </div>
 </div>
-
+}

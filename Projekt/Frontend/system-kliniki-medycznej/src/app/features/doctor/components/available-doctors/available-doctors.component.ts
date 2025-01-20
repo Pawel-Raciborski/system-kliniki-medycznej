@@ -54,9 +54,9 @@ export class AvailableDoctorsComponent implements OnInit {
     this.paginationOptions.pageSize = newPageSize;
   }
 
-  addNotification(appointmentCreatedInfo: {appointmentInfo:{appointmentCreated: boolean, date: string, hour: string}, doctor: {name:string, surname: string}}) {
+  addNotification(appointmentCreatedInfo: {appointmentInfo: {appointmentCreated: boolean, date: string, hour: string}, doctor: {name:string, surname: string}}) {
     console.log(`available-doctors: `,appointmentCreatedInfo);
-    if(appointmentCreatedInfo.appointmentInfo.appointmentCreated){
+    if(appointmentCreatedInfo.appointmentInfo && appointmentCreatedInfo.appointmentInfo.appointmentCreated){
       this.notification = this.buildNotification(appointmentCreatedInfo.appointmentInfo.date,appointmentCreatedInfo.appointmentInfo.hour,appointmentCreatedInfo.doctor);
     }
   }

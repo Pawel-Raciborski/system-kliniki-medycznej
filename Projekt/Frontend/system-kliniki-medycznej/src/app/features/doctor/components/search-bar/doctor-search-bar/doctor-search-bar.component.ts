@@ -17,9 +17,9 @@ import {DoctorService} from '../../../services/doctor.service';
 export class DoctorSearchBarComponent {
   showAdvancedSearch = false;
   doctorSearchForm: FormGroup = new FormGroup({
-    searchValue: new FormControl('')
+    doctorFullName: new FormControl('')
   });
-  advancedSearchForm!: FormGroup;
+  advancedSearch!: FormGroup;
   @Output() doctorSearchOptionsEmitter = new EventEmitter<FormGroup>();
 
   constructor(private doctorService:DoctorService
@@ -28,14 +28,14 @@ export class DoctorSearchBarComponent {
 
   changeAdvancedStatus() {
     if(this.showAdvancedSearch){
-      this.doctorSearchForm.removeControl('advancedSearchForm');
+      this.doctorSearchForm.removeControl('advancedSearch');
     }
 
     this.showAdvancedSearch = !this.showAdvancedSearch;
   }
 
   addAdvancedSearchToForm(data: FormGroup) {
-    this.doctorSearchForm.addControl('advancedSearchForm', data);
+    this.doctorSearchForm.addControl('advancedSearch', data);
   }
 
   search() {

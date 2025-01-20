@@ -1,8 +1,20 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DatePipe} from '@angular/common';
 import {CalendarService} from '../../services/calendar.service';
 import {MatCard} from '@angular/material/card';
 import {MatCalendar, MatCalendarUserEvent} from '@angular/material/datepicker';
+import {Router, RouterLink} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
+import {ExceptionMessageComponent} from '../../../error/component/exception-message/exception-message.component';
+import {
+  BasicAppointmentDetailsDialogComponent
+} from '../../../appointment/components/doctor-appointments/dialogs/basic-appoitment-details-dialog/basic-appointment-details-dialog.component';
+import {DateFormatterService} from '../../../../services/date-formatter.service';
+import {UserService} from '../../../auth/services/user.service';
+import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
+import {AccountService} from '../../../account/services/account.service';
+import {AppointmentService} from '../../../appointment/services/appointment.service';
+import {CalendarAppointment} from '../../domain/calendar/calendar-appointment';
 
 @Component({
   selector: 'app-calendar',
@@ -10,83 +22,26 @@ import {MatCalendar, MatCalendarUserEvent} from '@angular/material/datepicker';
   imports: [
     DatePipe,
     MatCard,
-    MatCalendar
+    MatCalendar,
+    RouterLink,
+    MatMenu,
+    MatMenuItem,
+    MatMenuTrigger
+  ],
+  providers: [
+    DatePipe
   ],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css'
 })
-export class CalendarComponent {
-  @Input() events: any[] = [
-    {
-      date: "2024-11-18",
-      calendarAppointments: [
-        {
-          id: "ddd582b7-1f39-4118-b9e0-6ae1dc8e2d41",
-          hour: "09:30",
-          status: "Zakończona"
-        },
-        {
-          id: "7ad87d8c-d3df-47dd-97a4-18c3a3ee473d",
-          hour: "10:30",
-          status: "Umówiono"
-        },
-        {
-          id: "2053a517-5e9f-461d-b2ec-1034b4d3f9ea",
-          hour: "13:00",
-          status: "Potwierdzono"
-        },
-        {
-          id: "2053a517-5e9f-461d-b2ec-1034b4d3f9ea",
-          hour: "14:00",
-          status: "Anulowano"
-        }
-      ]
-    },
-    {
-      date: "2024-11-19",
-      calendarAppointments: [
-        {
-          id: "5dbccd2d-93a2-48fd-ba37-1f5304d41d71",
-          hour: "12:00",
-          status: "Umówiono"
-        }
-      ]
-    },
-    {
-      date: "2024-11-20",
-      calendarAppointments: [
-        {
-          id: "60fb356f-69aa-4e28-ae8b-93dc900124fb",
-          hour: "14:25",
-          status: "Umówiono"
-        }
-      ]
-    },
-    {
-      date: "2024-11-21",
-      calendarAppointments: [
-        {
-          id: "40515823-e8da-47ce-af2a-4bafe217929e",
-          hour: "08:00",
-          status: "Anulowana"
-        },
-        {
-          id: "050710aa-28bb-4ca4-b8d4-c7c49ef47735",
-          hour: "09:30",
-          status: "Umówiono"
-        }
-      ]
-    },
-    {
-      date: "2024-11-22",
-      calendarAppointments: []
-    }
-  ];
-  @Input() startHour!: string;
-  @Input() endHour!: string;
-  start = new Date("2024-11-18");
-  end = new Date("2024-11-22");
-  currentDay = "2024-11-20";
+export class CalendarComponent implements OnInit{
+  @Input() events!: CalendarAppointment[];
+  @Input() startDate!: string;
+  @Input() endDate!: string;
+  @Input() currentDay: string = "2024-11-20";
+  @Output() loadDate = new EventEmitter<string>();
+  start = new Date(this.startDate);
+  end = new Date(this.endDate);
   days = [
     'PON',
     'WT',
@@ -97,9 +52,19 @@ export class CalendarComponent {
   selected: string = "";
 
   constructor(
-    private calendarService: CalendarService
+    private calendarService: CalendarService,
+    private datePipe: DatePipe,
+    private router: Router,
+    private dialog: MatDialog,
+    private userService: UserService,
+    private appointmentService: AppointmentService
   ) {
   }
+
+  ngOnInit(): void {
+       this.start = new Date(this.startDate);
+       this.end = new Date(this.endDate);
+    }
 
   getDay(stringDate: string) {
     let date = new Date(stringDate);
@@ -114,22 +79,68 @@ export class CalendarComponent {
     return date === this.currentDay;
   }
 
-  setColor(status: "Umówiono" |
-    "Potwierdzono" |
-    "Utworzono" |
-    "W trakcie" |
-    "Zakończona" |
-    "Anulowana") {
+  setColor(status: string) {
     return this.calendarService.setColor(status);
   }
 
-  onSelectDate(event: MatCalendarUserEvent<string | null>) {
-    if(event.value){
-      let date = new Date(event.value);
-      console.log(date);
-      console.log(event.value);
-      console.log(this.start > date);
-      console.log(this.end);
+  onSelectDate(stringDate: string | null) {
+    if(!stringDate){
+      return;
     }
+    let selectedDateString = this.formatDate(stringDate);
+
+    if(!selectedDateString){
+      return;
+    }
+
+    let selectedDate = new Date(selectedDateString);
+    console.log(selectedDateString);
+    console.log(this.start <= selectedDate);
+    console.log(this.end >= selectedDate);
+  }
+
+
+  navigateToAppointment(app: any) {
+    if((app.status !== 'Potwierdzono' && app.status !== 'W trakcie') || this.userService.hasRole("RECEPTIONIST")){
+      this.dialog.open(BasicAppointmentDetailsDialogComponent,{
+        data: app.id
+      });
+      return;
+    }
+    this.appointmentService.updateStatus(app.id,"IN_PROGRESS").subscribe(d => {
+      app.status = d.status;
+      this.router.navigate(["/doctor-panel/appointments",app.id]);
+    });
+  }
+
+  loadPreviousWeek() {
+    const today = new Date(this.startDate);
+    const dayOfWeek = today.getDay();
+
+    const daysToSubtract = dayOfWeek === 0 ? 6 + 7 : dayOfWeek - 1 + 7;
+    const previousMonday = new Date(today);
+    previousMonday.setDate(today.getDate() - daysToSubtract);
+
+    this.loadCalendarData(this.formatDate(previousMonday.toDateString()));
+  }
+
+  loadNextWeek(){
+    const today = new Date(this.startDate);
+    const dayOfWeek = today.getDay();
+
+    const daysToAdd = (8 - dayOfWeek) % 7 || 7;
+
+    const nextMonday = new Date(today);
+    nextMonday.setDate(today.getDate() + daysToAdd);
+
+    this.loadCalendarData(this.formatDate(nextMonday.toDateString()));
+  }
+
+  private loadCalendarData(date: string) {
+    this.loadDate.emit(date);
+  }
+
+  formatDate(date: string): string {
+    return this.datePipe.transform(date, "dd-MM-yyyy") || "";
   }
 }

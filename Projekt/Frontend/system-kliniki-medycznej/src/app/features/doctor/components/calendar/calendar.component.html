@@ -2,22 +2,24 @@
   <div class="col-md-12 justify-content-center mb-2">
     <div class="row justify-content-center">
       <div class="col-md-2 p-0">
-        <button class="btn btn-outline-dark rounded-circle"><i class="bi bi-arrow-left"></i></button>
+        <button (click)="loadPreviousWeek()" class="btn btn-outline-dark rounded-circle"><i
+          class="bi bi-arrow-left"></i></button>
       </div>
       <div class="col-md-6 text-center">
-        <h5 (click)="openDate()">{{ start | date:"dd MMM" }} - {{ end | date: "dd MMM yyyy" }}</h5>
+        <h5 (click)="openDate()">{{ startDate | date:"dd MMM" }} - {{ endDate | date: "dd MMM yyyy" }}</h5>
       </div>
       <div class="col-md-2 text-end p-0">
-        <button class="btn btn-outline-dark rounded-circle"><i class="bi bi-arrow-right"></i></button>
+        <button (click)="loadNextWeek()" class="btn btn-outline-dark rounded-circle"><i class="bi bi-arrow-right"></i>
+        </button>
       </div>
     </div>
   </div>
   <div class="col-md-2">
     <mat-card class="demo-inline-calendar-card">
-      <mat-calendar (_userSelection)="onSelectDate($event)" [(selected)]="selected"></mat-calendar>
+      <mat-calendar (_userSelection)="onSelectDate($event.value)" [(selected)]="selected"></mat-calendar>
     </mat-card>
   </div>
-  @for (event of events; track event.date) {
+  @for (event of events; let i = $index; track i) {
     <div class="col-md-2 border">
       <div class="row border-bottom p-2">
         <div class="col-md-12 text-center" [class]="{
@@ -28,13 +30,31 @@
         </div>
       </div>
       @for (app of event.calendarAppointments; track app.id) {
-        <div class="row rounded-4 border border-dark-subtle mt-1 mb-1" [style]="{
+        <div class="row transition rounded-4 border border-dark-subtle mt-1 mb-1 cursor-pointer"
+             [style]="{
       'background-color' : setColor(app.status)
-      }">
+      }"
+
+        >
           <div class="col-md-12 p-2">
-            <p class="fw-light mb-1">Wizyta <i class="bi bi-ca"></i></p>
-            <p class="fw-light mb-1">Status: <b>{{app.status}}</b></p>
-            <p class="fs-6 m-0 fw-bold">{{ app.hour }}</p>
+            <div class="row justify-content-end">
+              <div class="col-md-8">
+                <p class="fw-light mb-1">Pacjent: <b>{{ app.patientFullName }}</b></p>
+              </div>
+              <div class="col-md-4 text-end">
+                <button [matMenuTriggerFor]="menu" class="btn btn-outline-dark"><i class="bi bi-three-dots-vertical"></i></button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="navigateToAppointment(app)">Przejdź do wizyty</button>
+                </mat-menu>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <p class="fw-light mb-0">Status: <b>{{ app.status }}</b></p>
+
+                <p class="fs-6 m-0 fw-bold">{{ app.hour }}</p>
+              </div>
+            </div>
           </div>
         </div>
       }

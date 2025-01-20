@@ -49,6 +49,6 @@ export class DoctorsTableComponent {
     }
   }
   navigateToDoctorDetails(doctor: DoctorInfo) {
-    this.router.navigate(['/admin/doctors',doctor.pwzNumber]);
+    this.router.navigate(['/admin/doctors',doctor.id]);
   }
 }

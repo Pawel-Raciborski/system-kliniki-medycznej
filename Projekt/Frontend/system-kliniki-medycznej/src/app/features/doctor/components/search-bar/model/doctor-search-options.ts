@@ -1,5 +1,5 @@
 export interface DoctorSearchOptions {
-  searchValue: string;
+  doctorFullName: string;
   advancedSearch: {
     pwzNumber: string,
     selectedSpecializations: string[]

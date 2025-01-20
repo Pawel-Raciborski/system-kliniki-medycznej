@@ -12,8 +12,9 @@ import {DoctorOfficeHoursDialogData} from '../models/doctor-office-hours-dialog-
   templateUrl: './office-hours-details-dialog.component.html',
   styleUrl: './office-hours-details-dialog.component.css'
 })
-export class OfficeHoursDetailsDialogComponent {
+export class OfficeHoursDetailsDialogComponent{
   form: FormGroup = new FormGroup({
+    id: new FormControl(''),
     day: new FormControl(''),
     startHour: new FormControl(''),
     endHour: new FormControl(''),

@@ -8,7 +8,15 @@
       @if (isNewData) {
         <div class="mt-3">
           <label class="form-label" for="day">Dzień</label>
-          <input class="form-control" id="day" type="text" formControlName="day"/>
+          <select class="form-control" id="day" name="day" formControlName="day">
+            <option value="MONDAY">Poniedziałek</option>
+            <option value="TUESDAY">Wtorek</option>
+            <option value="WEDNESDAY">Środa</option>
+            <option value="THURSDAY">Czwartek</option>
+            <option value="FRIDAY">Piątek</option>
+            <option value="SATURDAY">Sobota</option>
+            <option value="SUNDAY">Niedziela</option>
+          </select>
         </div>
       } @else {
         <div class="mt-3 p-3 border text-center rounded-2">

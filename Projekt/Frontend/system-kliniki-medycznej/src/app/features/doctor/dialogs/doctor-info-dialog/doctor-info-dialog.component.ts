@@ -8,6 +8,7 @@ import {
 } from '../../../appointment/dialogs/make-appointment-dialog/make-appointment-dialog.component';
 import {UserService} from '../../../auth/services/user.service';
 import {DoctorInfoDialogDataWithConfig} from '../models/doctor-info-dialog-data-with-config';
+import {DoctorSpecialization} from '../../domain/doctor-specialization';
 
 @Component({
   selector: 'app-doctor-info-dialog',
@@ -19,7 +20,7 @@ import {DoctorInfoDialogDataWithConfig} from '../models/doctor-info-dialog-data-
   styleUrl: './doctor-info-dialog.component.css'
 })
 export class DoctorInfoDialogComponent implements OnInit {
-  doctorSpecializations: string[] = [];
+  doctorSpecializations: DoctorSpecialization[] = [];
   doctorInfo!: DoctorInfo;
   showButton: boolean = true;
 
@@ -33,13 +34,12 @@ export class DoctorInfoDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.doctorSpecializationService.getAllAvailableSpecializationNames().subscribe(
+    this.initDoctorInfoConfig();
+    this.doctorSpecializationService.getDoctorSpecializations(this.doctorInfo.pwzNumber).subscribe(
       specializationNames => {
         this.doctorSpecializations = specializationNames;
       }
     );
-
-    this.initDoctorInfoConfig();
     this.initShowButton();
   }
 
