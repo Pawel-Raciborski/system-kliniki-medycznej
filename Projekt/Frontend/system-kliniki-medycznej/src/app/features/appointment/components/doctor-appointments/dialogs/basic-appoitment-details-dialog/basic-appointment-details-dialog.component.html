@@ -12,16 +12,17 @@
       <div class="row border-bottom">
         <div class="col-md-12">
           <h6>Informacje o pacjencie</h6>
-          <p>Karta pacjenta: <span class="text-primary">{{appointmentDetails.patientCardId}}</span></p>
+          <p>Karta pacjenta: <span class="text-primary">{{ appointmentDetails.patientCardId }}</span></p>
         </div>
         <div class="col-md-6">
-          <p>Pesel: <span class="fw-light">{{patientData.personalDetails.pesel}}</span></p>
+          <p>Pesel: <span class="fw-light">{{ patientData.personalDetails.pesel }}</span></p>
         </div>
         <div class="col-md-6">
-          <p class="mb-0">Imię i nazwisko: <span class="fw-light">{{patientData.personalDetails.name}} {{patientData.personalDetails.surname}}</span></p>
-          <p class="mb-0">Data urodzenia: <span class="fw-light">{{patientData.personalDetails.birthDate}}</span></p>
-          <p>Płeć: <span class="fw-light">{{patientData.personalDetails.gender}}</span></p>
-          <p>Numer telefonu: <span class="fw-light">{{patientData.personalDetails.phoneNumber}}</span></p>
+          <p class="mb-0">Imię i nazwisko: <span
+            class="fw-light">{{ patientData.personalDetails.name }} {{ patientData.personalDetails.surname }}</span></p>
+          <p class="mb-0">Data urodzenia: <span class="fw-light">{{ patientData.personalDetails.birthDate }}</span></p>
+          <p>Płeć: <span class="fw-light">{{ patientData.personalDetails.gender }}</span></p>
+          <p>Numer telefonu: <span class="fw-light">{{ patientData.personalDetails.phoneNumber }}</span></p>
         </div>
       </div>
       <div class="row mt-3">
@@ -29,9 +30,60 @@
           <h6>Informacje o wizycie</h6>
           <div class="row">
             <div class="col-md-12">
-              <p class="mb-0">Identyfikator: <span class="fw-light text-primary">{{appointment.id}}</span></p>
-              <p>Data: {{appointment.date | date: "dd MMM yyyy"}}</p>
-              <p>Status: {{appointment.status}}</p>
+              @if(userService.hasRole("RECEPTIONIST")){
+                <div class="row mb-4">
+                  <div class="col-md-12">
+                    <h6>Lekarz prowadzący</h6>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="text-center">
+                      <img [src]="doctor.profileImagePath" width="150px" class="rounded-circle" alt="Zdjęcie profilowe lekarza">
+                    </div>
+                  </div>
+                  <div class="col-md-6 align-content-center">
+                    <p>Numer PWZ: <span class="fw-light">{{ doctor.pwzNumber }}</span></p>
+                    <p class="mb-0">Imię i nazwisko: <span
+                      class="fw-light">{{ doctor.name }} {{ doctor.surname }}</span></p>
+                    <p class="mb-0">Email: <span class="fw-light">{{ doctor.email }}</span></p>
+                    <p>Numer telefonu: <span class="fw-light">{{ doctor.phoneNumber }}</span></p>
+                  </div>
+                </div>
+              }
+              <div class="row">
+<!--                <p class="mb-0">Identyfikator: <span class="fw-light text-primary">{{ appointment.id }}</span></p>-->
+                <p>Data: {{ appointment.date | date: "dd MMM yyyy" }}</p>
+              </div>
+              <div class="row mb-4">
+                <div class="col-md-8">
+                  <p>Status: {{ appointment.status }}</p>
+                </div>
+                @if (userService.hasRole("RECEPTIONIST") ||
+                userService.hasRole("DOCTOR") &&
+                  appointment.status !== 'Zakończona'
+                  ) {
+                  <div class="col-md-4">
+                    <button class="btn btn-outline-dark" (click)="showUpdateStatus()">Zmień status</button>
+                    @if (showUpdateStatusInput) {
+                      <form [formGroup]="form">
+                        <select name="status" class="form-select mt-3" formControlName="status">
+                          @for (status of availableStatuses; let i = $index; track i) {
+                            <option [selected]="status.name === appointment.status"
+                                    [value]="status.value">{{ status.name }}
+                            </option>
+                          }
+                        </select>
+                      </form>
+                    }
+                  </div>
+                }
+              </div>
+              @if (showUpdateStatusInput) {
+                <div class="row mb-3">
+                  <div class="col-md-12 text-end">
+                    <button class="btn btn-outline-success" (click)="updateStatus()">Zapisz</button>
+                  </div>
+                </div>
+              }
             </div>
           </div>
         </div>

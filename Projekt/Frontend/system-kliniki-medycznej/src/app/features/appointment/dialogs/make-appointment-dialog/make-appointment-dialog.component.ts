@@ -1,12 +1,12 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {AppointmentService} from '../../services/appointment.service';
 import {DoctorInfo} from '../../../doctor/domain/doctor-info';
 import {
   DateFilterFn,
   MatCalendar,
   MatDatepicker,
-  MatDatepickerInput,
+  MatDatepickerInput, MatDatepickerInputEvent,
   MatDatepickerToggle
 } from '@angular/material/datepicker';
 import {MatFormField, MatHint, MatLabel, MatSuffix} from '@angular/material/form-field';
@@ -18,6 +18,8 @@ import {PatientsService} from '../../../patient/services/patients.service';
 import {DatePipe} from '@angular/common';
 import {LocalStorageService} from '../../../auth/services/local-storage.service';
 import {UserService} from '../../../auth/services/user.service';
+import {DateFormatterService} from '../../../../services/date-formatter.service';
+import {MessageDialogComponent} from '../../../message/message-dialog/message-dialog.component';
 
 @Component({
   selector: 'app-make-appointment-dialog',
@@ -45,8 +47,10 @@ export class MakeAppointmentDialogComponent implements OnInit {
     hour: new FormControl<string>('')
   });
 
-  workingDayNumbersWithOfficeHours: { day: number, hours: string[] }[] = [];
+  workingDays: number[] = [];
+  dayOfficeHours: string[] = [];
   patientPesel!: string;
+  public pickedDate = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public doctorInfo: DoctorInfo,
@@ -54,22 +58,24 @@ export class MakeAppointmentDialogComponent implements OnInit {
     private officeHoursService: OfficeHoursService,
     private currentDialog: MatDialogRef<MakeAppointmentDialogComponent>,
     private patientService: PatientsService,
-    public userService: UserService
+    public userService: UserService,
+    private dialog: MatDialog,
+    private dateFormatterService: DateFormatterService
   ) {
   }
 
   ngOnInit(): void {
     this.officeHoursService.findDoctorWorkingDays(this.doctorInfo.pwzNumber).subscribe(
       (data) => {
-        this.workingDayNumbersWithOfficeHours = data;
+        this.workingDays = data;
       }
     );
 
-    if(this.userService.hasRole("RECEPTIONIST")){
+    if (this.hasReceptionistRoleOrDoctor()) {
       this.appointmentForm.addControl("pesel", new FormControl(''));
-    }else{
+    } else {
       this.patientService.findPatientPesel(this.userService.getId('patientId'))
-        .subscribe(pesel => this.patientPesel = pesel);
+        .subscribe(pesel => this.patientPesel = pesel.personalDetails.pesel);
     }
   }
 
@@ -77,21 +83,18 @@ export class MakeAppointmentDialogComponent implements OnInit {
   dateFilter = (date: Date | null): boolean => {
     const day = (date || new Date()).getDay();
     const today = new Date();
-    let days = this.workingDayNumbersWithOfficeHours.map(value => value.day);
+
     if (!date) {
-      return days.includes(day);
+      return this.workingDays.includes(day);
     }
-    return days.includes(day) && date >= today;
+    return this.workingDays.includes(day) && date >= today;
   };
 
-  public officeHoursForDay(day: number) {
-    let dayOfficeHours = this.workingDayNumbersWithOfficeHours.find(value => value.day === day);
-
-    if (!dayOfficeHours) {
-      return [];
-    }
-
-    return dayOfficeHours.hours;
+  public searchOfficeHoursForDay(date: string) {
+    this.officeHoursService.findOfficeHoursForDay(this.doctorInfo.pwzNumber, this.formatDate(date, 'normal'))
+      .subscribe(officeHours => {
+        this.dayOfficeHours = officeHours;
+      });
   }
 
   get getDay() {
@@ -108,6 +111,15 @@ export class MakeAppointmentDialogComponent implements OnInit {
     return this.appointmentForm.controls['date'] as FormControl;
   }
 
+  public datePicked() {
+    console.log("DATE PICKED");
+    if (this.pickedDate) {
+      this.searchOfficeHoursForDay(this.dateFormField.value);
+      return true;
+    }
+    return false;
+  }
+
   close() {
     this.currentDialog.close({
         appointmentCreated: false
@@ -116,27 +128,46 @@ export class MakeAppointmentDialogComponent implements OnInit {
   }
 
   makeAppointment() {
-    let formatedDate = this.formatDate(this.date);
-    let pesel: string = this.userService.hasRole("RECEPTIONIST") ? this.appointmentForm.value.pesel : this.patientPesel;
+    let formatedDate = this.formatDate(this.date,'reversed');
+    let pesel: string = this.hasReceptionistRoleOrDoctor() ? this.appointmentForm.value.pesel : this.patientPesel;
 
     this.appointmentService.createAppointment({
       patientPesel: pesel,
       date: formatedDate,
       hour: this.formHour,
       doctorPwzNumber: this.doctorInfo.pwzNumber
-    });
-    this.currentDialog.close({
-      appointmentCreated: true,
-      date: formatedDate,
-      hour: this.formHour
+    }).subscribe({
+      next: data => {
+        this.currentDialog.close({
+          appointmentCreated: true,
+          date: this.date,
+          hour: data.hour
+        });
+      },
+      error: err => {
+        this.dialog.open(MessageDialogComponent,{
+          data: {
+            message: err.error,
+            type: 'error'
+          }
+        });
+      }
     });
   }
 
-  formatDate(date: string) {
-    let formatedDate: string = new DatePipe('pl').transform(date, 'dd-MM-yyyy') || '';
-    console.log(formatedDate);
+  private hasReceptionistRoleOrDoctor() {
+    return this.userService.hasRole("RECEPTIONIST") || this.userService.hasRole("DOCTOR");
+  }
 
-    return formatedDate;
+  formatDate(date: string, type: 'normal' | 'reversed') {
+    let formattedDate = '';
+    if(type === 'normal'){
+      formattedDate = new DatePipe('pl').transform(date, 'dd-MM-yyyy') || '';
+    }else if(type === 'reversed'){
+      formattedDate = new DatePipe('pl').transform(date, 'yyyy-MM-dd') || '';
+    }
+
+    return formattedDate;
   }
 
   get formHour(): string {
@@ -145,5 +176,10 @@ export class MakeAppointmentDialogComponent implements OnInit {
 
   get date(): string {
     return this.appointmentForm.controls['date'].value;
+  }
+
+  datePicked2(matDatepickerInputEvent: MatDatepickerInputEvent<any, any>) {
+    this.pickedDate = true;
+    this.searchOfficeHoursForDay(matDatepickerInputEvent.value);
   }
 }

@@ -18,7 +18,6 @@ import {UserService} from '../../../../auth/services/user.service';
   styleUrl: './finished-appointments.component.css'
 })
 export class FinishedAppointmentsComponent implements OnInit {
-  // @Input({required: true}) patientPesel!: string;
   patientId!:number;
   patientAppointments!: PatientAppointmentInfo[];
   paginationOptions: { page: number; pageSize: number } = {

@@ -37,6 +37,7 @@ export class UpcomingAppointmentsComponent implements OnInit {
 
     this.appointmentService.findPatientUpcomingAppointments(this.patientId, this.paginationOptions)
       .subscribe(data => {
+        console.log(data);
           this.patientAppointments = data;
         }
       );
