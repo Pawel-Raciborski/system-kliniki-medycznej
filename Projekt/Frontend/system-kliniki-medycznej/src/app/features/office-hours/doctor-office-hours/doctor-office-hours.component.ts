@@ -10,6 +10,7 @@ import {
 } from '../../doctor/dialogs/office-hours-details-dialog/office-hours-details-dialog.component';
 import {OfficeHoursService} from '../../doctor/services/office-hours.service';
 import {of} from 'rxjs';
+import {MessageDialogComponent} from '../../message/message-dialog/message-dialog.component';
 
 @Component({
   selector: 'app-doctor-office-hours',
@@ -43,10 +44,25 @@ export class DoctorOfficeHoursComponent {
     this.dialog.open(OfficeHoursDetailsDialogComponent, {
       data: doctorOfficeHoursDialogData
     }).afterClosed().subscribe((officeHours: OfficeHours) => {
-      if(officeHours){
-        this.officeHoursService.create(officeHours,this.doctorPwzNumber).subscribe(
-          createdOfficeHours => {
-            this.addNewOfficeHours(createdOfficeHours);
+      if (officeHours) {
+        this.officeHoursService.create(officeHours, this.doctorPwzNumber).subscribe({
+            next: createdOfficeHours => {
+              this.addNewOfficeHours(createdOfficeHours);
+              this.dialog.open(MessageDialogComponent, {
+                data: {
+                  message: 'Pomyślnie dodano godziny pracy',
+                  type: 'success'
+                }
+              });
+            },
+            error: err => {
+              this.dialog.open(MessageDialogComponent, {
+                data: {
+                  message: err.error,
+                  type: 'error'
+                }
+              });
+            }
           }
         );
       }
@@ -55,6 +71,7 @@ export class DoctorOfficeHoursComponent {
   }
 
   updateOfficeHourDetails(oldOfficeHours: OfficeHours) {
+    console.log('OLD',oldOfficeHours);
     let doctorOfficeHoursData: DoctorOfficeHoursDialogData = {
       officeHours: oldOfficeHours,
       isNewData: false
@@ -63,7 +80,7 @@ export class DoctorOfficeHoursComponent {
     this.dialog.open(OfficeHoursDetailsDialogComponent, {
       data: doctorOfficeHoursData
     }).afterClosed().subscribe((officeHours: OfficeHours) => {
-      if(officeHours){
+      if (officeHours) {
         this.officeHoursService.update(officeHours).subscribe(
           updatedOfficeHours => {
             this.updateOfficeHours(oldOfficeHours, updatedOfficeHours)
@@ -83,7 +100,7 @@ export class DoctorOfficeHoursComponent {
   private updateOfficeHours(oldOfficeHours: OfficeHours, updatedOfficeHours: OfficeHours) {
     let index = this.getIndex(oldOfficeHours);
 
-    if(index !== -1){
+    if (index !== -1) {
       this.doctorOfficeHours[index] = updatedOfficeHours;
     }
   }
@@ -95,7 +112,7 @@ export class DoctorOfficeHoursComponent {
   private deleteFromArray(officeHours: OfficeHours) {
     let index = this.getIndex(officeHours);
     console.log(index);
-    if(index !== -1){
+    if (index !== -1) {
       this.doctorOfficeHours = this.doctorOfficeHours.filter(d => d !== officeHours);
     }
   }
