@@ -14,6 +14,7 @@ import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular
 })
 export class UpdatePatientDetailsDialogComponent {
   form!: FormGroup;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) private patientDetails: PatientDetails,
     private formBuilder: FormBuilder,
@@ -24,18 +25,37 @@ export class UpdatePatientDetailsDialogComponent {
   }
 
   private buildForm() {
-    this.form = this.formBuilder.group({
-      heightInCm: new FormControl(this.patientDetails.heightInCm),
-      weightInKg: new FormControl(this.patientDetails.weightInKg),
-      bloodType: new FormControl(this.patientDetails.bloodType),
-    });
+    if (this.patientDetails) {
+      this.form = this.formBuilder.group({
+        heightInCm: new FormControl(this.patientDetails.heightInCm),
+        weightInKg: new FormControl(this.patientDetails.weightInKg),
+        bloodType: new FormControl(this.patientDetails.bloodType),
+      });
+    } else {
+      this.form = this.formBuilder.group({
+        heightInCm: new FormControl(''),
+        weightInKg: new FormControl(''),
+        bloodType: new FormControl(''),
+      });
+    }
   }
 
   update() {
-    this.patientDetails.weightInKg = this.form.value.weightInKg;
-    this.patientDetails.heightInCm = this.form.value.heightInCm;
-    this.patientDetails.bloodType = this.form.value.bloodType;
-
+    if (this.patientDetails) {
+      this.patientDetails = {
+        ...this.patientDetails,
+        weightInKg: this.form.value.weightInKg,
+        heightInCm: this.form.value.heightInCm,
+        bloodType: this.form.value.bloodType,
+      }
+    } else {
+      this.patientDetails = {
+        id: null,
+        weightInKg: this.form.value.weightInKg,
+        heightInCm: this.form.value.heightInCm,
+        bloodType: this.form.value.bloodType,
+      }
+    }
     this.dialogRef.close(this.patientDetails);
   }
 
