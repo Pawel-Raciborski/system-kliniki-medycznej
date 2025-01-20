@@ -2,11 +2,12 @@ import {ApplicationConfig, LOCALE_ID, provideZoneChangeDetection} from '@angular
 import {provideRouter, withComponentInputBinding} from '@angular/router';
 
 import {routes} from './app.routes';
-import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClient, withInterceptors, withInterceptorsFromDi} from '@angular/common/http';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {registerLocaleData} from '@angular/common';
 import localePl from '@angular/common/locales/pl';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS, provideNativeDateAdapter} from '@angular/material/core';
+import {provideNativeDateAdapter} from '@angular/material/core';
+import {authInterceptor} from './features/auth/interceptor/auth.interceptor';
 
 registerLocaleData(localePl, 'pl');
 export const appConfig: ApplicationConfig = {

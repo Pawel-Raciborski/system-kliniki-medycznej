@@ -15,7 +15,7 @@ export class FormGeneratorService {
     return this.formBuilder.group({
       registerAccountData: this.createRegisterAccountForm(),
       personalDetails: this.createPersonalDetailsForm(),
-      dateOfEmployment: new FormControl(this.getCurrentDate())
+      dateOfEmployment: new FormControl('')
     });
   }
 
@@ -23,13 +23,13 @@ export class FormGeneratorService {
     return this.formBuilder.group({
       username: new FormControl(''),
       password: new FormControl(''),
-      passwordConfirm: new FormControl(''),
       email: new FormControl(''),
     });
   }
 
   public createPersonalDetailsForm(){
     return this.formBuilder.group({
+      id: new FormControl(null),
       pesel: new FormControl(''),
       name: new FormControl(''),
       surname: new FormControl(''),
@@ -54,15 +54,18 @@ export class FormGeneratorService {
   }
 
   patchPersonalDetails(formGroup:FormGroup, personalDetails: PersonalDetails) {
+
     formGroup.patchValue({
+      id: personalDetails.id,
       pesel: personalDetails.pesel,
       name: personalDetails.name,
       surname: personalDetails.surname,
       phoneNumber: personalDetails.phoneNumber,
-      birthDate:  formatDate(personalDetails.birthDate),
+      birthDate:  personalDetails.birthDate,
       gender: personalDetails.gender,
       address: personalDetails.address,
     });
+    console.log(formGroup);
   }
 
   patchAccountValues(account: AccountInfo) {

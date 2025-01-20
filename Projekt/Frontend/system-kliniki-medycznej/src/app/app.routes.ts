@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 import {MainPageComponent} from './features/main-page/components/main-page/main-page.component';
 import {AdminPageComponent} from './features/admin/components/admin-page/admin-page.component';
 import {adminRoutes} from './features/admin/routes/admin-routes';
@@ -10,12 +10,7 @@ import {
   ReceptionistPanelComponent
 } from './features/receptionist-panel/components/receptionist-panel/receptionist-panel.component';
 import {AuthComponent} from './features/auth/components/auth/auth.component';
-import {roleAuthGuard} from './features/auth/guards/role-auth.guard';
 import {receptionistRoutes} from './features/receptionist-panel/routes/receptionist-routes';
-import {
-  DoctorPatientCardComponent
-} from './features/patient-card/components/doctor-patient-card/doctor-patient-card.component';
-import {PatientCardComponent} from './features/patient-card/components/patient-card/patient-card.component';
 
 export const routes: Routes = [
   {
