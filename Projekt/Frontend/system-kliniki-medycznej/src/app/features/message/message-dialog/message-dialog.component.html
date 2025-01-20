@@ -1,0 +1,21 @@
+<div class="container-fluid">
+  <div class="row">
+    <div [class]="{
+    'bg-danger' : content.type === 'error',
+    'bg-success' : content.type === 'success',
+    'bg-warning' : content.type === 'warning'
+    }" class="col-md-12">
+      <div class="row p-1">
+        <div class="col-md-8">
+          <h5>{{getMessage()}}</h5>
+        </div>
+        <div (click)="close()" class="col-md-4 text-end">
+          <button class="btn btn-close"></button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <p class="small mt-3">{{content.message}}</p>
+    </div>
+  </div>
+</div>
