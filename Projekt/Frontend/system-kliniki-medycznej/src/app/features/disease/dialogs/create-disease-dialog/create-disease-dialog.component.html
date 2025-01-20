@@ -1,0 +1,19 @@
+<div class="container-fluid">
+  <div class="row p-2">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-10">
+          <h5>Dodawanie schorzenia</h5>
+        </div>
+        <div class="col-md-2 text-end">
+          <button (click)="cancel()" class="btn btn-close"></button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <app-disease-list (selectedDiseaseWithDescriptionEmitter)="returnDisease($event)"></app-disease-list>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

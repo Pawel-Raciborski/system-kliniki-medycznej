@@ -1,0 +1,19 @@
+<form [formGroup]="from">
+  <div class="row mb-2">
+    <div class="col-md-6">
+      <div class="mb-3">
+        <label class="form-label" for="name">Nazwa choroby</label>
+        <input class="form-control" id="name" name="name" type="text" formControlName="name"/>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="mb-3">
+        <label class="form-label" for="code">Kod choroby</label>
+        <input class="form-control" id="code" name="code" type="text" formControlName="code"/>
+      </div>
+    </div>
+    <div class="col-md-2 align-content-center">
+      <div (click)="search()" class="btn btn-outline-dark mt-3"><i class="bi bi-search"></i></div>
+    </div>
+  </div>
+</form>

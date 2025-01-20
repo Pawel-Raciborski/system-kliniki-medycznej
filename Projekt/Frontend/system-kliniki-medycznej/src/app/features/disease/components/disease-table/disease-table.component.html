@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-hover">
+      <thead class="table-dark">
+        <tr>
+          <td>Kod choroby</td>
+          <td class="text-center">Informacje</td>
+        </tr>
+      </thead>
+      <tbody>
+        @for (disease of diseases; track disease.id){
+          <tr>
+            <td>{{disease.icd11Code}}</td>
+            <td>
+              <div class="row p-1">
+                <div class="col-md-10">
+                  <p>Nazwa: {{disease.icd11Title}}</p>
+                  <p class="small">Kategoria: {{disease.category}}</p>
+                </div>
+                <div class="col-md-2 align-content-center">
+                  <button (click)="addDisease(disease)" class="btn btn-outline-success"><i class="bi bi-plus"></i></button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

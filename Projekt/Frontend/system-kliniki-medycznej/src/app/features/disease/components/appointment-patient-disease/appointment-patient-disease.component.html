@@ -8,8 +8,8 @@
   </div>
   <div class="col-md-6 max-height-300">
     <h5 class="fw-light">Przepisane leki</h5>
-    @if(patientDisease.hospitalization.length > 0){
-      @for(hospitalization of patientDisease.hospitalization; let i=$index; track i){
+    @if(patientDisease.hospitalizations.length > 0){
+      @for(hospitalization of patientDisease.hospitalizations; let i=$index; track i){
         <div class="row border p-1 mt-1">
           <div class="col-md-6">
             <p class="fw-light">{{hospitalization.medicine.commonName}} | <span class="text-primary">{{hospitalization.medicine.atcCode}}</span></p>
