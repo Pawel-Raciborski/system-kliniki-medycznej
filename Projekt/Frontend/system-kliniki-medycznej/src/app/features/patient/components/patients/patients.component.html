@@ -9,6 +9,12 @@
   </div>
   <div class="row mt-5">
     <h3 class="fw-light">Lista pacjentów</h3>
+    <div class="col-md-12 mt-2 mb-2 text-center">
+      @if(userService.hasRole("RECEPTIONIST") || userService.hasRole("ADMIN")){
+        <button (click)="openCreateAccountModal()" class="btn btn-outline-dark mx-2">Utwórz konto</button>
+      }
+      <button class="btn btn-outline-dark" (click)="addPatient()">Dodaj pacjenta</button>
+    </div>
     <section>
       <table class="table table-hover mt-4">
         <thead>

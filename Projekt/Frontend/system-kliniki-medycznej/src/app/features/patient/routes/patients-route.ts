@@ -8,6 +8,7 @@ import {AvailableDoctorsComponent} from '../../doctor/components/available-docto
 import {
   PatientPrescriptionPageComponent
 } from '../../prescriptions/components/patient-prescription-page/patient-prescription-page.component';
+import {AppointmentComponent} from '../../appointment/components/doctor-appointments/appointment/appointment.component';
 
 export const patientRoutes: Routes = [
   {

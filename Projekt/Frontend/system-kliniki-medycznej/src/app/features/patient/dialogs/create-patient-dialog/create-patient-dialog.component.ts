@@ -14,7 +14,7 @@ import {MatDialogRef} from '@angular/material/dialog';
 export class CreatePatientDialogComponent {
   form = new FormGroup({
     pesel : new FormControl(''),
-    parentPesel : new FormControl(''),
+    parentPesel : new FormControl(),
     name : new FormControl(''),
     surname : new FormControl(''),
     birthDate : new FormControl(''),

@@ -1,0 +1,23 @@
+<div class="row mt-2 pb-3">
+  <div class="col-md-12 mb-2">
+    <h5 class="card-title fw-light">Dane pacjenta <i class="bi bi-person"></i></h5>
+  </div>
+  <div class="col-md-6 mt-2">
+    <p class="mb-0"><b>PESEL:</b> {{ personalDetails.pesel }}</p>
+    <p class="fw-bold">{{ personalDetails.name }} {{ personalDetails.surname }}</p>
+    <p class="mb-0">Data urodzenia: <span class="text-success">{{ personalDetails.birthDate | date:"dd MMM yyyy" }}</span></p>
+  </div>
+  <div class="col-md-6">
+    <p>Płeć: <i class="bi fw-bold" [class]="{
+    'bi-gender-female': personalDetails.gender === 'Kobieta',
+    'bi-gender-male': personalDetails.gender === 'Mężczyzna'
+    }"></i></p>
+    @if (patientDetails) {
+      <p class="mb-0"><i class="bi bi-graph-up"></i> <span class="fw-bold">{{ patientDetails.heightInCm || "nie określono"}}</span> -
+        wzrost</p>
+      <p class="mb-0"><i class="bi bi-clipboard text-success"></i> <b>{{ patientDetails.weightInKg || "nie określono"}}</b> - waga</p>
+      <p class="mb-0"><i class="bi bi-droplet-fill text-danger"></i> <b>{{ patientDetails.bloodType || "nie określono"}}</b> - grupa krwi
+      </p>
+    }
+  </div>
+</div>

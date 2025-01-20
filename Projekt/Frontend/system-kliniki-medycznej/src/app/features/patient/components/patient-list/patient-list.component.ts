@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {Pagination} from '../../../pagination/model/pagination';
 import {MatDialog} from '@angular/material/dialog';
 import {CreatePatientDialogComponent} from '../../dialogs/create-patient-dialog/create-patient-dialog.component';
+import {MessageDialogComponent} from '../../../message/message-dialog/message-dialog.component';
 
 @Component({
   selector: 'app-patient-list',
@@ -53,8 +54,24 @@ export class PatientListComponent implements OnInit {
     let {parentPesel,...personalDetails} = data;
     let patientToCreate = this.patientsService.buildPatientData(parentPesel,personalDetails);
     console.log(patientToCreate);
-    this.patientsService.createPatient(patientToCreate).subscribe(createdPatient => {
-      this.patients.unshift(createdPatient);
+    this.patientsService.createPatient(patientToCreate).subscribe({
+      next: createdPatient => {
+        this.patients.unshift(createdPatient);
+        this.dialog.open(MessageDialogComponent,{
+          data: {
+            message: 'Pomyślnie utworzono użytkownika',
+            type:'success'
+          }
+        });
+      },
+      error: err => {
+        this.dialog.open(MessageDialogComponent,{
+          data: {
+            message: err.error,
+            type:'error'
+          }
+        });
+      }
     });
   }
 }

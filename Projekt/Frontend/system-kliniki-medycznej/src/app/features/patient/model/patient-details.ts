@@ -1,5 +1,5 @@
 export interface PatientDetails {
-  id: number;
+  id: number | null;
   weightInKg: string;
   heightInCm: string;
   bloodType: string;
