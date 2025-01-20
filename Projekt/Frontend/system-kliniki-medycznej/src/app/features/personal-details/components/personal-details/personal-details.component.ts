@@ -30,6 +30,7 @@ export class PersonalDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.personalDetails);
     this.personalDetailsSignal = signal(this.personalDetails);
     this.personalDetailsForm = this.formGeneratorService.createPersonalDetailsForm();
     this.formGeneratorService.patchPersonalDetails(this.personalDetailsForm,this.personalDetails);

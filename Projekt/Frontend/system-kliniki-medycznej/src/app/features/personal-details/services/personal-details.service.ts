@@ -1,22 +1,23 @@
 import { Injectable } from '@angular/core';
 import {PersonalDetails} from '../domain/personal-details';
 import {Observable, of, throwError} from 'rxjs';
+import {environment} from '../../../../environments/environment.dev';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PersonalDetailsService {
+  url = `${environment.serverUrl}/personal-details`;
 
-  constructor() { }
+  constructor(
+    private httpClient: HttpClient
+  ) { }
 
   update(personalDetailsToUpdate: PersonalDetails): Observable<PersonalDetails> {
-    console.log(personalDetailsToUpdate);
-
-    let randomNumber = Math.floor(Math.random() * 11);
-    if(randomNumber%2==0){
-      console.log(`ERROR OCCUR!`);
-      return throwError(() => new Error("Mock backend error"));
-    }
-    return of(personalDetailsToUpdate);
+    return this.httpClient.put<PersonalDetails>(
+      `${this.url}/update`,
+      personalDetailsToUpdate
+    );
   }
 }
