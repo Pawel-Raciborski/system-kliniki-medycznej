@@ -3,13 +3,17 @@ import {SearchMedicineData} from '../../prescriptions/model/search-medicine-data
 import {Pagination} from '../../pagination/model/pagination';
 import {Observable, of} from 'rxjs';
 import {MedicineDto} from '../model/medicine-dto';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../../../environments/environment.dev';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MedicineService {
-
-  constructor() { }
+  url = `${environment.serverUrl}/medicine`
+  constructor(
+    private httpClient: HttpClient
+  ) { }
 
   searchMedicine(searchMedicineData: SearchMedicineData, pagination: Pagination): Observable<MedicineDto[]> {
     const medicines: MedicineDto[] = [
@@ -89,6 +93,15 @@ export class MedicineService {
         targetSpecies: ""
       }
     ];
-    return of(medicines);
+    return this.httpClient.post<MedicineDto[]>(
+      `${this.url}/search`,
+      searchMedicineData,
+      {
+        params: {
+          page: pagination.page,
+          pageSize: pagination.pageSize,
+        }
+      }
+    );
   }
 }

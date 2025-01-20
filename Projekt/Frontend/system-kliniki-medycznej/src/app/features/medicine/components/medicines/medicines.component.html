@@ -1,0 +1,12 @@
+<div class="container-fluid">
+  <div class="row p-1">
+    <div class="col-md-12">
+      <h5 class="modal-title">Lista lekarstw</h5>
+    </div>
+    <div class="col-md-12">
+      <app-search-medicine-bar (searchFormEmitter)="onMedicineSearch($event)"></app-search-medicine-bar>
+<!--      <app-found-medicines class="max-height-600" type="medicinePanel" [medicines]="medicines"></app-found-medicines>-->
+      <app-medicine-table [medicines]="medicines"></app-medicine-table>
+    </div>
+  </div>
+</div>

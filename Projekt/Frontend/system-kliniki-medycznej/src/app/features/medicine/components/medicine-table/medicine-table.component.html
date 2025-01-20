@@ -4,7 +4,7 @@
       <thead>
       <tr>
         <th>Kod lekarstwa</th>
-        <th>Opis</th>
+        <th class="text-center">Opis</th>
       </tr>
       </thead>
       <tbody>
@@ -14,9 +14,19 @@
               <p>{{ medicine.atcCode || "brak" }}</p>
             </td>
             <td>
-              <p class="mb-0">{{ medicine.medicinalProductName }} </p>
-              <p class="small text-primary">{{ medicine.commonName }}</p>
-              <p class="small text-dark"><b>Moc</b>: {{ medicine.medicinalProductPower }}</p>
+              <div class="row">
+                <div class="col-md-6">
+                  <p class="mb-0">{{ medicine.medicinalProductName }} </p>
+                  <p class="small text-primary">{{ medicine.commonName }}</p>
+                  <p class="small text-dark mb-0"><b>Moc</b>: {{ medicine.medicinalProductPower }}</p>
+                  <p class="small mb-0">Kod ATC: <span class="text-success">{{ medicine.atcCode }}</span></p>
+                  <p class="small">Numer w rejestrze: <span class="text-success">{{ medicine.registryNumber }}</span></p>
+                </div>
+                <div class="col-md-6">
+                  <p class="small mb-0 text-primary">{{ medicine.pharmaceuticalFormName }}</p>
+                  <p class="small">{{ medicine.subjectMedicinalProductName}}</p>
+                </div>
+              </div>
             </td>
           </tr>
         }
