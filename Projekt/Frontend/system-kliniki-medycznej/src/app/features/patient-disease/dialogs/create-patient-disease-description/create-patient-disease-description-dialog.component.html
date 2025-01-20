@@ -1,0 +1,45 @@
+<div class="container-fluid">
+  <div class="row p-1">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12">
+          <h5 class="modal-title">Dodaj opis/objawy</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <p class="mb-0">Nazwa choroby</p>
+          <p class="fw-light">{{ disease.icd11Title }}</p>
+        </div>
+        <div class="col-md-6">
+          <p class="mb-0">Kod</p>
+          <p class="text-primary">{{ disease.icd11Code }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <form [formGroup]="form">
+            <div class="mb-3">
+              <label class="form-label">Opis/Objawy</label>
+              <textarea class="form-control" formControlName="description"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-12 text-center">
+          <button (click)="openAddHospitalizationDialog()" class="btn btn-outline-dark">Dodaj leczenie</button>
+        </div>
+        @if (hospitalization.length > 0) {
+          <div class="col-md-12 mb-2">
+            <app-added-medicines-to-prescription
+              [addedMedicines]="getPrescriptionMedicines"></app-added-medicines-to-prescription>
+          </div>
+        }
+      </div>
+      <div class="row">
+        <div class="col-md-12 text-end">
+          <button (click)="save()" class="btn btn-outline-success">Zapisz</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

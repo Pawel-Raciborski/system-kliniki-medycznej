@@ -7,7 +7,7 @@ export interface CreatePatientDiseaseRequest {
   diseaseDto: DiseaseDto;
   doctorId: number;
   description: string;
-  hospitalization: {
+  hospitalizations: {
     medicine: MedicineDto,
     dosage: string,
     notes: string
