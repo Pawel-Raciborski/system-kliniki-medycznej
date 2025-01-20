@@ -13,15 +13,17 @@ import {UserService} from '../../../auth/services/user.service';
 })
 export class ReceptionistMenuComponent implements OnInit{
   receptionistId!: number;
+  username!: string;
 
   constructor(
-    private userService: UserService,
+    public userService: UserService,
     private router: Router
   ) {
   }
 
   ngOnInit(): void {
     this.receptionistId = this.userService.getId("receptionistId");
+    this.username = this.userService.username;
   }
 
   logout() {
