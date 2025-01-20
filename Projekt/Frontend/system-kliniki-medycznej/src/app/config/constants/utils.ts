@@ -1,3 +1,6 @@
 export default function formatDate(birthDate: string) {
-  return birthDate.split("-").reverse().join("-");
+  console.log(birthDate);
+  let s = birthDate.split("-").reverse().join(".");
+  console.log(s);
+  return s;
 }
